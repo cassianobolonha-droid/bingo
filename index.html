@@ -1,0 +1,2254 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Bingo do CEMTEC — Online</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  :root{
+    --bg:#0a1024; --card:#121e3d; --line:#22314f;
+    --azul:#4f9bff; --txt:#eaf0ff; --dim:#8fa2c7;
+    --ciano:#1BA7EC; --verde:#37d67a;
+    --cel:44px; --bola:180px;
+  }
+  html,body{height:100%}
+  body{
+    background:radial-gradient(ellipse at 50% 0%, #14224a 0%, var(--bg) 62%);
+    color:var(--txt);font-family:system-ui,'Segoe UI',Roboto,sans-serif;
+  }
+  body[data-modo="operador"]{
+    display:grid;grid-template-rows:auto minmax(0,1fr) auto;
+    gap:8px;padding:10px 12px;height:100%;overflow:hidden;
+  }
+  body[data-modo="jogador"]{display:block;padding:10px 12px;min-height:100%}
+  button{font-family:inherit;cursor:pointer;transition:.15s;border-radius:11px}
+
+  #telaInicio{display:grid;place-items:center;min-height:100%;padding:18px}
+  body[data-modo="operador"] #telaInicio,
+  body[data-modo="jogador"] #telaInicio{display:none}
+  .inicioBox{
+    width:min(520px,100%);background:linear-gradient(180deg,#101c3a,#0a1226);
+    border:1px solid var(--line);border-radius:18px;padding:22px 20px;
+    text-align:center;box-shadow:0 26px 70px rgba(0,0,0,.6);
+  }
+  .marca{
+    background:#fff;border-radius:12px;padding:8px 14px;display:inline-block;
+    margin-bottom:16px;
+  }
+  .marca img{display:block;height:44px;width:auto;max-width:200px;object-fit:contain}
+  .inicioBox h1{
+    font-size:clamp(18px,4.6vw,26px);font-weight:900;letter-spacing:.05em;
+    margin-bottom:6px;
+  }
+  .inicioBox h1 span{color:var(--ciano)}
+  .inicioBox .sub{font-size:12.5px;color:var(--dim);margin-bottom:20px}
+  .btGrande{
+    width:100%;height:60px;border:none;font-size:15px;font-weight:800;
+    letter-spacing:.06em;margin-bottom:10px;
+  }
+  .btOperador{
+    background:linear-gradient(180deg,#4f9bff,#2f74db);color:#fff;
+    box-shadow:0 7px 22px rgba(79,155,255,.35);
+  }
+  .btJogador{
+    background:linear-gradient(180deg,#1e8e3e,#136329);color:#fff;
+    box-shadow:0 7px 22px rgba(30,142,62,.35);
+  }
+  .btGrande:hover{filter:brightness(1.09)}
+  .btGrande:active{transform:scale(.985)}
+  .inicioBox .peq{font-size:11px;color:var(--dim);line-height:1.6;margin-top:12px}
+
+  #telaOperador{display:contents}
+  body[data-modo="inicio"] #telaOperador,
+  body[data-modo="jogador"] #telaOperador{display:none}
+
+  header.ope{display:flex;align-items:center;gap:8px;min-height:50px;flex-wrap:wrap}
+  .brand{
+    background:#fff;border-radius:11px;padding:4px 10px;
+    display:flex;align-items:center;flex:0 0 auto;
+    box-shadow:0 3px 16px rgba(0,0,0,.42);
+  }
+  .brand img{
+    display:block;height:clamp(26px,3.1vh,38px);width:auto;
+    max-width:min(210px,23vw);object-fit:contain;
+  }
+  @media(max-width:900px){ .brand img{max-width:125px} }
+  .titOp{
+    font-size:clamp(12px,1.5vw,23px);font-weight:900;letter-spacing:.055em;
+    white-space:nowrap;line-height:1;flex:0 0 auto;
+  }
+  .titOp span{color:var(--ciano)}
+  @media(max-width:840px){ .titOp{display:none} }
+  .spacer{flex:1;min-width:6px}
+  .pill{
+    border:1px solid var(--azul);border-radius:999px;padding:5px 13px;
+    font-size:clamp(10px,.9vw,13px);font-weight:700;color:var(--azul);
+    white-space:nowrap;
+  }
+  .pill.bingo{
+    border-color:#ff5b5b;color:#ff8585;background:rgba(198,40,40,.18);
+    animation:piscaPill 1s ease-in-out infinite;
+  }
+  @keyframes piscaPill{50%{opacity:.55}}
+  .icobtn{
+    width:39px;height:39px;border:1px solid var(--line);border-radius:11px;
+    background:var(--card);color:var(--dim);display:grid;place-items:center;
+    flex:0 0 auto;
+  }
+  .icobtn:hover{color:var(--txt);border-color:#3a5480}
+  .icobtn.on{color:var(--azul);border-color:var(--azul);background:#132a52;
+    box-shadow:0 0 14px rgba(79,155,255,.28)}
+  .icobtn.alertaOn{color:#ffd84d;border-color:#ffd84d;background:#3a2f0d}
+  .icobtn.passadorOn{color:var(--verde);border-color:var(--verde);background:#0f2e1c}
+  .icobtn.travaOn{color:#b57bff;border-color:#b57bff;background:#2a1a4a}
+  .icobtn svg{width:18px;height:18px;fill:none;stroke:currentColor;
+    stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+
+  main.ope{display:grid;grid-template-columns:minmax(0,2.35fr) minmax(245px,.72fr);
+    gap:10px;min-height:0}
+  @media(max-width:1040px){
+    main.ope{grid-template-columns:minmax(0,2.1fr) minmax(210px,.8fr)}
+  }
+
+  .placar{
+    position:relative;background:linear-gradient(180deg,#0d1730,#0a1226);
+    border:1px solid var(--line);border-radius:16px;padding:8px;
+    display:flex;flex-direction:column;justify-content:center;
+    min-height:0;overflow:hidden;transition:box-shadow .35s,border-color .35s;
+  }
+  .placar.quente{border-color:rgba(232,113,10,.65);
+    box-shadow:0 0 0 1px rgba(232,113,10,.45),0 0 34px rgba(232,113,10,.22) inset}
+  .placar.urgente{border-color:rgba(255,216,77,.85);
+    box-shadow:0 0 0 2px rgba(255,216,77,.55),0 0 46px rgba(255,216,77,.30) inset;
+    animation:bordaPulsa 1.15s ease-in-out infinite}
+  .placar.parado{border-color:rgba(255,91,91,.9);
+    box-shadow:0 0 0 3px rgba(255,91,91,.7),0 0 60px rgba(255,91,91,.35) inset;
+    animation:bordaPulsaBingo 1s ease-in-out infinite}
+  @keyframes bordaPulsa{
+    0%,100%{box-shadow:0 0 0 2px rgba(255,216,77,.45),0 0 26px rgba(255,216,77,.16) inset}
+    50%{box-shadow:0 0 0 3px rgba(255,216,77,.9),0 0 58px rgba(255,216,77,.42) inset}
+  }
+  @keyframes bordaPulsaBingo{
+    0%,100%{box-shadow:0 0 0 3px rgba(255,91,91,.5),0 0 34px rgba(255,91,91,.2) inset}
+    50%{box-shadow:0 0 0 4px rgba(255,91,91,1),0 0 70px rgba(255,91,91,.5) inset}
+  }
+
+  .grade{display:flex;flex-direction:column;gap:5px;align-items:center;
+    justify-content:center;flex:1;min-height:0;padding-top:20px}
+  .linha{display:flex;align-items:center;gap:5px;justify-content:center}
+  .letra{
+    width:calc(var(--cel)*.86);height:calc(var(--cel)*.86);flex:0 0 auto;
+    border-radius:10px;background:linear-gradient(160deg,#2f6fd0,#1b4a99);
+    display:grid;place-items:center;font-weight:800;
+    font-size:calc(var(--cel)*.46);color:#fff;
+    box-shadow:0 2px 8px rgba(0,0,0,.35);
+  }
+  .cel{
+    width:var(--cel);height:var(--cel);flex:0 0 auto;border-radius:50%;
+    display:grid;place-items:center;font-weight:800;
+    font-size:calc(var(--cel)*.38);position:relative;overflow:hidden;
+    background:#1b2543;color:#3b4b70;
+    transition:transform .18s,box-shadow .25s,background .25s,color .25s;
+  }
+  .cel.aceso{color:#fff;background:var(--cor);
+    box-shadow:inset 0 -3px 8px rgba(0,0,0,.55),inset 0 3px 6px rgba(255,255,255,.24),
+      0 3px 9px rgba(0,0,0,.5)}
+  .cel .brilho{position:absolute;inset:0;border-radius:50%;pointer-events:none;
+    background:radial-gradient(circle at 30% 24%,rgba(255,255,255,.9),rgba(255,255,255,0) 46%)}
+  .cel .n{position:relative;z-index:2;text-shadow:0 0 2px rgba(0,0,0,.85),0 1px 3px rgba(0,0,0,.9)}
+  .cel.aceso.listrada::before{content:'';position:absolute;left:-12%;right:-12%;
+    top:30%;height:40%;background:#fff;z-index:1}
+  .cel.aceso.listrada .n{color:#1a1a1a;text-shadow:0 1px 0 rgba(255,255,255,.6)}
+  .cel.piscando{color:#1a1200;background:#ffd84d;transform:scale(1.16);
+    box-shadow:0 0 20px 5px rgba(255,216,77,.8);z-index:5}
+  .cel.piscando .n{text-shadow:none}
+  .cel.atual{transform:scale(1.18);z-index:6;
+    box-shadow:0 0 0 3px rgba(79,155,255,.95),0 0 28px 9px rgba(79,155,255,.6),
+      inset 0 -3px 8px rgba(0,0,0,.5)}
+
+  .alerta{
+    position:absolute;left:50%;top:7px;
+    transform:translateX(-50%) translateY(-18px) scale(.8);
+    padding:9px 22px;border-radius:999px;font-weight:900;
+    font-size:clamp(10px,1.08vw,16px);letter-spacing:.04em;white-space:nowrap;
+    max-width:96%;overflow:hidden;text-overflow:ellipsis;
+    opacity:0;pointer-events:none;z-index:40;
+  }
+  .alerta.show{opacity:1}
+  .alerta.n2{background:linear-gradient(90deg,#ff9d3d,#e8710a);color:#fff;
+    animation:entraPula .48s cubic-bezier(.2,1.5,.4,1) both,pulsa 1.6s ease-in-out .55s infinite}
+  .alerta.n1{background:linear-gradient(90deg,#ffe27a,#ffc400);color:#241a00;
+    animation:entraPula .48s cubic-bezier(.2,1.5,.4,1) both,pulsaRapido .85s ease-in-out .5s infinite}
+  .alerta.n0{background:linear-gradient(90deg,#37d67a,#0f9d58);color:#04240f;
+    animation:entraPula .48s cubic-bezier(.2,1.5,.4,1) both,pulsaRapido .8s ease-in-out .5s infinite}
+  .alerta.np{background:linear-gradient(90deg,#3a86d4,#1b4a99);color:#fff;
+    animation:entraPula .48s cubic-bezier(.2,1.5,.4,1) both}
+  .alerta.npk{background:linear-gradient(90deg,#ff5b5b,#c62828);color:#fff;
+    animation:entraPula .48s cubic-bezier(.2,1.5,.4,1) both,pulsaRapido .9s ease-in-out .5s infinite}
+  @keyframes entraPula{
+    0%{opacity:0;transform:translateX(-50%) translateY(-22px) scale(.75)}
+    55%{opacity:1;transform:translateX(-50%) translateY(2px) scale(1.09)}
+    75%{transform:translateX(-50%) translateY(0) scale(.97)}
+    100%{opacity:1;transform:translateX(-50%) translateY(0) scale(1)}
+  }
+  @keyframes pulsa{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.035)}}
+  @keyframes pulsaRapido{0%,100%{transform:translateX(-50%) scale(1)}50%{transform:translateX(-50%) scale(1.055)}}
+
+  .painel{
+    background:linear-gradient(180deg,#101c3a,#0b1428);
+    border:1px solid var(--line);border-radius:16px;padding:10px 9px;
+    display:flex;flex-direction:column;align-items:center;gap:6px;
+    min-height:0;overflow:hidden;
+  }
+  .rotulo{font-size:9.5px;letter-spacing:.19em;color:var(--azul);font-weight:800}
+  .selo-letra{
+    width:clamp(36px,4.4vh,52px);height:clamp(36px,4.4vh,52px);border-radius:12px;
+    background:linear-gradient(160deg,#2f6fd0,#1b4a99);display:grid;place-items:center;
+    font-size:clamp(18px,2.2vh,27px);font-weight:900;color:#fff;line-height:1;
+    flex:0 0 auto;
+  }
+  .selo-letra.vazio{background:#1b2543;color:#3b4b70;box-shadow:inset 0 0 0 1px var(--line)}
+  .bola{
+    width:var(--bola);height:var(--bola);flex:0 0 auto;border-radius:50%;
+    position:relative;overflow:hidden;display:grid;place-items:center;
+    background:#16223f;color:#3b4b70;
+    box-shadow:inset 0 -9px 20px rgba(0,0,0,.6),inset 0 9px 15px rgba(255,255,255,.16),
+      0 10px 28px rgba(0,0,0,.55);transition:.3s;
+  }
+  .bola.aceso{background:var(--cor);color:#fff}
+  .bola .brilho{position:absolute;inset:0;border-radius:50%;pointer-events:none;
+    background:radial-gradient(circle at 30% 22%,rgba(255,255,255,.88),rgba(255,255,255,0) 44%)}
+  .bola.aceso.listrada::before{content:'';position:absolute;left:-12%;right:-12%;
+    top:30%;height:40%;background:#fff;z-index:1}
+  .bola.aceso.listrada .n{color:#1a1a1a;text-shadow:0 2px 0 rgba(255,255,255,.55)}
+  .bola .n{position:relative;z-index:2;font-weight:800;line-height:1;
+    font-size:calc(var(--bola)*.40);text-shadow:0 0 4px rgba(0,0,0,.9),0 2px 7px rgba(0,0,0,.95)}
+  .bola.vazia .n{font-size:calc(var(--bola)*.115);font-weight:600;color:#5a6f96;
+    text-shadow:none;text-align:center;padding:0 14px;line-height:1.4}
+  .frase{font-size:clamp(10.5px,1.05vw,15.5px);line-height:1.36;text-align:center;
+    color:#dbe6ff;max-width:100%;min-height:2.6em;display:flex;align-items:center;
+    justify-content:center;padding:0 3px}
+  .frase.ativa{color:#fff;font-weight:600}
+  .ultimos{margin-top:auto;width:100%}
+  .ultimos .t{font-size:8.5px;letter-spacing:.15em;color:var(--dim);
+    margin-bottom:5px;font-weight:700}
+  .ultimos .lista{display:flex;gap:5px;flex-wrap:wrap}
+  .mini{width:32px;height:32px;border-radius:50%;display:grid;place-items:center;
+    font-size:12px;font-weight:800;color:#fff;position:relative;overflow:hidden;
+    background:var(--cor);flex:0 0 auto}
+  .mini.listrada::before{content:'';position:absolute;left:-12%;right:-12%;
+    top:31%;height:38%;background:#fff;z-index:1}
+  .mini span{position:relative;z-index:2;text-shadow:0 0 2px #000}
+  .mini.listrada span{color:#1a1a1a;text-shadow:0 1px 0 rgba(255,255,255,.5)}
+
+  footer.ope{display:flex;gap:6px;align-items:stretch;flex-wrap:wrap}
+  .btn{
+    background:var(--card);border:1px solid var(--line);color:#cdd9f0;
+    padding:0 11px;height:44px;font-size:11px;font-weight:600;
+  }
+  .btn:hover{background:#17264a;border-color:#39547f;color:#fff}
+  .btn:active{transform:scale(.97)}
+  .sortear{
+    flex:1 1 150px;min-width:140px;height:56px;border:none;
+    background:linear-gradient(180deg,#4f9bff,#2f74db);color:#fff;
+    font-size:16px;font-weight:800;letter-spacing:.12em;
+    box-shadow:0 7px 22px rgba(79,155,255,.38);
+  }
+  .sortear:disabled{opacity:.5;cursor:not-allowed;box-shadow:none}
+  .sortear.narrando{background:linear-gradient(180deg,#6a4fbf,#4b3390);
+    font-size:12px;letter-spacing:.07em;cursor:wait}
+  .sortear.narrando.agendado{background:linear-gradient(180deg,#8a5f2a,#6b4516)}
+  .sortear.paradoBtn{background:linear-gradient(180deg,#6b6b6b,#4a4a4a);
+    font-size:12px;box-shadow:none}
+  .bingoBtn{
+    flex:0 0 auto;min-width:112px;height:56px;border:none;
+    background:linear-gradient(180deg,#ff5b5b,#c62828);color:#fff;
+    font-size:15px;font-weight:900;letter-spacing:.1em;
+    box-shadow:0 7px 22px rgba(198,40,40,.45);
+  }
+  .bingoBtn.ativo{animation:piscaBingo .9s ease-in-out infinite;
+    box-shadow:0 0 0 3px rgba(255,91,91,.85),0 7px 26px rgba(198,40,40,.6)}
+  @keyframes piscaBingo{0%,100%{transform:scale(1)}50%{transform:scale(1.055)}}
+  select{
+    background:var(--card);border:1px solid var(--line);color:#cdd9f0;
+    border-radius:11px;padding:0 24px 0 10px;height:44px;font-size:11px;
+    font-family:inherit;font-weight:600;
+  }
+  #selPadrao{max-width:250px}
+  #selVeloc,#selVoz{height:38px;font-size:10.5px}
+  #selVoz{max-width:200px}
+
+  .overlay{
+    position:fixed;inset:0;background:rgba(4,8,18,.86);backdrop-filter:blur(6px);
+    display:none;place-items:center;padding:20px;z-index:100;
+  }
+  .overlay.show{display:grid}
+  .modal{
+    background:linear-gradient(180deg,#101c3a,#0a1226);
+    border:1px solid #2c4370;border-radius:16px;width:min(680px,100%);
+    max-height:90vh;display:flex;flex-direction:column;
+    box-shadow:0 30px 80px rgba(0,0,0,.75);
+  }
+  .modal.bingoM{border-color:#c62828;
+    box-shadow:0 0 0 2px rgba(198,40,40,.5),0 30px 80px rgba(0,0,0,.8)}
+  .modal header{padding:15px 19px;border-bottom:1px solid var(--line)}
+  .modal header h3{font-size:15px;letter-spacing:.04em}
+  .modal .corpo{padding:17px 19px;overflow-y:auto}
+  .modal footer{padding:13px 19px;border-top:1px solid var(--line);
+    display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+  .modal p{font-size:13px;line-height:1.58;color:#c3d0e8}
+  .modal label{display:block;font-size:11px;letter-spacing:.11em;color:var(--dim);
+    margin-bottom:6px;font-weight:700}
+  .modal input[type=number],.modal input[type=text],.modal textarea{
+    width:100%;background:#0c1730;border:1px solid var(--line);border-radius:10px;
+    padding:11px 13px;color:#fff;font-size:15px;font-family:inherit;font-weight:600;
+  }
+  .modal textarea{min-height:110px;font-size:12px;font-weight:500;resize:vertical}
+  .modal select{width:100%;height:46px}
+  .aviso{font-size:11.5px;color:var(--dim);line-height:1.55;margin-top:9px}
+  .aviso b{color:#cdd9f0}
+  .resultado{margin-top:13px;padding:14px;border-radius:11px;text-align:center;
+    font-weight:800;font-size:14px;letter-spacing:.06em;display:none}
+  .resultado.ok{display:block;background:rgba(30,142,62,.18);
+    border:1px solid #1e8e3e;color:#5ddc85}
+  .resultado.err{display:block;background:rgba(198,40,40,.18);
+    border:1px solid #c62828;color:#ff8585}
+  .resultado small{display:block;font-weight:500;font-size:11.5px;margin-top:7px;
+    line-height:1.5;letter-spacing:0;opacity:.9}
+
+  table.hist{width:100%;border-collapse:collapse;font-size:12.5px}
+  table.hist th{text-align:left;color:var(--dim);font-size:10.5px;letter-spacing:.1em;
+    padding:6px 8px;border-bottom:1px solid var(--line)}
+  table.hist td{padding:6px 8px;border-bottom:1px solid rgba(34,49,79,.5);color:#d5e0f5}
+  table.hist tr:last-child td{border-bottom:none}
+  table.quentes{width:100%;border-collapse:collapse;font-size:12px;margin-top:10px}
+  table.quentes th{text-align:left;color:var(--dim);font-size:10px;letter-spacing:.09em;
+    padding:6px 7px;border-bottom:1px solid var(--line)}
+  table.quentes td{padding:5px 7px;border-bottom:1px solid rgba(34,49,79,.5);color:#d5e0f5}
+  table.quentes tr:last-child td{border-bottom:none}
+  table.quentes td.f{text-align:right;font-weight:800;white-space:nowrap}
+  table.quentes td.n{color:#9fb3d4;font-size:11.5px}
+  table.quentes td.nm{color:#ffd84d;font-weight:700;font-size:11.5px}
+
+  .listaNomes{max-height:44vh;overflow-y:auto;margin-top:12px;
+    border:1px solid var(--line);border-radius:10px}
+  .linhaNome{display:flex;align-items:center;gap:10px;padding:8px 10px;
+    border-bottom:1px solid rgba(34,49,79,.5)}
+  .linhaNome:last-child{border-bottom:none}
+  .cod{flex:0 0 auto;font-family:ui-monospace,Consolas,monospace;font-size:12px;
+    font-weight:800;color:#9fc4ff;background:#1b2b4d;border:1px solid #2c4370;
+    border-radius:6px;padding:4px 9px;min-width:52px;text-align:center}
+  .linhaNome input{flex:1;background:#0c1730;border:1px solid var(--line);
+    border-radius:8px;padding:8px 11px;color:#fff;font-size:13.5px;
+    font-family:inherit;font-weight:600;min-width:0}
+
+  .minicart{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;margin-top:14px;
+    max-width:280px;margin-left:auto;margin-right:auto}
+  .minicart div{aspect-ratio:1;display:grid;place-items:center;border-radius:6px;
+    background:#0c1730;border:1px solid #1d2e50;font-size:11px;font-weight:700;
+    color:#4a5f88;overflow:hidden}
+  .minicart div.mk{background:#1e8e3e;border-color:#2bb355;color:#fff}
+  .minicart div.livre{background:#fff;border-color:var(--ciano);padding:2px}
+  .minicart div.livre img{width:100%;height:100%;object-fit:contain;display:block}
+
+  .listaLinks{max-height:44vh;overflow-y:auto;margin-top:12px;
+    border:1px solid var(--line);border-radius:10px}
+  .linhaLink{display:flex;align-items:center;gap:8px;padding:8px 10px;
+    border-bottom:1px solid rgba(34,49,79,.5)}
+  .linhaLink:last-child{border-bottom:none}
+  .linhaLink .nm{flex:1;font-size:12.5px;color:#d5e0f5;min-width:0;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .linhaLink button{
+    flex:0 0 auto;height:32px;padding:0 10px;font-size:10.5px;font-weight:700;
+    background:#132a52;border:1px solid var(--azul);color:var(--azul);
+  }
+  .linhaLink button:hover{background:#1a3768;color:#fff}
+
+  #printArea{display:none}
+  @media print{
+    @page{size:A4 portrait;margin:7mm}
+    html,body{overflow:visible;height:auto;background:#fff;color:#000;
+      display:block;padding:0}
+    body > *:not(#printArea){display:none !important}
+    #printArea{display:block !important}
+    .folha{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;
+      height:283mm;page-break-after:always;border:1px dashed #999}
+    .folha:last-child{page-break-after:auto}
+    .cp{border:1px dashed #999;padding:4mm;display:flex;flex-direction:column;color:#000}
+    .cp .topo{display:flex;justify-content:space-between;align-items:center;
+      margin-bottom:1.5mm;gap:2mm}
+    .cp .marca img{display:block;height:10mm;width:auto;max-width:36mm;object-fit:contain}
+    .cp .topo i{font-size:9pt;font-style:normal;font-weight:700;
+      border:1.2px solid #000;padding:.6mm 2mm;border-radius:2mm;white-space:nowrap}
+    .cp .dono{font-size:8pt;font-weight:700;border-bottom:.4mm solid #000;
+      padding:0 1mm 1mm;margin-bottom:1.5mm;min-height:5mm;display:flex;align-items:flex-end}
+    .cp table{width:100%;border-collapse:collapse;flex:1}
+    .cp th{font-size:10pt;padding:1.1mm 0;border:1px solid #000;background:#eee}
+    .cp td{border:1px solid #000;text-align:center;font-size:13pt;font-weight:700;
+      padding:1.5mm 0;width:20%}
+    .cp td.lv{padding:1mm;background:#fff}
+    .cp td.lv img{display:block;margin:0 auto;max-width:100%;max-height:14mm;
+      width:auto;height:auto;object-fit:contain}
+    .cp .pe{font-size:6.5pt;text-align:center;margin-top:1.5mm;letter-spacing:.09em;font-weight:700}
+  }
+
+  #telaJogador{display:none}
+  body[data-modo="jogador"] #telaJogador{display:block}
+  .jTopo{display:flex;align-items:center;gap:10px;max-width:560px;margin:0 auto 10px}
+  .jTopo .marca{padding:5px 9px;border-radius:9px;margin:0}
+  .jTopo .marca img{height:28px;max-width:120px}
+  .jTopo .dir{flex:1;text-align:right;min-width:0}
+  .jTopo .dir .cod{display:inline-block;font-size:13px;padding:5px 11px}
+  .jTopo .dir .troca{display:block;margin-top:5px;background:none;border:none;
+    color:var(--dim);font-size:10.5px;text-decoration:underline;padding:0}
+  .jBox{
+    max-width:560px;margin:0 auto;background:linear-gradient(180deg,#101c3a,#0a1226);
+    border:1px solid var(--line);border-radius:16px;padding:12px;
+  }
+  .jAviso{max-width:560px;margin:12px auto 0;font-size:11px;color:var(--dim);
+    line-height:1.55;text-align:center}
+  .jPadrao{margin-bottom:10px}
+  .jPadrao select{width:100%;height:44px;font-size:12px}
+  .jFalta{
+    text-align:center;font-size:13px;font-weight:700;color:#dbe6ff;
+    background:#0c1730;border:1px solid var(--line);border-radius:10px;
+    padding:9px 10px;margin-bottom:10px;line-height:1.45;
+  }
+  .jFalta.perto{color:#ffd84d;border-color:#5c4a12;background:#221c06}
+  .jFalta.bingo{color:#37d67a;border-color:#1e8e3e;background:#0c2917;
+    animation:pulsaRapido .9s ease-in-out infinite}
+  .jGrade{display:grid;grid-template-columns:repeat(5,1fr);gap:6px}
+  .jLetra{
+    aspect-ratio:1;border-radius:9px;display:grid;place-items:center;
+    background:linear-gradient(160deg,#2f6fd0,#1b4a99);color:#fff;
+    font-weight:900;font-size:clamp(15px,4.4vw,22px);
+  }
+  .jCel{
+    aspect-ratio:1;border-radius:10px;border:2px solid #1d2e50;
+    background:#0c1730;color:#9fb3d4;display:grid;place-items:center;
+    font-weight:800;font-size:clamp(15px,4.6vw,24px);
+    user-select:none;-webkit-tap-highlight-color:transparent;
+    transition:.12s;min-height:48px;
+  }
+  .jCel:active{transform:scale(.94)}
+  .jCel.mk{
+    background:linear-gradient(180deg,#1e8e3e,#136329);border-color:#37d67a;
+    color:#fff;box-shadow:0 0 0 2px rgba(55,214,122,.28),
+      inset 0 -3px 8px rgba(0,0,0,.45);
+  }
+  .jCel.livre{background:#fff;border-color:var(--ciano);padding:4px}
+  .jCel.livre img{width:100%;height:100%;object-fit:contain;display:block}
+  .jCel.livre.mk{background:#fff;border-color:#37d67a}
+  .jAcoes{display:flex;gap:8px;margin-top:12px}
+  .jAcoes button{
+    flex:1;height:44px;font-size:11.5px;font-weight:700;
+    background:var(--card);border:1px solid var(--line);color:#cdd9f0;
+  }
+  .jAcoes button:hover{background:#17264a;color:#fff}
+
+  .jInput{
+    width:100%;background:#0c1730;border:1px solid var(--line);border-radius:10px;
+    padding:14px;color:#fff;font-size:22px;font-family:inherit;font-weight:800;
+    text-align:center;letter-spacing:.16em;
+  }
+  .jBt{
+    width:100%;height:54px;border:none;border-radius:12px;margin-top:12px;
+    background:linear-gradient(180deg,#1e8e3e,#136329);color:#fff;
+    font-size:14px;font-weight:800;letter-spacing:.06em;
+    box-shadow:0 6px 20px rgba(30,142,62,.35);
+  }
+  .jBt:hover{filter:brightness(1.09)}
+  .jBtSec{
+    width:100%;height:44px;border:1px solid var(--line);border-radius:12px;
+    background:var(--card);color:#cdd9f0;font-size:12px;font-weight:600;
+    margin-top:8px;
+  }
+  .jLink{background:none;border:none;color:var(--azul);font-size:11.5px;
+    text-decoration:underline;margin-top:14px;padding:4px}
+
+  .overlayBingo{
+    position:fixed;inset:0;z-index:200;display:none;place-items:center;
+    background:rgba(8,40,20,.96);padding:22px;text-align:center;
+  }
+  .overlayBingo.show{display:grid}
+  .overlayBingo .txt{
+    font-size:clamp(38px,13vw,78px);font-weight:900;letter-spacing:.04em;
+    color:#5ddc85;text-shadow:0 0 40px rgba(55,214,122,.7);line-height:1;
+  }
+  .overlayBingo .sub{font-size:15px;color:#dbe6ff;margin-top:16px;font-weight:700;line-height:1.5}
+  .overlayBingo .cod{
+    display:inline-block;margin-top:14px;font-size:15px;font-weight:900;
+    background:#0c2917;border:1px solid #1e8e3e;color:#5ddc85;
+    border-radius:10px;padding:8px 18px;
+  }
+  .overlayBingo button{
+    margin-top:22px;height:52px;padding:0 26px;border:none;border-radius:12px;
+    background:linear-gradient(180deg,#1e8e3e,#136329);color:#fff;
+    font-size:14px;font-weight:800;letter-spacing:.05em;
+  }
+</style>
+</head>
+<body data-modo="inicio">
+
+<div id="telaInicio">
+  <div class="inicioBox">
+    <div class="marca"><img id="logoInicio" alt="CEMTEC"></div>
+    <h1>BINGO DO <span>CEMTEC</span></h1>
+    <div class="sub">Online — painel do sorteador e cartelas no celular</div>
+    <button class="btGrande btOperador" id="btIrOperador">PAINEL DO SORTEADOR</button>
+    <button class="btGrande btJogador" id="btIrJogador">SOU JOGADOR — ABRIR CARTELA</button>
+    <p class="peq">
+      O painel roda no computador do operador.<br>
+      Cada jogador abre a cartela pelo link que recebeu.
+    </p>
+  </div>
+</div>
+
+<div id="telaOperador">
+  <header class="ope">
+    <div class="brand"><img id="logoOp" alt="CEMTEC"></div>
+    <div class="titOp">BINGO DO <span>CEMTEC</span></div>
+    <div class="spacer"></div>
+    <div class="pill" id="contador">0 / 75</div>
+    <select id="selVoz" title="Voz da narração"></select>
+    <select id="selVeloc" title="Velocidade da narração">
+      <option value="0.68">Bem pausada</option>
+      <option value="0.8" selected>Pausada</option>
+      <option value="0.95">Normal</option>
+    </select>
+    <button class="icobtn on" id="btnSom" title="Som das bolas (M)">
+      <svg viewBox="0 0 24 24"><polygon points="4 9 8 9 13 4 13 20 8 15 4 15"></polygon>
+        <path d="M17 8a5 5 0 0 1 0 8"></path></svg>
+    </button>
+    <button class="icobtn" id="btnVoz" title="Narração dos números (V)">
+      <svg viewBox="0 0 24 24"><rect x="9" y="2" width="6" height="11" rx="3"></rect>
+        <path d="M5 11a7 7 0 0 0 14 0M12 18v4M8 22h8"></path></svg>
+    </button>
+    <button class="icobtn alertaOn" id="btnAlerta" title="Narração dos alertas">
+      <svg viewBox="0 0 24 24"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"></path>
+        <path d="M13.7 21a2 2 0 0 1-3.4 0"></path></svg>
+    </button>
+    <button class="icobtn travaOn" id="btnTrava" title="Trava de narração (T)">
+      <svg viewBox="0 0 24 24"><rect x="4" y="10" width="16" height="11" rx="2.5"></rect>
+        <path d="M8 10V7a4 4 0 0 1 8 0v3"></path><circle cx="12" cy="15.5" r="1.4"></circle></svg>
+    </button>
+    <button class="icobtn" id="btnPassador" title="Modo passador (P)">
+      <svg viewBox="0 0 24 24"><rect x="7" y="2" width="10" height="20" rx="5"></rect>
+        <path d="M12 6.5v3.5"></path><circle cx="12" cy="16.5" r="2.2"></circle></svg>
+    </button>
+    <button class="icobtn" id="btnFull" title="Tela cheia (F)">
+      <svg viewBox="0 0 24 24" id="icoFull">
+        <path d="M8 3H5a2 2 0 0 0-2 2v3"></path>
+        <path d="M16 3h3a2 2 0 0 1 2 2v3"></path>
+        <path d="M8 21H5a2 2 0 0 1-2-2v-3"></path>
+        <path d="M16 21h3a2 2 0 0 0 2-2v-3"></path></svg>
+    </button>
+    <button class="icobtn" id="btnSair" title="Voltar ao início">
+      <svg viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+        <path d="M16 17l5-5-5-5M21 12H9"></path></svg>
+    </button>
+  </header>
+
+  <main class="ope">
+    <section class="placar" id="placar">
+      <div class="alerta" id="alerta"></div>
+      <div class="grade" id="grade"></div>
+    </section>
+    <aside class="painel">
+      <div class="rotulo">SORTEIO ATUAL</div>
+      <div class="selo-letra vazio" id="seloLetra">—</div>
+      <div class="bola vazia" id="bola">
+        <div class="brilho"></div>
+        <div class="n" id="bolaNum">Aguardando<br>o sorteio</div>
+      </div>
+      <div class="frase" id="frase">Clique em SORTEAR ou use o passador.</div>
+      <div class="ultimos">
+        <div class="t">ÚLTIMOS SORTEADOS</div>
+        <div class="lista" id="ultimos"></div>
+      </div>
+    </aside>
+  </main>
+
+  <footer class="ope">
+    <button class="sortear" id="btnSortear">SORTEAR</button>
+    <button class="bingoBtn" id="btnBingo" title="Pausar o jogo — alguém bateu bingo (B)">BINGO!</button>
+    <select id="selPadrao" title="Padrão de vitória">
+      <option value="aberto">Linha, coluna, diagonal ou cantos</option>
+      <option value="cantos">Quatro cantos</option>
+      <option value="x">X (duas diagonais)</option>
+      <option value="borda">Borda</option>
+      <option value="linha">Só linha ou coluna</option>
+      <option value="cheia">Cartela cheia</option>
+    </select>
+    <button class="btn" id="btnCartelas">Cartelas</button>
+    <button class="btn" id="btnLinks">Links</button>
+    <button class="btn" id="btnNomes">Nomes</button>
+    <button class="btn" id="btnQuentes">Mais perto</button>
+    <button class="btn" id="btnHist">Histórico</button>
+    <button class="btn" id="btnBackup">Backup</button>
+    <button class="btn" id="btnNova">Nova Rodada</button>
+  </footer>
+</div>
+
+<div id="telaJogador">
+  <div class="jTopo">
+    <div class="marca"><img id="logoJog" alt="CEMTEC"></div>
+    <div class="dir">
+      <span class="cod" id="jCodigo" style="display:none">CARTELA —</span>
+      <button class="troca" id="jTrocar" style="display:none">trocar cartela</button>
+    </div>
+  </div>
+
+  <div class="jBox" id="jAbertura">
+    <p style="font-size:14px;font-weight:700;color:#fff;text-align:center;
+       margin-bottom:14px">Abrir sua cartela</p>
+    <input class="jInput" id="jCodInput" placeholder="000" maxlength="3"
+           inputmode="numeric" autocomplete="off">
+    <button class="jBt" id="jAbrir">ABRIR CARTELA</button>
+    <button class="jBtSec" id="jCarregar">Carregar cartelas</button>
+    <button class="jLink" id="jVirtual">Não tenho cartela — gerar uma virtual</button>
+    <div class="resultado" id="jMsg"></div>
+  </div>
+
+  <div class="jBox" id="jPainel" style="display:none">
+    <div class="jPadrao">
+      <select id="jPadrao">
+        <option value="aberto">Linha, coluna, diagonal ou cantos</option>
+        <option value="cantos">Quatro cantos</option>
+        <option value="x">X (duas diagonais)</option>
+        <option value="borda">Borda</option>
+        <option value="linha">Só linha ou coluna</option>
+        <option value="cheia">Cartela cheia</option>
+      </select>
+    </div>
+    <div class="jFalta" id="jFalta">Marque as casas conforme saem no telão.</div>
+    <div class="jGrade" id="jGrade"></div>
+    <div class="jAcoes">
+      <button id="jLimpar">Limpar marcações</button>
+    </div>
+  </div>
+
+  <p class="jAviso" id="jRodape">
+    Marque tocando nas casas. Esta cartela fica salva neste celular.
+  </p>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="modal" id="modalBox">
+    <header><h3 id="mTitulo">Título</h3></header>
+    <div class="corpo" id="mCorpo"></div>
+    <footer id="mRodape"></footer>
+  </div>
+</div>
+
+<div class="overlayBingo" id="overlayBingo">
+  <div>
+    <div class="txt">BINGO!</div>
+    <div class="sub">Levante a mão e mostre esta tela ao organizador.</div>
+    <div class="cod" id="obCod">CARTELA —</div>
+    <button id="obFechar">Confirmar meu bingo</button>
+  </div>
+</div>
+
+<input type="file" id="inpBackup" accept=".json,application/json" style="display:none">
+<div id="printArea"></div>
+
+<script>
+const FRASES = [
+"Começou o jogo, o número é 1","Um patinho na lagoa, o número é 2",
+"Três corações ou o número do amor, é 3","Quatro patas na mesa, o número é 4",
+"Cachorro, o número é 5","Meia dúzia, o número é 6","Mentiroso, o número é 7",
+"Biscoito, o número é 8","Pingo no pé, o número é 9","Craque de bola, camisa 10",
+"Um atrás do outro, o número é 11","Vitamina B12, o número é 12",
+"Galo ou número da sorte, é 13","Doutor, o número é 14","Menina moça, o número é 15",
+"Leão, o número é 16","O bicho que pula, o número é 17","Maior de idade, o número é 18",
+"São José, o número é 19","Peru de Natal, o número é 20",
+"Ano que vem ou século atual, o número é 21","Dois patinhos na lagoa, o número é 22",
+"Meio-dia com sol ou o número do urso, é 23","Veado, o número é 24","Natal, o número é 25",
+"Meia de lã, o número é 26","Sete com dois na frente, o número é 27",
+"Carneiro, o número é 28","São Pedro, o número é 29","Não minta, o número é 30",
+"Preparem os fogos, o número é 31","Dentes na boca, o número é 32",
+"Idade de Cristo, o número é 33","Cobra no mato, o número é 34",
+"Três com cinco, o número é 35","Três dúzias, o número é 36",
+"Temperatura do corpo, o número é 37","Justiça feita ou o calibre pesado, o número é 38",
+"Três com nove, o número é 39","Idade da loba, o número é 40","Quatro com um, o número é 41",
+"Quatro com dois, o número é 42","Quatro com três, o número é 43",
+"Quarentão dobrado ou o pé de mesa, o número é 44","Fim do primeiro tempo, o número é 45",
+"Começou o segundo tempo, o número é 46","Quatro com sete, o número é 47",
+"Quatro dúzias, o número é 48","Quatro com nove, o número é 49",
+"Meio século, o número é 50","Uma boa ideia, o número é 51",
+"Baralho completo, o número é 52","Cinco com três, o número é 53",
+"Cinco com quatro, o número é 54","Dois cachorros do padre, o número é 55",
+"Cinco com seis, o número é 56","Cinco com sete, o número é 57",
+"Cinco com oito, o número é 58","Falta um para sessenta, o número é 59",
+"Melhor idade ou descanso merecido, o número é 60","Seis com um, o número é 61",
+"Seis com dois, o número é 62","Seis com três, o número é 63","Seis com quatro, o número é 64",
+"Aposentadoria, o número é 65","Um tapa na orelha ou meia-meia, o número é 66",
+"Seis com sete, o número é 67","Seis com oito, o número é 68",
+"Um sobe e outro desce, o número é 69","Setenta anos de história, o número é 70",
+"Dona Clotilde, a bruxa do 71","Sete com dois, o número é 72",
+"Sete com três, o número é 73","Sete com quatro, o número é 74",
+"Terminou o jogo, o número é 75"
+];
+
+const AL2 = [
+ {t:'🔥 DUAS PEDRAS! Tem cartela quase lá!',f:'Atenção, gente! O clima tá esquentando! Tem cartela a duas pedras do bingo!'},
+ {t:'🔥 TÁ ESQUENTANDO! Faltam 2 pedras!',f:'Olha a tensão no ar, gente! Faltam só duas pedrinhas!'},
+ {t:'🔥 OLHA A TENSÃO! Duas pedras só!',f:'Fica ligado, fica ligado! Tem gente quase gritando bingo!'},
+ {t:'🔥 FICA LIGADO! Faltam 2 pedras!',f:'Uuuuh, a coisa tá ficando boa! Duas pedras e o bingo estoura!'},
+ {t:'🔥 A COISA TÁ BOA! Duas pedras!',f:'Atenção total! Duas pedras separam a alegria do bingo!'}
+];
+const AL1 = [
+ {t:'⚡ FALTA UMA! Segura o coração!',f:'É agora, gente! É agora! Falta uma pedra só! Segura o coração!'},
+ {t:'⚡ É AGORA! Uma pedra só!',f:'Atenção total! Uma pedra separa a vitória do grito!'},
+ {t:'⚡ QUASE! Falta 1 pedra!',f:'Chegou! Chegou! Falta uma pedra para o bingo!'}
+];
+const AL0 = [
+ {t:'🎉 BINGO!!! Temos um campeão!',f:'Bingo! Bingo! Que emoção! Temos um campeão!'},
+ {t:'🎉 BIIINGOOO!',f:'Biiingooo! Saiu o bingo!'},
+ {t:'🎉 BINGO! Parabéns!',f:'É bingo! Que alegria! Temos um vencedor!'}
+];
+
+const UNI=['zero','um','dois','três','quatro','cinco','seis','sete','oito','nove',
+'dez','onze','doze','treze','quatorze','quinze','dezesseis','dezessete','dezoito','dezenove'];
+const DEZ=['','','vinte','trinta','quarenta','cinquenta','sessenta','setenta'];
+function extenso(n){
+  if(n<20) return UNI[n];
+  const d=Math.floor(n/10),u=n%10;
+  return DEZ[d]+(u?' e '+UNI[u]:'');
+}
+const CORES=['#e8b400','#1a5fd0','#c62828','#6a2fa0','#e8710a','#1e8e3e','#6d1a1a','#1a1a1a'];
+function estilo(n){return {cor:CORES[(n-1)%8], listrada: Math.floor((n-1)/8)%2===1};}
+const letraDe=n=> n<=15?'B':n<=30?'I':n<=45?'N':n<=60?'G':'O';
+
+const LOGO_DRIVE='https://drive.google.com/thumbnail?id=1Wr0oaQn3PFDETlL2jskRZJlaZdeVxRCW&sz=w1024';
+const LOGO_LOCAL='logo-cemtec.png';
+function logoImg(){
+  return '<img src="'+LOGO_LOCAL+'" data-drive="'+LOGO_DRIVE+'" '+
+   'onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src=this.dataset.drive}" '+
+   'alt="CEMTEC">';
+}
+function pintarLogos(){
+  document.querySelectorAll('.marca img,.brand img').forEach(img=>{
+    img.src=LOGO_LOCAL;
+    img.onerror=function(){
+      if(!this.dataset.fb){this.dataset.fb=1;this.src=LOGO_DRIVE;}
+    };
+  });
+}
+
+const S={fila:[],sorteados:[],atual:null,som:true,voz:false,vozAlerta:true,
+  modoPassador:false,travaFala:true,pausado:false,padrao:'aberto',
+  velocidade:0.8,vozNome:''};
+let cartelas=[],proximoCodigo=0,rodando=false,falando=false,pendente=false;
+
+const KEY_S='bingo_estado_v4';
+const KEY_C='bingo_cartelas_v4';
+const KEY_J_ATUAL='bingo_jogador_atual';
+
+let AC=null;
+function ac(){
+  if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)();}catch(e){return null;}}
+  if(AC.state==='suspended') AC.resume();
+  return AC;
+}
+function tique(p){
+  if(!S.som) return; const c=ac(); if(!c) return;
+  const o=c.createOscillator(),g=c.createGain();
+  o.type='square';o.frequency.value=620+p*520;
+  g.gain.setValueAtTime(0.055+p*0.03,c.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.0008,c.currentTime+0.05);
+  o.connect(g).connect(c.destination);o.start();o.stop(c.currentTime+0.06);
+}
+function balanco(){
+  if(!S.som) return; const c=ac(); if(!c) return;
+  const dur=0.9,sr=c.sampleRate;
+  const buf=c.createBuffer(1,sr*dur,sr),d=buf.getChannelData(0);
+  for(let i=0;i<d.length;i++) d[i]=(Math.random()*2-1)*0.5;
+  const src=c.createBufferSource();src.buffer=buf;
+  const f=c.createBiquadFilter();f.type='bandpass';f.Q.value=1.1;
+  f.frequency.setValueAtTime(700,c.currentTime);
+  f.frequency.linearRampToValueAtTime(1900,c.currentTime+dur);
+  const g=c.createGain();
+  g.gain.setValueAtTime(0.0001,c.currentTime);
+  g.gain.linearRampToValueAtTime(0.13,c.currentTime+0.14);
+  g.gain.linearRampToValueAtTime(0.0001,c.currentTime+dur);
+  src.connect(f).connect(g).connect(c.destination);
+  src.start();src.stop(c.currentTime+dur);
+}
+function revelacao(){
+  if(!S.som) return; const c=ac(); if(!c) return;
+  const o=c.createOscillator(),g=c.createGain();
+  o.type='sine';o.frequency.setValueAtTime(180,c.currentTime);
+  o.frequency.exponentialRampToValueAtTime(55,c.currentTime+0.3);
+  g.gain.setValueAtTime(0.26,c.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.001,c.currentTime+0.34);
+  o.connect(g).connect(c.destination);o.start();o.stop(c.currentTime+0.35);
+  [523.25,659.25,783.99].forEach((f,i)=>{
+    const oo=c.createOscillator(),gg=c.createGain(),t=c.currentTime+0.10+i*0.10;
+    oo.type='triangle';oo.frequency.value=f;
+    gg.gain.setValueAtTime(0.0001,t);
+    gg.gain.linearRampToValueAtTime(0.12,t+0.02);
+    gg.gain.exponentialRampToValueAtTime(0.0008,t+0.30);
+    oo.connect(gg).connect(c.destination);oo.start(t);oo.stop(t+0.32);
+  });
+}
+function chamada(nivel){
+  if(!S.som) return; const c=ac(); if(!c) return;
+  const notas=(nivel===0)?[880,1108.73,1318.51,1760]:[880,1108.73,1318.51];
+  notas.forEach((f,i)=>{
+    const o=c.createOscillator(),g=c.createGain(),t=c.currentTime+i*0.14;
+    o.type='square';o.frequency.value=f;
+    g.gain.setValueAtTime(0.0001,t);
+    g.gain.linearRampToValueAtTime(0.085,t+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0008,t+0.24);
+    o.connect(g).connect(c.destination);o.start(t);o.stop(t+0.26);
+  });
+}
+function somBingo(){
+  if(!S.som) return; const c=ac(); if(!c) return;
+  [523.25,659.25,783.99,1046.5].forEach((f,i)=>{
+    const o=c.createOscillator(),g=c.createGain(),t=c.currentTime+i*0.11;
+    o.type='square';o.frequency.value=f;
+    g.gain.setValueAtTime(0.0001,t);
+    g.gain.linearRampToValueAtTime(0.10,t+0.02);
+    g.gain.exponentialRampToValueAtTime(0.001,t+0.42);
+    o.connect(g).connect(c.destination);o.start(t);o.stop(t+0.45);
+  });
+}
+function toque(){
+  const c=ac(); if(!c) return;
+  const o=c.createOscillator(),g=c.createGain();
+  o.type='sine';o.frequency.value=760;
+  g.gain.setValueAtTime(0.07,c.currentTime);
+  g.gain.exponentialRampToValueAtTime(0.0008,c.currentTime+0.07);
+  o.connect(g).connect(c.destination);o.start();o.stop(c.currentTime+0.08);
+}
+
+const temSintese=('speechSynthesis' in window);
+let vozEscolhida=null;
+function ehPtBR(v){return v&&v.lang&&v.lang.toLowerCase().replace('_','-')==='pt-br';}
+function listarVozesPtBR(){
+  if(!temSintese) return [];
+  return speechSynthesis.getVoices().filter(ehPtBR).sort((a,b)=>a.name.localeCompare(b.name));
+}
+function montarSeletorVoz(){
+  const sel=document.getElementById('selVoz');
+  if(!sel) return;
+  if(!temSintese){sel.innerHTML='<option>Voz indisponível</option>';sel.disabled=true;return;}
+  const vozes=listarVozesPtBR();
+  if(!vozes.length){sel.innerHTML='<option>Nenhuma voz pt-BR</option>';sel.disabled=true;vozEscolhida=null;return;}
+  sel.disabled=false;sel.innerHTML='';
+  vozes.forEach(v=>{
+    const op=document.createElement('option');
+    op.value=v.name;op.textContent=v.name;sel.appendChild(op);
+  });
+  let idx=0;
+  if(S.vozNome){const i=vozes.findIndex(v=>v.name===S.vozNome);if(i>=0) idx=i;}
+  sel.selectedIndex=idx;vozEscolhida=vozes[idx];S.vozNome=vozEscolhida.name;
+}
+function inicializarVozes(){
+  if(!temSintese) return;
+  montarSeletorVoz();
+  if(speechSynthesis.getVoices().length) return;
+  try{speechSynthesis.onvoiceschanged=()=>montarSeletorVoz();}catch(e){}
+  let n=0;
+  const iv=setInterval(()=>{n++;montarSeletorVoz();
+    if(speechSynthesis.getVoices().length||n>15) clearInterval(iv);},120);
+}
+
+const btnSortear=document.getElementById('btnSortear');
+function atualizarTravaUI(){
+  if(!btnSortear) return;
+  btnSortear.classList.remove('narrando','agendado','paradoBtn');
+  if(S.pausado){
+    btnSortear.classList.add('paradoBtn');
+    btnSortear.textContent='⏸ JOGO PAUSADO';
+    btnSortear.disabled=true;return;
+  }
+  const bloqueado=S.travaFala&&falando;
+  if(!bloqueado){
+    btnSortear.textContent='SORTEAR';
+    btnSortear.disabled=rodando;
+  }else{
+    btnSortear.classList.add('narrando');
+    btnSortear.classList.toggle('agendado',pendente);
+    btnSortear.textContent=pendente?'⏳ AGENDADO — AGUARDE A FALA':'🔒 NARRANDO...';
+    btnSortear.disabled=true;
+  }
+}
+function marcarFalando(v){
+  falando=v;
+  if(!v){
+    const tinha=pendente;pendente=false;atualizarTravaUI();
+    if(tinha) setTimeout(()=>sortear(),220);
+  }else atualizarTravaUI();
+}
+let tokenFala=0;
+function falarBlocos(blocos){
+  if(!temSintese||!blocos.length){marcarFalando(false);return;}
+  const meu=++tokenFala;
+  try{speechSynthesis.cancel();}catch(e){}
+  marcarFalando(true);
+  let i=0;
+  const seguir=()=>{
+    if(meu!==tokenFala) return;
+    if(i>=blocos.length){setTimeout(()=>{if(meu===tokenFala) marcarFalando(false);},120);return;}
+    const b=blocos[i++];
+    if(b.pausa!=null){setTimeout(seguir,b.pausa);return;}
+    const u=new SpeechSynthesisUtterance(b.texto);
+    if(vozEscolhida){u.voice=vozEscolhida;}
+    u.lang='pt-BR';
+    u.rate=b.rate||S.velocidade;
+    u.pitch=b.pitch||1.0;
+    u.volume=b.volume||1;
+    let fim=false;
+    const avancar=()=>{if(fim) return;fim=true;if(meu!==tokenFala) return;setTimeout(seguir,150);};
+    u.onend=avancar;u.onerror=avancar;
+    try{speechSynthesis.speak(u);}catch(e){avancar();return;}
+    setTimeout(avancar,Math.max(1400,b.texto.length*105));
+  };
+  setTimeout(seguir,260);
+}
+function falarCurto(t){falarBlocos([{texto:t}]);}
+function narrarNumero(n,al){
+  const temNumero=S.voz;
+  const temAlerta=S.vozAlerta&&al&&al.fala;
+  if(!temNumero&&!temAlerta){marcarFalando(false);return;}
+  const blocos=[];
+  if(temNumero){
+    blocos.push({texto:'Letra '+letraDe(n)+'.'});
+    blocos.push({pausa:1100});
+    blocos.push({texto:FRASES[n-1]+'.'});
+    blocos.push({pausa:1300});
+    blocos.push({texto:'Número '+extenso(n)+'.'});
+  }
+  if(temAlerta){
+    if(blocos.length) blocos.push({pausa:750});
+    blocos.push({texto:al.fala,rate:Math.min(1.05,S.velocidade+0.14),
+      pitch:al.nivel===1?1.16:1.08});
+  }
+  falarBlocos(blocos);
+}
+
+const PADROES={
+  cantos:[0,4,20,24],
+  x:[0,4,6,8,12,16,18,20,24],
+  borda:[0,1,2,3,4,5,9,10,14,15,19,20,21,22,23,24],
+  cheia:Array.from({length:25},(_,i)=>i)
+};
+const NOME_PADRAO={
+  aberto:'Linha, coluna, diagonal ou cantos',
+  cantos:'Quatro cantos', x:'X (duas diagonais)', borda:'Borda',
+  linha:'Só linha ou coluna', cheia:'Cartela cheia'
+};
+function faltamNoGrupo(cartela,set,idx){
+  const nums=[];
+  idx.forEach(i=>{
+    const v=cartela[i];
+    if(v===null) return;
+    if(!set.has(v)) nums.push(v);
+  });
+  return nums;
+}
+function analisar(cartela,set,padrao){
+  if(padrao==='linha'||padrao==='aberto'){
+    const grupos=[];
+    for(let l=0;l<5;l++){
+      const idx=[];for(let c=0;c<5;c++) idx.push(l*5+c);
+      grupos.push(faltamNoGrupo(cartela,set,idx));
+    }
+    for(let c=0;c<5;c++){
+      const idx=[];for(let l=0;l<5;l++) idx.push(l*5+c);
+      grupos.push(faltamNoGrupo(cartela,set,idx));
+    }
+    if(padrao==='aberto'){
+      grupos.push(faltamNoGrupo(cartela,set,[0,6,12,18,24]));
+      grupos.push(faltamNoGrupo(cartela,set,[4,8,12,16,20]));
+      grupos.push(faltamNoGrupo(cartela,set,[0,4,20,24]));
+    }
+    let min=99;
+    grupos.forEach(g=>{if(g.length<min) min=g.length;});
+    const uniao=[];
+    grupos.forEach(g=>{
+      if(g.length===min) g.forEach(n=>{if(!uniao.includes(n)) uniao.push(n);});
+    });
+    return {valido:min===0,faltam:min,nums:uniao.slice().sort((a,b)=>a-b)};
+  }
+  const nums=faltamNoGrupo(cartela,set,PADROES[padrao]);
+  const unicos=[];
+  nums.forEach(n=>{if(!unicos.includes(n)) unicos.push(n);});
+  return {valido:unicos.length===0,faltam:unicos.length,nums:unicos.slice().sort((a,b)=>a-b)};
+}
+function listaFalta(nums,limite){
+  const arr=(nums||[]).slice().sort((a,b)=>a-b);
+  const lim=limite||4;
+  if(!arr.length) return '';
+  if(arr.length===1) return 'o '+arr[0];
+  if(arr.length===2) return 'o '+arr[0]+' ou o '+arr[1];
+  if(arr.length<=lim){
+    const cab=arr.slice(0,arr.length-1).join(', ');
+    return 'o '+cab+' ou o '+arr[arr.length-1];
+  }
+  return 'o '+arr.slice(0,lim).join(', ')+' ou outro';
+}
+
+const placar=document.getElementById('placar');
+const grade=document.getElementById('grade');
+function montarPlacar(){
+  grade.innerHTML='';
+  for(let l=0;l<5;l++){
+    const linha=document.createElement('div');
+    linha.className='linha';
+    const letra=document.createElement('div');
+    letra.className='letra';letra.textContent='BINGO'[l];
+    linha.appendChild(letra);
+    for(let c=0;c<15;c++){
+      const n=l*15+c+1;
+      const cel=document.createElement('div');
+      cel.className='cel';cel.dataset.n=n;
+      cel.innerHTML='<div class="brilho"></div><span class="n">'+n+'</span>';
+      linha.appendChild(cel);
+    }
+    grade.appendChild(linha);
+  }
+  ajustarTamanho();pintarPlacar();
+}
+function celulaDe(n){return grade.querySelector('.cel[data-n="'+n+'"]');}
+function setEstado(n,estado){
+  const el=celulaDe(n); if(!el) return;
+  const {cor,listrada}=estilo(n);
+  el.classList.remove('atual','piscando','aceso','listrada');
+  if(estado==='apagado'){el.style.removeProperty('--cor');return;}
+  el.classList.add('aceso');
+  el.style.setProperty('--cor',cor);
+  if(listrada) el.classList.add('listrada');
+  if(estado==='piscando') el.classList.add('piscando');
+  if(estado==='atual') el.classList.add('atual');
+}
+function pintarPlacar(){
+  const set=new Set(S.sorteados.map(x=>x.n));
+  for(let n=1;n<=75;n++){
+    if(n===S.atual) setEstado(n,'atual');
+    else if(set.has(n)) setEstado(n,'marcado');
+    else setEstado(n,'apagado');
+  }
+}
+function ajustarTamanho(){
+  const r=placar.getBoundingClientRect();
+  if(!r.width||!r.height) return;
+  const pad=16,gap=5,letraFrac=0.86;
+  const wCel=(r.width-pad-gap*16)/(15+letraFrac);
+  const hCel=(r.height-pad-24-gap*4)/5;
+  const cel=Math.max(12,Math.floor(Math.min(wCel,hCel)));
+  document.documentElement.style.setProperty('--cel',cel+'px');
+  const painel=document.querySelector('.painel');
+  if(!painel) return;
+  const pr=painel.getBoundingClientRect();
+  const selo=document.getElementById('seloLetra');
+  const seloH=selo?selo.getBoundingClientRect().height:0;
+  const disp=pr.height-seloH-95;
+  const bola=Math.max(64,Math.min(pr.width-24,disp));
+  document.documentElement.style.setProperty('--bola',Math.floor(bola)+'px');
+}
+window.addEventListener('resize',()=>requestAnimationFrame(ajustarTamanho));
+
+const bola=document.getElementById('bola');
+const bolaNum=document.getElementById('bolaNum');
+const seloLetra=document.getElementById('seloLetra');
+const fraseEl=document.getElementById('frase');
+const ultimosEl=document.getElementById('ultimos');
+const contadorEl=document.getElementById('contador');
+const alertaEl=document.getElementById('alerta');
+
+function pintar(estado){
+  const n=S.atual;
+  contadorEl.textContent=S.sorteados.length+' / 75';
+  contadorEl.className='pill'+(S.pausado?' bingo':'');
+  if(!estado){
+    bola.className='bola vazia';bola.style.removeProperty('--cor');
+    bolaNum.innerHTML='Aguardando<br>o sorteio';
+    seloLetra.className='selo-letra vazio';seloLetra.textContent='—';
+    fraseEl.className='frase';
+    fraseEl.textContent='Clique em SORTEAR ou use o passador.';
+  }else{
+    const {cor,listrada}=estilo(n);
+    bola.className='bola aceso'+(listrada?' listrada':'');
+    bola.style.setProperty('--cor',cor);
+    bolaNum.textContent=n;
+    seloLetra.className='selo-letra';seloLetra.textContent=letraDe(n);
+    fraseEl.className='frase ativa';
+    fraseEl.textContent='Letra '+letraDe(n)+' — '+FRASES[n-1];
+  }
+  ultimosEl.innerHTML='';
+  S.sorteados.slice(-8).reverse().forEach(item=>{
+    const {cor,listrada}=estilo(item.n);
+    const m=document.createElement('div');
+    m.className='mini'+(listrada?' listrada':'');
+    m.style.setProperty('--cor',cor);
+    m.innerHTML='<span>'+item.n+'</span>';
+    ultimosEl.appendChild(m);
+  });
+}
+
+let ultimoIdx={0:-1,1:-1,2:-1};
+let alertaAtual={nivel:-1,ts:0};
+function escolhe(arr,nivel){
+  if(arr.length===1) return arr[0];
+  let i=Math.floor(Math.random()*arr.length);
+  if(i===ultimoIdx[nivel]) i=(i+1+Math.floor(Math.random()*(arr.length-1)))%arr.length;
+  ultimoIdx[nivel]=i;return arr[i];
+}
+function limparAlerta(){
+  if(alertaEl){alertaEl.className='alerta';alertaEl.textContent='';}
+  placar.classList.remove('quente','urgente');
+  alertaAtual={nivel:-1,ts:0};
+}
+function avaliarAlerta(){
+  if(!alertaEl) return null;
+  if(S.pausado) return null;
+  if(!cartelas.length||!S.sorteados.length){limparAlerta();return null;}
+  const set=new Set(S.sorteados.map(x=>x.n));
+  let min=99,codigos=[],numsTodos=[],nomeMin='';
+  cartelas.forEach(c=>{
+    const r=analisar(c.nums,set,S.padrao);
+    const q=r.faltam;
+    if(q<min){
+      min=q;codigos=[c.codigo];numsTodos=r.nums.slice();
+      nomeMin=(c.nome||'').trim();
+    }else if(q===min&&min<99){
+      codigos.push(c.codigo);
+      r.nums.forEach(n=>{if(!numsTodos.includes(n)) numsTodos.push(n);});
+    }
+  });
+  if(min>2){limparAlerta();return null;}
+  const agora=Date.now();
+  if(alertaAtual.nivel===1&&min>1&&(agora-alertaAtual.ts)<2600) return null;
+  const varias=codigos.length>1;
+  const codPrincipal=codigos[0];
+
+  if(min===0){
+    const fr=escolhe(AL0,0);
+    placar.classList.remove('quente');placar.classList.add('urgente');
+    alertaEl.className='alerta show n0';
+    let extra;
+    if(nomeMin) extra=' — '+nomeMin+' · '+codPrincipal;
+    else if(varias) extra=' — '+codigos.length+' cartelas!';
+    else extra=' — Cartela '+codPrincipal;
+    alertaEl.textContent=fr.t+extra;
+    chamada(0);
+    alertaAtual={nivel:0,ts:agora};
+    return {nivel:0,fala:nomeMin?'Bingo! '+nomeMin+' bateu bingo!':'Bingo! Temos um campeão!'};
+  }
+  if(min===1){
+    const fr=escolhe(AL1,1);
+    placar.classList.remove('quente');placar.classList.add('urgente');
+    alertaEl.className='alerta show n1';
+    let quem;
+    if(nomeMin) quem=nomeMin;
+    else if(varias) quem=codigos.length+' cartelas';
+    else quem='Cartela '+codPrincipal;
+    alertaEl.textContent=fr.t+' ('+quem+' — falta '+listaFalta(numsTodos,4)+')';
+    chamada(1);
+    alertaAtual={nivel:1,ts:agora};
+    return {nivel:1,fala:nomeMin?'Atenção! O '+nomeMin+' está a uma pedra do bingo!':fr.f};
+  }
+  const fr=escolhe(AL2,2);
+  placar.classList.remove('urgente');placar.classList.add('quente');
+  alertaEl.className='alerta show n2';
+  let quem2;
+  if(nomeMin) quem2=nomeMin+' está perto';
+  else if(varias) quem2=codigos.length+' cartelas';
+  else quem2='Cartela '+codPrincipal;
+  alertaEl.textContent=fr.t+' ('+quem2+')';
+  alertaAtual={nivel:2,ts:agora};
+  return {nivel:2,fala:nomeMin?'Fica de olho! O '+nomeMin+' está a duas pedras do bingo!':fr.f};
+}
+
+const btnBingo=document.getElementById('btnBingo');
+function pausarNoBingo(semSom){
+  if(S.pausado){abrirTelaBingo();return;}
+  S.pausado=true;pendente=false;tokenFala++;
+  try{speechSynthesis.cancel();}catch(e){}
+  falando=false;
+  atualizarTravaUI();
+  btnBingo.classList.add('ativo');
+  placar.classList.remove('quente','urgente');placar.classList.add('parado');
+  contadorEl.className='pill bingo';
+  salvar();
+  alertaEl.className='alerta show npk';
+  alertaEl.textContent='🛑 JOGO PAUSADO — alguém bateu BINGO!';
+  if(!semSom){
+    somBingo();
+    if(S.voz&&temSintese&&S.vozAlerta) falarCurto('Atenção! Vamos conferir a cartela do bingo!');
+  }
+  abrirTelaBingo();
+}
+function retomarJogo(){
+  S.pausado=false;
+  btnBingo.classList.remove('ativo');
+  placar.classList.remove('parado');
+  contadorEl.className='pill';
+  fecharModal();limparAlerta();atualizarTravaUI();
+  avaliarAlerta();pintar(S.atual!==null);salvar();
+}
+function abrirTelaBingo(){
+  const html=`
+    <p style="font-size:14px;color:#fff;font-weight:700">
+      Jogo pausado. Digite o código da cartela de quem gritou BINGO.</p>
+    <div style="margin-top:14px">
+      <label for="codBingo">Código da cartela</label>
+      <input type="text" id="codBingo" placeholder="Ex: 027" maxlength="4"
+             inputmode="numeric" autocomplete="off">
+    </div>
+    <p class="aviso">Padrão em uso: <b>${NOME_PADRAO[S.padrao]}</b>
+      · ${S.sorteados.length} números sorteados · centro conta como marcado</p>
+    <div class="resultado" id="resBingo"></div>
+    <div id="miniBingo"></div>`;
+  abrirModal('BINGO! — Jogo pausado',html,[
+    {rotulo:'Continuar o jogo',acao:retomarJogo},
+    {rotulo:'Conferir cartela',acao:validarBingo}
+  ],true);
+  const el=document.getElementById('codBingo');
+  if(el) setTimeout(()=>el.focus(),120);
+}
+function validarBingo(){
+  const campo=document.getElementById('codBingo');
+  const res=document.getElementById('resBingo');
+  const mini=document.getElementById('miniBingo');
+  if(!campo||!res) return;
+  const cod=(campo.value||'').trim().padStart(3,'0');
+  const c=cartelas.find(x=>x.codigo===cod);
+  if(!c){
+    res.className='resultado err';
+    res.innerHTML='CARTELA NÃO ENCONTRADA<small>Confira o código impresso no canto da cartela.</small>';
+    if(mini) mini.innerHTML='';
+    return;
+  }
+  const set=new Set(S.sorteados.map(x=>x.n));
+  const r=analisar(c.nums,set,S.padrao);
+  const quem=(c.nome||'').trim();
+  if(r.valido){
+    res.className='resultado ok';
+    res.innerHTML='✅ BINGO VÁLIDO<small>'+
+      (quem?'<b>'+quem+'</b> — cartela '+c.codigo:'Cartela '+c.codigo)+
+      ' completou '+NOME_PADRAO[S.padrao]+'.</small>';
+    const roda=document.getElementById('mRodape');
+    if(roda&&!roda.querySelector('.encerrar')){
+      const el=document.createElement('button');
+      el.className='btn encerrar';
+      el.textContent='Encerrar rodada e premiar';
+      el.style.borderColor='#1e8e3e';el.style.color='#5ddc85';
+      el.onclick=()=>{fecharModal();abrirNovaRodada();};
+      roda.appendChild(el);
+    }
+    if(S.voz&&temSintese&&S.vozAlerta)
+      falarCurto('Bingo confirmado! '+(quem?quem+' é o campeão!':'Temos um campeão!'));
+    somBingo();
+  }else{
+    res.className='resultado err';
+    res.innerHTML='❌ BINGO INVÁLIDO<small>Faltam: '+
+      (r.nums.length?r.nums.join(', '):'—')+'. Continue o jogo.</small>';
+    if(S.voz&&temSintese&&S.vozAlerta)
+      falarCurto('Ainda não. Faltam '+r.nums.length+
+        (r.nums.length===1?' número.':' números.'));
+  }
+  if(mini) mini.innerHTML=minicartelaHtml(c.nums,set);
+}
+btnBingo.onclick=()=>{ if(S.pausado) abrirTelaBingo(); else pausarNoBingo(); };
+
+function gerarCartela(assinaturas){
+  for(let tent=0;tent<400;tent++){
+    const nums=new Array(25).fill(null);
+    for(let col=0;col<5;col++){
+      const base=col*15;
+      const pool=Array.from({length:15},(_,i)=>base+i+1);
+      for(let i=pool.length-1;i>0;i--){
+        const j=Math.floor(Math.random()*(i+1));
+        [pool[i],pool[j]]=[pool[j],pool[i]];
+      }
+      for(let lin=0;lin<5;lin++){
+        if(col===2&&lin===2) continue;
+        nums[lin*5+col]=pool[lin];
+      }
+    }
+    const sig=nums.filter(v=>v!==null).sort((a,b)=>a-b).join('-');
+    if(!assinaturas.has(sig)){assinaturas.add(sig);return nums;}
+  }
+  return null;
+}
+function abrirCartelas(){
+  const comNome=cartelas.filter(c=>(c.nome||'').trim()).length;
+  const html=`
+    <p>Cartelas em <b>4 por folha A4</b>, com código único, logo no centro,
+    linha de nome e corte tracejado.</p>
+    <div style="margin-top:16px">
+      <label for="qtdCart">Quantidade de cartelas</label>
+      <input type="number" id="qtdCart" value="40" min="1" max="500">
+    </div>
+    <p class="aviso" id="infoCart"></p>
+    <p class="aviso">${comNome>0
+      ? '✔ '+comNome+' cartelas já têm nome.'
+      : 'Depois de gerar, use <b>Nomes</b> para identificar quem recebeu cada uma.'}</p>
+    <div class="resultado" id="resCart"></div>`;
+  const botoes=[
+    {rotulo:'Fechar',acao:fecharModal},
+    {rotulo:'Imprimir',acao:()=>{
+      if(!cartelas.length){
+        const r=document.getElementById('resCart');
+        if(r){r.className='resultado err';r.textContent='Gere as cartelas antes de imprimir.';}
+        return;
+      }
+      imprimirCartelas();
+    }},
+    {rotulo:'Gerar cartelas',acao:gerarCartelasAcao}
+  ];
+  if(cartelas.length) botoes.splice(1,0,{rotulo:'Limpar cartelas',acao:abrirLimparCartelas});
+  abrirModal('Gerar cartelas',html,botoes);
+  atualizarInfoCart();
+}
+function atualizarInfoCart(){
+  const info=document.getElementById('infoCart');
+  if(!info) return;
+  info.textContent='Última cartela gerada: '+
+    (proximoCodigo>0?String(proximoCodigo).padStart(3,'0'):'nenhuma')+
+    ' · Total no sistema: '+cartelas.length;
+}
+function gerarCartelasAcao(){
+  const campo=document.getElementById('qtdCart');
+  const qtd=Math.max(1,Math.min(500,parseInt(campo.value,10)||0));
+  const assinaturas=new Set(cartelas.map(c=>
+    c.nums.filter(v=>v!==null).slice().sort((a,b)=>a-b).join('-')));
+  let feitas=0;const primeiro=proximoCodigo+1;
+  for(let i=0;i<qtd;i++){
+    const nums=gerarCartela(assinaturas);
+    if(!nums) break;
+    proximoCodigo++;
+    cartelas.push({codigo:String(proximoCodigo).padStart(3,'0'),nome:'',nums});
+    feitas++;
+  }
+  salvar();atualizarInfoCart();avaliarAlerta();
+  const r=document.getElementById('resCart');
+  if(r){
+    r.className='resultado ok';
+    r.innerHTML=feitas+' cartelas geradas. '+Math.ceil(feitas/4)+' folha(s) A4.'+
+      '<small>Códigos '+String(primeiro).padStart(3,'0')+' a '+
+      String(proximoCodigo).padStart(3,'0')+'</small>';
+  }
+}
+function abrirLimparCartelas(){
+  const qtd=cartelas.length;
+  if(!qtd){abrirModal('Limpar cartelas','<p>Não há cartelas para apagar.</p>',[]);return;}
+  const comNome=cartelas.filter(c=>(c.nome||'').trim()).length;
+  abrirModal('Limpar cartelas',
+    '<p>Isso apaga <b>todas as '+qtd+' cartelas</b>'+
+    (comNome?' e os <b>'+comNome+' nomes</b> cadastrados':'')+'.</p>'+
+    '<p class="aviso">Depois de limpar, a numeração recomeça em <b>001</b>.</p>'+
+    '<p class="aviso">Os números já sorteados <b>NÃO</b> são apagados.</p>',
+    [{rotulo:'Cancelar',acao:fecharModal},
+     {rotulo:'Sim, limpar tudo',acao:()=>{
+       cartelas=[];proximoCodigo=0;salvar();limparAlerta();fecharModal();
+       abrirModal('Cartelas apagadas',
+         '<p>Todas as cartelas foram removidas. A próxima geração começa em <b>001</b>.</p>',[]);
+     }}]);
+}
+function abrirNomes(){
+  if(!cartelas.length){
+    abrirModal('Nomes nas cartelas','<p>Nenhuma cartela gerada ainda.</p>',[]);
+    return;
+  }
+  let html='<p>Digite o nome de quem recebeu cada cartela. Com o nome, os alertas '+
+    'passam a dizer <b>"a Maria está a uma pedra"</b>.</p><div class="listaNomes">';
+  cartelas.forEach((c,i)=>{
+    html+='<div class="linhaNome"><span class="cod">'+c.codigo+'</span>'+
+      '<input type="text" data-i="'+i+'" maxlength="40" placeholder="Nome" value="'+
+      ((c.nome||'').replace(/"/g,'&quot;'))+'"></div>';
+  });
+  html+='</div>';
+  const comNome=cartelas.filter(c=>(c.nome||'').trim()).length;
+  html+='<p class="aviso" id="infoNomes">'+comNome+' de '+cartelas.length+
+    ' cartelas com nome.</p>';
+  abrirModal('Nomes nas cartelas',html,[
+    {rotulo:'Fechar',acao:fecharModal},
+    {rotulo:'Salvar nomes',acao:salvarNomes}
+  ]);
+}
+function salvarNomes(){
+  document.querySelectorAll('#mCorpo input[data-i]').forEach(inp=>{
+    const i=parseInt(inp.dataset.i,10);
+    if(cartelas[i]) cartelas[i].nome=inp.value.trim();
+  });
+  salvar();avaliarAlerta();fecharModal();
+}
+function abrirQuentes(){
+  if(!cartelas.length||!S.sorteados.length){
+    abrirModal('Cartelas mais próximas',
+      '<p>É preciso ter cartelas geradas e números sorteados.</p>',[]);
+    return;
+  }
+  const set=new Set(S.sorteados.map(x=>x.n));
+  const lista=cartelas.map(c=>{
+    const r=analisar(c.nums,set,S.padrao);
+    return {codigo:c.codigo,nome:(c.nome||'').trim(),faltam:r.faltam,nums:r.nums};
+  }).sort((a,b)=>a.faltam-b.faltam).slice(0,15);
+  let html='<p>Padrão: <b>'+NOME_PADRAO[S.padrao]+'</b> · '+S.sorteados.length+
+    ' sorteados · '+cartelas.length+' cartelas</p>'+
+    '<table class="quentes"><thead><tr><th>Cartela</th><th>Nome</th>'+
+    '<th>Falta</th></tr></thead><tbody>';
+  lista.forEach(x=>{
+    const cls=x.faltam<=1?'q1':x.faltam===2?'q2':'';
+    const txt=x.faltam===0?'BINGO':x.faltam===1?'falta 1':'faltam '+x.faltam;
+    const nums=(x.faltam>0&&x.nums.length)?x.nums.join(', '):'';
+    html+='<tr><td>'+x.codigo+'</td><td class="nm">'+
+      (x.nome||'<span style="color:#4a5f88">—</span>')+'</td>'+
+      '<td class="n">'+nums+'</td><td class="f '+cls+'">'+txt+'</td></tr>';
+  });
+  html+='</tbody></table>';
+  abrirModal('Cartelas mais próximas',html,[]);
+}
+
+function baseUrl(){
+  return location.origin+location.pathname;
+}
+function linkDaCartela(c){
+  const nums=c.nums.map(v=>v===null?'':v).join('-');
+  return baseUrl()+'#c='+c.codigo+'&n='+nums+'&p='+S.padrao;
+}
+function abrirLinks(){
+  if(!cartelas.length){
+    abrirModal('Links das cartelas',
+      '<p>Nenhuma cartela gerada ainda. Gere as cartelas primeiro.</p>',[]);
+    return;
+  }
+  const publicado=(location.protocol==='http:'||location.protocol==='https:');
+  let html='<p>Cada cartela tem um link próprio, com os números dentro dele. '+
+    'O jogador abre o link e a cartela aparece pronta no celular — não precisa '+
+    'carregar nada.</p>';
+  if(!publicado){
+    html+='<p class="aviso" style="color:#ff8585"><b>Atenção:</b> a página está '+
+      'aberta como arquivo local. Os links só funcionam entre celulares depois '+
+      'que a página estiver publicada na internet.</p>';
+  }
+  html+='<p class="aviso">Padrão gravado no link: <b>'+NOME_PADRAO[S.padrao]+
+    '</b>. Se trocar o padrão depois, gere os links novamente.</p>'+
+    '<div class="listaLinks" id="listaLinks">';
+  cartelas.forEach(c=>{
+    const nome=(c.nome||'').trim();
+    html+='<div class="linhaLink"><span class="cod">'+c.codigo+'</span>'+
+      '<span class="nm">'+(nome||'<span style="color:#4a5f88">sem nome</span>')+
+      '</span><button data-cod="'+c.codigo+'">copiar link</button></div>';
+  });
+  html+='</div>';
+  abrirModal('Links das cartelas',html,[
+    {rotulo:'Fechar',acao:fecharModal},
+    {rotulo:'Copiar todos',acao:copiarTodosLinks}
+  ]);
+  document.querySelectorAll('#listaLinks button').forEach(bt=>{
+    bt.onclick=()=>{
+      const c=cartelas.find(x=>x.codigo===bt.dataset.cod);
+      if(!c) return;
+      copiar(linkDaCartela(c));
+      bt.textContent='copiado ✓';
+      setTimeout(()=>{bt.textContent='copiar link';},1600);
+    };
+  });
+}
+function copiar(txt){
+  try{
+    if(navigator.clipboard&&navigator.clipboard.writeText){
+      navigator.clipboard.writeText(txt);
+      return true;
+    }
+  }catch(e){}
+  const ta=document.createElement('textarea');
+  ta.value=txt;ta.style.position='fixed';ta.style.opacity='0';
+  document.body.appendChild(ta);ta.select();
+  try{document.execCommand('copy');}catch(e){}
+  document.body.removeChild(ta);
+  return true;
+}
+function copiarTodosLinks(){
+  const linhas=cartelas.map(c=>{
+    const nome=(c.nome||'').trim();
+    return c.codigo+(nome?' ('+nome+')':'')+' - '+linkDaCartela(c);
+  }).join('\n');
+  copiar(linhas);
+  const roda=document.getElementById('mRodape');
+  if(roda){
+    const av=document.createElement('span');
+    av.textContent='Links copiados';
+    av.style.cssText='font-size:11px;color:#5ddc85;align-self:center;margin-right:6px';
+    roda.insertBefore(av,roda.firstChild);
+  }
+}
+function imprimirCartelas(){
+  const area=document.getElementById('printArea');
+  area.innerHTML='';
+  for(let i=0;i<cartelas.length;i+=4){
+    const folha=document.createElement('div');
+    folha.className='folha';
+    cartelas.slice(i,i+4).forEach(c=>{
+      folha.insertAdjacentHTML('beforeend',cartelaHtml(c));
+    });
+    area.appendChild(folha);
+  }
+  fecharModal();
+  setTimeout(()=>window.print(),180);
+}
+function cartelaHtml(c){
+  const nome=(c.nome||'').trim();
+  let html='<div class="cp"><div class="topo"><div class="marca">'+logoImg()+
+    '</div><i>Nº '+c.codigo+'</i></div>'+
+    '<div class="dono">'+(nome?nome:'Nome:')+'</div>'+
+    '<table><thead><tr>';
+  'BINGO'.split('').forEach(l=>{html+='<th>'+l+'</th>';});
+  html+='</tr></thead><tbody>';
+  for(let lin=0;lin<5;lin++){
+    html+='<tr>';
+    for(let col=0;col<5;col++){
+      const v=c.nums[lin*5+col];
+      html+=(v===null)?'<td class="lv">'+logoImg()+'</td>':'<td>'+v+'</td>';
+    }
+    html+='</tr>';
+  }
+  return html+'</tbody></table><div class="pe">CEMTEC · BINGO DO CEMTEC · CÓDIGO '+
+    c.codigo+'</div></div>';
+}
+function minicartelaHtml(cartela,set){
+  let h='<div class="minicart">';
+  cartela.forEach(v=>{
+    if(v===null) h+='<div class="livre">'+logoImg()+'</div>';
+    else if(set.has(v)) h+='<div class="mk">'+v+'</div>';
+    else h+='<div>'+v+'</div>';
+  });
+  return h+'</div>';
+}
+
+function novaFila(){
+  const arr=Array.from({length:75},(_,i)=>i+1);
+  for(let i=arr.length-1;i>0;i--){
+    const j=Math.floor(Math.random()*(i+1));
+    [arr[i],arr[j]]=[arr[j],arr[i]];
+  }
+  return arr;
+}
+function piscar(){
+  return new Promise(resolve=>{
+    const restantes=S.fila.slice();
+    const passos=20;
+    let k=0,anterior=null;
+    (function tick(){
+      if(anterior!==null) setEstado(anterior,'apagado');
+      if(k>=passos||!restantes.length){resolve();return;}
+      const n=restantes[Math.floor(Math.random()*restantes.length)];
+      setEstado(n,'piscando');anterior=n;tique(k/passos);
+      const espera=75+Math.pow(k/passos,2.3)*300;
+      k++;setTimeout(tick,espera);
+    })();
+  });
+}
+async function sortear(){
+  if(rodando) return;
+  if(S.pausado){abrirTelaBingo();return;}
+  if(S.travaFala&&falando){
+    if(!pendente){pendente=true;atualizarTravaUI();}
+    return;
+  }
+  if(!S.fila.length){
+    abrirModal('Sorteio encerrado',
+      '<p>Todos os 75 números já foram sorteados.</p>'+
+      '<p class="aviso">Clique em Nova Rodada.</p>',[]);
+    return;
+  }
+  rodando=true;atualizarTravaUI();
+  const anterior=S.atual;
+  balanco();
+  await piscar();
+  if(anterior!==null) setEstado(anterior,'marcado');
+  const n=S.fila.shift();
+  S.sorteados.push({n,letra:letraDe(n),hora:new Date().toISOString()});
+  S.atual=n;
+  setEstado(n,'atual');pintar(true);revelacao();
+  const al=avaliarAlerta();
+  narrarNumero(n,al);
+  salvar();
+  rodando=false;atualizarTravaUI();
+}
+
+let memoriaFallback={};
+function salvar(){
+  const dados={fila:S.fila,sorteados:S.sorteados,atual:S.atual,som:S.som,
+    voz:S.voz,vozAlerta:S.vozAlerta,modoPassador:S.modoPassador,
+    travaFala:S.travaFala,pausado:S.pausado,padrao:S.padrao,
+    velocidade:S.velocidade,vozNome:S.vozNome};
+  try{localStorage.setItem(KEY_S,JSON.stringify(dados));}
+  catch(e){memoriaFallback[KEY_S]=dados;}
+  try{localStorage.setItem(KEY_C,JSON.stringify({cartelas,proximoCodigo}));}
+  catch(e){}
+}
+function restaurar(){
+  let dados=null;
+  try{dados=JSON.parse(localStorage.getItem(KEY_S));}
+  catch(e){dados=memoriaFallback[KEY_S]||null;}
+  if(!dados||!Array.isArray(dados.fila)) return false;
+  S.fila=dados.fila;S.sorteados=dados.sorteados||[];
+  S.atual=dados.atual??null;
+  S.som=dados.som!==false;S.voz=!!dados.voz;
+  S.vozAlerta=dados.vozAlerta!==false;
+  S.modoPassador=dados.modoPassador===true;
+  S.travaFala=dados.travaFala!==false;
+  S.pausado=dados.pausado===true;
+  S.padrao=dados.padrao||'aberto';
+  S.velocidade=dados.velocidade||0.8;
+  S.vozNome=dados.vozNome||'';
+  const jaSaiu=new Set(S.sorteados.map(x=>x.n));
+  S.fila=S.fila.filter(n=>!jaSaiu.has(n));
+  try{
+    const c=JSON.parse(localStorage.getItem(KEY_C));
+    if(c){cartelas=c.cartelas||[];proximoCodigo=c.proximoCodigo||0;}
+  }catch(e){}
+  return true;
+}
+
+function exportarBackup(){
+  if(!S.sorteados.length&&!cartelas.length){
+    abrirModal('Backup','<p>Não há nada para salvar ainda.</p>',[]);
+    return;
+  }
+  const pacote={
+    app:'Bingo do CEMTEC',versao:6,geradoEm:new Date().toISOString(),
+    estado:{fila:S.fila,sorteados:S.sorteados,atual:S.atual,padrao:S.padrao,
+      som:S.som,voz:S.voz,vozAlerta:S.vozAlerta,travaFala:S.travaFala,
+      modoPassador:S.modoPassador,pausado:S.pausado,
+      velocidade:S.velocidade,vozNome:S.vozNome},
+    cartelas:cartelas.map(c=>({codigo:c.codigo,nome:c.nome||'',nums:c.nums})),
+    proximoCodigo
+  };
+  const blob=new Blob([JSON.stringify(pacote,null,2)],
+    {type:'application/json;charset=utf-8;'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  const d=new Date();
+  const stamp=d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+
+    String(d.getDate()).padStart(2,'0')+'_'+String(d.getHours()).padStart(2,'0')+'h'+
+    String(d.getMinutes()).padStart(2,'0');
+  a.href=url;a.download='backup-bingo-cemtec-'+stamp+'.json';
+  document.body.appendChild(a);a.click();document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  abrirModal('Backup salvo',
+    '<p>Arquivo com <b>'+S.sorteados.length+' números sorteados</b> e <b>'+
+    cartelas.length+' cartelas</b>.</p>'+
+    '<p class="aviso">Guarde num pendrive e no Drive.</p>',[]);
+}
+function abrirBackup(){
+  abrirModal('Backup do jogo',
+    '<p>O backup guarda tudo num único arquivo: números sorteados, fila, '+
+    'cartelas e nomes.</p>',
+    [{rotulo:'Fechar',acao:fecharModal},
+     {rotulo:'⬇ Importar',acao:()=>{fecharModal();
+       document.getElementById('inpBackup').click();}},
+     {rotulo:'⬆ Exportar',acao:()=>{fecharModal();exportarBackup();}}]);
+}
+const inpBackup=document.getElementById('inpBackup');
+inpBackup.addEventListener('change',ev=>{
+  const file=ev.target.files&&ev.target.files[0];
+  if(!file) return;
+  const reader=new FileReader();
+  reader.onload=()=>{
+    try{
+      const p=JSON.parse(reader.result);
+      if(!p||!p.estado||!Array.isArray(p.estado.fila)) throw new Error('formato');
+      abrirModal('Confirmar importação',
+        '<p>Arquivo: <b>'+file.name+'</b></p>'+
+        '<p class="aviso">Contém <b>'+(p.estado.sorteados||[]).length+
+        ' números sorteados</b> e <b>'+(p.cartelas||[]).length+' cartelas</b>.</p>'+
+        '<p class="aviso">Isso substitui o estado atual. Confirma?</p>',
+        [{rotulo:'Cancelar',acao:fecharModal},
+         {rotulo:'Sim, importar',acao:()=>{aplicarBackup(p);fecharModal();}}]);
+    }catch(err){
+      abrirModal('Arquivo inválido',
+        '<p>Este arquivo não é um backup do Bingo do CEMTEC.</p>',[]);
+    }
+    inpBackup.value='';
+  };
+  reader.readAsText(file,'utf-8');
+});
+function aplicarBackup(p){
+  const e=p.estado||{};
+  S.fila=Array.isArray(e.fila)?e.fila.slice():novaFila();
+  S.sorteados=Array.isArray(e.sorteados)?e.sorteados.slice():[];
+  S.atual=(typeof e.atual==='number')?e.atual:null;
+  S.padrao=e.padrao||'aberto';
+  S.som=e.som!==false;S.voz=!!e.voz;
+  S.vozAlerta=e.vozAlerta!==false;
+  S.travaFala=e.travaFala!==false;
+  S.modoPassador=false;S.pausado=false;
+  S.velocidade=e.velocidade||0.8;S.vozNome=e.vozNome||'';
+  cartelas=(p.cartelas||[]).map(c=>({codigo:c.codigo,nome:c.nome||'',nums:c.nums}));
+  proximoCodigo=p.proximoCodigo||cartelas.length;
+  const jaSaiu=new Set(S.sorteados.map(x=>x.n));
+  S.fila=S.fila.filter(n=>!jaSaiu.has(n));
+  salvar();montarPlacar();pintar(S.atual!==null);
+  document.getElementById('btnSom').classList.toggle('on',S.som);
+  document.getElementById('btnVoz').classList.toggle('on',S.voz);
+  pintarBtnAlerta();pintarBtnPassador();pintarBtnTrava();
+  btnBingo.classList.remove('ativo');
+  placar.classList.remove('parado');
+  document.getElementById('selPadrao').value=S.padrao;
+  document.getElementById('selVeloc').value=String(S.velocidade);
+  atualizarTravaUI();inicializarVozes();
+  setTimeout(()=>{ajustarTamanho();avaliarAlerta();},80);
+}
+
+const overlay=document.getElementById('overlay');
+const modalBox=document.getElementById('modalBox');
+const mTitulo=document.getElementById('mTitulo');
+const mCorpo=document.getElementById('mCorpo');
+const mRodape=document.getElementById('mRodape');
+function abrirModal(titulo,corpoHtml,botoes,ehBingo){
+  mTitulo.textContent=titulo;
+  mCorpo.innerHTML=corpoHtml;
+  mRodape.innerHTML='';
+  modalBox.classList.toggle('bingoM',!!ehBingo);
+  (botoes||[]).forEach(b=>{
+    const el=document.createElement('button');
+    el.className='btn';el.textContent=b.rotulo;el.onclick=b.acao;
+    mRodape.appendChild(el);
+  });
+  if(!botoes||!botoes.length){
+    const el=document.createElement('button');
+    el.className='btn';el.textContent='Fechar';el.onclick=fecharModal;
+    mRodape.appendChild(el);
+  }
+  overlay.classList.add('show');
+  const primeiro=mCorpo.querySelector('input,textarea');
+  if(primeiro&&!ehBingo) setTimeout(()=>primeiro.focus(),60);
+}
+function fecharModal(){overlay.classList.remove('show');}
+overlay.addEventListener('click',e=>{if(e.target===overlay) fecharModal();});
+
+function abrirHistorico(){
+  let html;
+  if(!S.sorteados.length) html='<p>Nenhum número sorteado ainda.</p>';
+  else{
+    html='<table class="hist"><thead><tr><th>#</th><th>Pedra</th><th>Hora</th>'+
+      '</tr></thead><tbody>';
+    S.sorteados.forEach((x,i)=>{
+      const h=new Date(x.hora).toLocaleTimeString('pt-BR',
+        {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+      html+='<tr><td>'+(i+1)+'</td><td><b>'+x.letra+' '+x.n+'</b></td><td>'+h+'</td></tr>';
+    });
+    html+='</tbody></table>';
+  }
+  abrirModal('Histórico de sorteios',html,[]);
+}
+
+function abrirNovaRodada(){
+  abrirModal('Nova rodada',
+    '<p>Isso apaga <b>todos os números sorteados</b> desta sessão.</p>'+
+    '<p class="aviso">As cartelas e os nomes <b>NÃO</b> são apagados.</p>',
+    [{rotulo:'Cancelar',acao:()=>{if(S.pausado) abrirTelaBingo(); else fecharModal();}},
+     {rotulo:'Confirmar',acao:()=>{
+       S.fila=novaFila();S.sorteados=[];S.atual=null;S.pausado=false;pendente=false;
+       btnBingo.classList.remove('ativo');
+       placar.classList.remove('parado');
+       limparAlerta();pintarPlacar();pintar(false);atualizarTravaUI();
+       salvar();fecharModal();
+     }}]);
+}
+
+function estaFull(){
+  return !!(document.fullscreenElement||document.webkitFullscreenElement||
+    document.msFullscreenElement);
+}
+async function alternarFull(){
+  try{
+    if(!estaFull()){
+      const el=document.documentElement;
+      const req=el.requestFullscreen||el.webkitRequestFullscreen||el.msRequestFullscreen;
+      if(!req){abrirModal('Tela cheia indisponível',
+        '<p>Use F11 no teclado.</p>',[]);return;}
+      await req.call(el);
+    }else{
+      const exit=document.exitFullscreen||document.webkitExitFullscreen||
+        document.msExitFullscreen;
+      if(exit) await exit.call(document);
+    }
+  }catch(e){}
+}
+function atualizarIconeFull(){
+  const ico=document.getElementById('icoFull');
+  const btn=document.getElementById('btnFull');
+  if(!ico||!btn) return;
+  if(estaFull()){
+    ico.innerHTML='<path d="M8 3v3a2 2 0 0 1-2 2H3"></path>'+
+      '<path d="M16 3v3a2 2 0 0 0 2 2h3"></path>'+
+      '<path d="M8 21v-3a2 2 0 0 0-2-2H3"></path>'+
+      '<path d="M16 21v-3a2 2 0 0 1 2-2h3"></path>';
+    btn.title='Sair da tela cheia';btn.classList.add('on');
+  }else{
+    ico.innerHTML='<path d="M8 3H5a2 2 0 0 0-2 2v3"></path>'+
+      '<path d="M16 3h3a2 2 0 0 1 2 2v3"></path>'+
+      '<path d="M8 21H5a2 2 0 0 1-2-2v-3"></path>'+
+      '<path d="M16 21h3a2 2 0 0 0 2-2v-3"></path>';
+    btn.title='Tela cheia';btn.classList.remove('on');
+  }
+  setTimeout(ajustarTamanho,120);
+}
+['fullscreenchange','webkitfullscreenchange','msfullscreenchange']
+  .forEach(ev=>document.addEventListener(ev,atualizarIconeFull));
+
+const btnPassador=document.getElementById('btnPassador');
+function pintarBtnPassador(){btnPassador.classList.toggle('passadorOn',S.modoPassador);}
+function ativarPassador(){
+  S.modoPassador=true;pintarBtnPassador();salvar();
+  alertaEl.className='alerta show np';
+  alertaEl.textContent='🔒 MODO PASSADOR — teclado bloqueado';
+  setTimeout(()=>{
+    if(S.modoPassador&&alertaEl.textContent.indexOf('MODO PASSADOR')>=0) avaliarAlerta();
+  },2600);
+}
+function desativarPassador(){
+  S.modoPassador=false;pintarBtnPassador();salvar();
+  alertaEl.className='alerta show np';
+  alertaEl.textContent='🔓 Modo passador desativado';
+  setTimeout(()=>avaliarAlerta(),2200);
+}
+btnPassador.onclick=()=>{ if(S.modoPassador) desativarPassador(); else ativarPassador(); };
+
+const btnTrava=document.getElementById('btnTrava');
+function pintarBtnTrava(){btnTrava.classList.toggle('travaOn',S.travaFala);}
+btnTrava.onclick=()=>{
+  S.travaFala=!S.travaFala;pintarBtnTrava();salvar();
+  if(!S.travaFala){pendente=false;atualizarTravaUI();}
+};
+
+const btnAlerta=document.getElementById('btnAlerta');
+function pintarBtnAlerta(){btnAlerta.classList.toggle('alertaOn',S.vozAlerta);}
+btnAlerta.onclick=()=>{
+  S.vozAlerta=!S.vozAlerta;pintarBtnAlerta();salvar();
+  if(S.vozAlerta&&temSintese){ac();inicializarVozes();
+    falarCurto('Alertas com narração ativados.');}
+};
+
+let cartelaJogador=null;
+let marcadas=new Set();
+let bingoAvisado=false;
+
+const jGrade=document.getElementById('jGrade');
+const jFalta=document.getElementById('jFalta');
+const jCodigo=document.getElementById('jCodigo');
+const jAbertura=document.getElementById('jAbertura');
+const jPainel=document.getElementById('jPainel');
+const jTrocar=document.getElementById('jTrocar');
+const jPadrao=document.getElementById('jPadrao');
+const jMsg=document.getElementById('jMsg');
+const jRodape=document.getElementById('jRodape');
+
+function lerCartelasSalvas(){
+  try{
+    const c=JSON.parse(localStorage.getItem(KEY_C));
+    if(c){cartelas=c.cartelas||[];proximoCodigo=c.proximoCodigo||0;}
+  }catch(e){}
+}
+function abrirCartelaPorCodigo(cod){
+  lerCartelasSalvas();
+  const c=cartelas.find(x=>x.codigo===cod);
+  if(!c) return null;
+  return {codigo:c.codigo,nome:c.nome||'',nums:c.nums.slice()};
+}
+function mostrarMensagem(tipo,txt){
+  jMsg.className='resultado '+tipo;
+  jMsg.textContent=txt;
+}
+function abrirPainelJogador(){
+  jAbertura.style.display='none';
+  jPainel.style.display='block';
+  jCodigo.style.display='inline-block';
+  jTrocar.style.display='block';
+  jCodigo.textContent='CARTELA '+cartelaJogador.codigo;
+  const nome=(cartelaJogador.nome||'').trim();
+  jRodape.textContent=nome
+    ? nome+' · marque tocando nas casas. A cartela fica salva neste celular.'
+    : 'Marque tocando nas casas. A cartela fica salva neste celular.';
+  desenharGrade();
+}
+function desenharGrade(){
+  jGrade.innerHTML='';
+  'BINGO'.split('').forEach(l=>{
+    const d=document.createElement('div');
+    d.className='jLetra';d.textContent=l;
+    jGrade.appendChild(d);
+  });
+  cartelaJogador.nums.forEach((v,i)=>{
+    const d=document.createElement('div');
+    d.className='jCel';
+    d.dataset.i=i;
+    if(v===null){
+      d.classList.add('livre','mk');
+      d.innerHTML=logoImg();
+    }else{
+      d.textContent=v;
+      if(marcadas.has(i)) d.classList.add('mk');
+    }
+    d.onclick=()=>tocarCasa(i);
+    jGrade.appendChild(d);
+  });
+  atualizarFalta();
+}
+function tocarCasa(i){
+  if(cartelaJogador.nums[i]===null) return;
+  if(marcadas.has(i)) marcadas.delete(i);
+  else marcadas.add(i);
+  const el=jGrade.querySelector('.jCel[data-i="'+i+'"]');
+  if(el) el.classList.toggle('mk',marcadas.has(i));
+  toque();
+  if(navigator.vibrate) try{navigator.vibrate(18);}catch(e){}
+  salvarMarcacoes();
+  atualizarFalta();
+}
+function setDeMarcadas(){
+  const marcados=new Set();
+  cartelaJogador.nums.forEach((v,i)=>{
+    if(v===null) return;
+    if(marcadas.has(i)) marcados.add(v);
+  });
+  return marcados;
+}
+function atualizarFalta(){
+  if(!cartelaJogador) return;
+  const r=analisar(cartelaJogador.nums,setDeMarcadas(),jPadrao.value);
+  jFalta.className='jFalta';
+  if(r.valido){
+    jFalta.classList.add('bingo');
+    jFalta.textContent='BINGO! Levante a mão.';
+    if(!bingoAvisado){
+      bingoAvisado=true;
+      mostrarOverlayBingo();
+    }
+  }else{
+    bingoAvisado=false;
+    if(r.faltam<=2) jFalta.classList.add('perto');
+    const alvo=NOME_PADRAO[jPadrao.value]||'o padrão escolhido';
+    if(r.faltam<=3&&r.nums.length){
+      jFalta.textContent='Faltam '+r.faltam+' para '+alvo+' — '+listaFalta(r.nums,4)+'.';
+    }else{
+      jFalta.textContent='Faltam '+r.faltam+' para '+alvo+'.';
+    }
+  }
+}
+function mostrarOverlayBingo(){
+  document.getElementById('obCod').textContent='CARTELA '+cartelaJogador.codigo;
+  document.getElementById('overlayBingo').classList.add('show');
+  if(navigator.vibrate) try{navigator.vibrate([220,120,320]);}catch(e){}
+  somBingo();
+}
+document.getElementById('obFechar').onclick=()=>{
+  document.getElementById('overlayBingo').classList.remove('show');
+};
+function salvarMarcacoes(){
+  if(!cartelaJogador) return;
+  try{
+    localStorage.setItem('bingo_jogador_'+cartelaJogador.codigo,
+      JSON.stringify(Array.from(marcadas)));
+    localStorage.setItem(KEY_J_ATUAL,cartelaJogador.codigo);
+  }catch(e){}
+}
+function carregarMarcacoes(codigo){
+  marcadas=new Set();
+  try{
+    const raw=JSON.parse(localStorage.getItem('bingo_jogador_'+codigo));
+    if(Array.isArray(raw)) marcadas=new Set(raw);
+  }catch(e){}
+}
+function definirCartela(obj){
+  cartelaJogador=obj;
+  carregarMarcacoes(obj.codigo);
+  abrirPainelJogador();
+}
+function abrirPorDados(codigo,numsString,padrao){
+  const nums=numsString.split('-').map(v=>v===''?null:parseInt(v,10));
+  if(nums.length!==25) return false;
+  const obj={codigo:codigo,nome:'',nums};
+  if(padrao&&NOME_PADRAO[padrao]) jPadrao.value=padrao;
+  definirCartela(obj);
+  return true;
+}
+function gerarCartelaVirtual(){
+  const nums=new Array(25).fill(null);
+  for(let col=0;col<5;col++){
+    const base=col*15;
+    const pool=Array.from({length:15},(_,i)=>base+i+1);
+    for(let i=pool.length-1;i>0;i--){
+      const j=Math.floor(Math.random()*(i+1));
+      [pool[i],pool[j]]=[pool[j],pool[i]];
+    }
+    for(let lin=0;lin<5;lin++){
+      if(col===2&&lin===2) continue;
+      nums[lin*5+col]=pool[lin];
+    }
+  }
+  lerCartelasSalvas();
+  let cod=901;
+  while(cartelas.some(c=>c.codigo===String(cod))||
+        localStorage.getItem('bingo_jogador_'+String(cod))) cod++;
+  const obj={codigo:String(cod),nome:'',nums};
+  jPadrao.value=S.padrao||'aberto';
+  definirCartela(obj);
+  mostrarMensagem('ok','Cartela virtual '+obj.codigo+
+    ' criada. Ela não existe em papel — o organizador confere pela tela.');
+}
+function abrirTelaCarregar(){
+  const html=`
+    <p>Cole aqui o conteúdo do arquivo de backup exportado pelo painel do
+    sorteador. Isso carrega as cartelas neste celular — basta fazer uma vez.</p>
+    <div style="margin-top:12px">
+      <label for="txtBackup">Conteúdo do backup</label>
+      <textarea id="txtBackup" placeholder='{"app":"Bingo do CEMTEC","cartelas":[...]}'></textarea>
+    </div>
+    <div class="resultado" id="resCarga"></div>`;
+  abrirModal('Carregar cartelas',html,[
+    {rotulo:'Fechar',acao:fecharModal},
+    {rotulo:'Escolher arquivo',acao:()=>{
+      fecharModal();
+      const inp=document.createElement('input');
+      inp.type='file';inp.accept='.json,application/json';
+      inp.onchange=()=>{
+        const f=inp.files&&inp.files[0];
+        if(!f) return;
+        const rd=new FileReader();
+        rd.onload=()=>{processarCarga(String(rd.result));};
+        rd.readAsText(f,'utf-8');
+      };
+      inp.click();
+    }},
+    {rotulo:'Carregar',acao:()=>{
+      const t=document.getElementById('txtBackup');
+      processarCarga(t?t.value:'');
+    }}
+  ]);
+}
+function processarCarga(txt){
+  let lista=null;
+  try{
+    const p=JSON.parse(txt);
+    if(Array.isArray(p)) lista=p;
+    else if(p&&Array.isArray(p.cartelas)) lista=p.cartelas;
+  }catch(e){}
+  if(!lista||!lista.length){
+    const r=document.getElementById('resCarga');
+    if(r){r.className='resultado err';
+      r.textContent='Conteúdo inválido. Use o arquivo exportado pelo painel.';}
+    return;
+  }
+  const limpas=lista.map(c=>({codigo:String(c.codigo),nome:c.nome||'',nums:c.nums}))
+    .filter(c=>Array.isArray(c.nums)&&c.nums.length===25);
+  try{
+    localStorage.setItem(KEY_C,JSON.stringify({cartelas:limpas,proximoCodigo:limpas.length}));
+  }catch(e){}
+  cartelas=limpas;
+  const r=document.getElementById('resCarga');
+  if(r){r.className='resultado ok';
+    r.innerHTML=limpas.length+' cartelas carregadas.<small>Agora digite o '+
+    'código da sua cartela.</small>';}
+  if(!temSintese) return;
+  setTimeout(()=>falarCurto(limpas.length+' cartelas carregadas.'),300);
+}
+function initJogador(){
+  lerCartelasSalvas();
+  const hash=(location.hash||'').replace(/^#/,'');
+  const qs=(location.search||'').replace(/^\?/,'');
+  const par=new URLSearchParams(hash||qs);
+  const cod=par.get('c');
+  const nums=par.get('n');
+  const pad=par.get('p');
+  if(pad&&NOME_PADRAO[pad]) jPadrao.value=pad;
+  if(cod&&nums){
+    if(abrirPorDados(String(cod),nums,pad)) return;
+  }
+  if(cod){
+    const c=abrirCartelaPorCodigo(String(cod).padStart(3,'0'));
+    if(c){definirCartela(c);return;}
+  }
+  let ultimo=null;
+  try{ultimo=localStorage.getItem(KEY_J_ATUAL);}catch(e){}
+  if(ultimo){
+    const c=lerCartelaLocal(ultimo);
+    if(c){jPadrao.value=S.padrao||jPadrao.value;definirCartela(c);return;}
+  }
+}
+function lerCartelaLocal(codigo){
+  lerCartelasSalvas();
+  const c=cartelas.find(x=>x.codigo===codigo);
+  if(c) return {codigo:c.codigo,nome:c.nome||'',nums:c.nums.slice()};
+  return null;
+}
+
+document.getElementById('jAbrir').onclick=()=>{
+  const campo=document.getElementById('jCodInput');
+  const cod=(campo.value||'').replace(/\D/g,'').padStart(3,'0');
+  if(!cod||cod==='000'){
+    mostrarMensagem('err','Digite o código da sua cartela.');
+    return;
+  }
+  const c=abrirCartelaPorCodigo(cod);
+  if(!c){
+    mostrarMensagem('err','Cartelas não carregadas neste celular. Toque em '+
+      '"Carregar cartelas" ou gere uma cartela virtual.');
+    return;
+  }
+  definirCartela(c);
+};
+document.getElementById('jCarregar').onclick=abrirTelaCarregar;
+document.getElementById('jVirtual').onclick=gerarCartelaVirtual;
+document.getElementById('jTrocar').onclick=()=>{
+  jPainel.style.display='none';
+  jAbertura.style.display='block';
+  jCodigo.style.display='none';
+  jTrocar.style.display='none';
+  document.getElementById('jCodInput').value='';
+  jMsg.className='resultado';
+  jMsg.textContent='';
+};
+jPadrao.onchange=()=>{ atualizarFalta(); };
+document.getElementById('jLimpar').onclick=()=>{
+  marcadas=new Set();
+  bingoAvisado=false;
+  salvarMarcacoes();
+  desenharGrade();
+};
+
+function irPara(modo){
+  document.body.dataset.modo=modo;
+  if(modo==='operador'){
+    setTimeout(()=>{ajustarTamanho();avaliarAlerta();},60);
+    setTimeout(ajustarTamanho,300);
+  }
+  if(modo==='jogador') initJogador();
+  window.scrollTo(0,0);
+}
+document.getElementById('btIrOperador').onclick=()=>irPara('operador');
+document.getElementById('btIrJogador').onclick=()=>irPara('jogador');
+document.getElementById('btnSair').onclick=()=>{
+  if(location.hash){
+    location.hash='';
+    history.replaceState(null,'',location.pathname+location.search);
+  }
+  irPara('inicio');
+};
+
+btnSortear.onclick=sortear;
+document.getElementById('btnHist').onclick=abrirHistorico;
+document.getElementById('btnCartelas').onclick=abrirCartelas;
+document.getElementById('btnLinks').onclick=abrirLinks;
+document.getElementById('btnNomes').onclick=abrirNomes;
+document.getElementById('btnQuentes').onclick=abrirQuentes;
+document.getElementById('btnBackup').onclick=abrirBackup;
+document.getElementById('btnNova').onclick=abrirNovaRodada;
+document.getElementById('btnFull').onclick=alternarFull;
+
+const btnSom=document.getElementById('btnSom');
+btnSom.onclick=()=>{
+  S.som=!S.som;btnSom.classList.toggle('on',S.som);
+  if(S.som) ac();
+  salvar();
+};
+const btnVoz=document.getElementById('btnVoz');
+btnVoz.onclick=()=>{
+  if(!temSintese){
+    abrirModal('Narração indisponível',
+      '<p>Este navegador não oferece síntese de voz.</p>',[]);
+    return;
+  }
+  S.voz=!S.voz;btnVoz.classList.toggle('on',S.voz);
+  if(S.voz){
+    ac();inicializarVozes();
+    if(!vozEscolhida){
+      S.voz=false;btnVoz.classList.remove('on');salvar();
+      abrirModal('Nenhuma voz em português do Brasil',
+        '<p>O navegador não encontrou voz <b>pt-BR</b> instalada.</p>',[]);
+      return;
+    }
+    falarCurto('Narração dos números ativada.');
+  }else{
+    tokenFala++;
+    try{speechSynthesis.cancel();}catch(e){}
+    falando=false;pendente=false;atualizarTravaUI();
+  }
+  salvar();
+};
+const selPadrao=document.getElementById('selPadrao');
+selPadrao.onchange=()=>{S.padrao=selPadrao.value;salvar();avaliarAlerta();};
+const selVeloc=document.getElementById('selVeloc');
+selVeloc.onchange=()=>{S.velocidade=parseFloat(selVeloc.value)||0.8;salvar();};
+const selVoz=document.getElementById('selVoz');
+selVoz.onchange=()=>{
+  const vozes=listarVozesPtBR();
+  const v=vozes[selVoz.selectedIndex];
+  if(!v) return;
+  vozEscolhida=v;S.vozNome=v.name;salvar();
+  if(S.voz) falarCurto('Esta é a voz selecionada.');
+};
+
+const TECLAS=['Space','PageDown','ArrowRight','Enter','NumpadEnter'];
+document.addEventListener('keydown',e=>{
+  if(document.body.dataset.modo!=='operador') return;
+  if(S.modoPassador){
+    if(e.ctrlKey&&e.shiftKey&&(e.key==='L'||e.key==='l')){
+      e.preventDefault();desativarPassador();return;
+    }
+    if(e.code==='KeyB'){e.preventDefault();if(!e.repeat) btnBingo.click();return;}
+    if(TECLAS.includes(e.code)){e.preventDefault();if(!e.repeat) sortear();return;}
+    e.preventDefault();e.stopPropagation();return;
+  }
+  const aberto=overlay.classList.contains('show');
+  if(e.key==='Escape'){if(aberto) fecharModal();return;}
+  if(aberto) return;
+  if(e.repeat) return;
+  if(TECLAS.includes(e.code)){e.preventDefault();sortear();return;}
+  const k=(e.key||'').toLowerCase();
+  if(k==='b') btnBingo.click();
+  else if(k==='f') alternarFull();
+  else if(k==='h') abrirHistorico();
+  else if(k==='q') abrirQuentes();
+  else if(k==='n') abrirNovaRodada();
+  else if(k==='m') btnSom.click();
+  else if(k==='v') btnVoz.click();
+  else if(k==='a') btnAlerta.click();
+  else if(k==='p') btnPassador.click();
+  else if(k==='t') btnTrava.click();
+});
+
+(function init(){
+  pintarLogos();
+  restaurar();
+  montarPlacar();
+  pintar(S.atual!==null);
+  btnSom.classList.toggle('on',S.som);
+  btnVoz.classList.toggle('on',S.voz);
+  pintarBtnAlerta();pintarBtnPassador();pintarBtnTrava();
+  selPadrao.value=S.padrao;
+  selVeloc.value=String(S.velocidade);
+  if(!S.fila||!S.fila.length){
+    if(!S.sorteados.length){S.fila=novaFila();salvar();}
+  }
+  inicializarVozes();
+  atualizarIconeFull();
+  atualizarTravaUI();
+  if(S.pausado){
+    btnBingo.classList.add('ativo');
+    placar.classList.add('parado');
+    contadorEl.className='pill bingo';
+  }
+  if(!temSintese){
+    btnVoz.disabled=true;btnVoz.style.opacity='.35';
+    btnAlerta.disabled=true;btnAlerta.style.opacity='.35';
+    selVoz.disabled=true;
+  }
+  const temLink=!!(location.hash||location.search);
+  irPara(temLink?'jogador':'inicio');
+})();
+</script>
+</body>
+</html>
