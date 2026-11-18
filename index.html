@@ -2625,6 +2625,78 @@ background:#0f2236;color:#dcebff;font:800 20px system-ui,sans-serif;cursor:point
   }
 })();
 </script>
-<!-- ===== FIM DO MODULO ===== -->
+<style>
+  /* ===== BARRA PADRONIZADA ===== */
+  footer{
+    display:flex !important;
+    flex-wrap:wrap !important;
+    justify-content:center !important;
+    align-items:stretch !important;
+    gap:10px !important;
+  }
+  footer > button,
+  footer > select,
+  footer > #cvFab{
+    flex:1 1 0 !important;
+    min-width:86px !important;
+    max-width:118px !important;
+    width:auto !important;
+    height:46px !important;
+    padding:0 4px !important;
+    margin:0 !important;
+    box-sizing:border-box !important;
+    font-size:10px !important;
+    font-weight:700 !important;
+    letter-spacing:.01em !important;
+    border-radius:11px !important;
+    line-height:1.1 !important;
+    text-align:center !important;
+    display:inline-flex !important;
+    align-items:center !important;
+    justify-content:center !important;
+  }
+  #btnSortear{
+    background:linear-gradient(180deg,#4f9bff,#2f74db) !important;
+    border:none !important;color:#fff !important;
+    font-size:11.5px !important;letter-spacing:.06em !important;
+  }
+  #btnBingo{
+    background:linear-gradient(180deg,#ff5b5b,#c62828) !important;
+    border:none !important;color:#fff !important;
+    font-size:11.5px !important;letter-spacing:.05em !important;
+  }
+  footer select{padding:0 14px 0 5px !important;font-size:9.5px !important}
+  #cvFab{
+    background:#16a34a !important;border:1px solid #1fbf62 !important;
+    color:#fff !important;box-shadow:none !important;
+    position:static !important;left:auto !important;right:auto !important;
+    top:auto !important;bottom:auto !important;
+  }
+</style>
+
+<script>
+(function(){
+  function mover(){
+    var fab = document.getElementById('cvFab');
+    var barra = document.querySelector('footer');
+    if(!fab || !barra) return;
+    if(fab.parentNode === barra) return;
+    fab.textContent = '🔗 Links';
+    fab.style.setProperty('position','static','important');
+    fab.style.setProperty('left','auto','important');
+    fab.style.setProperty('bottom','auto','important');
+    barra.insertBefore(fab, document.getElementById('btnNova') || null);
+  }
+  var n = 0;
+  var t = setInterval(function(){
+    mover();
+    if(++n > 40) clearInterval(t);
+  }, 250);
+  if(document.readyState === 'loading'){
+    document.addEventListener('DOMContentLoaded', mover);
+  } else { mover(); }
+})();
+</script>
+ 
 </body>
 </html>
