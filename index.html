@@ -2234,5 +2234,397 @@ window.addEventListener('beforeunload', e=>{
   setTimeout(ajustarTamanho, 900);
 })();
 </script>
+ <!-- ===== MODULO LINKS + CARTELA VIRTUAL ===== -->
+<!-- Cole ANTES da tag </body> -->
+<style>
+#cvFab{position:fixed;left:16px;bottom:100px;z-index:9000;padding:12px 18px;border:0;border-radius:999px;
+background:#16a34a;color:#fff;font:700 14px system-ui,sans-serif;cursor:pointer;
+box-shadow:0 6px 18px rgba(0,0,0,.45)}
+#cvFab:hover{background:#128a3e}
+.cvOv{position:fixed;inset:0;z-index:99999;background:rgba(4,11,22,.97);color:#e9f1ff;
+font:14px/1.5 system-ui,sans-serif;overflow:auto;padding:20px}
+.cvWrap{max-width:920px;margin:0 auto}
+.cvTop{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}
+.cvTitle{font-size:18px;font-weight:800}
+.cvBtn{background:#1e6fd9;color:#fff;border:0;border-radius:8px;padding:10px 16px;
+font:600 14px system-ui,sans-serif;cursor:pointer}
+.cvBtn:hover{filter:brightness(1.12)}
+.cvBtn.sec{background:#2b3c55}
+.cvBtn.ok{background:#16a34a}
+.cvBtn.red{background:#c0392b}
+.cvRow{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:12px 0}
+.cvInp{background:#0d1b2d;border:1px solid #2c4straight;border:1px solid #2c445f;border-radius:8px;
+padding:10px 12px;color:#e9f1ff;font:14px system-ui,sans-serif;width:110px}
+.cvItem{background:#0f1f33;border:1px solid #24405c;border-radius:10px;padding:12px;
+margin-bottom:10px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+.cvMini{border-collapse:collapse}
+.cvMini td{border:1px solid #35526f;text-align:center;font-size:11px;width:26px;height:24px;color:#cfe0f5}
+.cvMini td.f{background:#1d3busy}
+.cvMini td.f{background:#1d3a56}
+.cvLnk{flex:1;min-width:260px;font:12px ui-monospace,monospace;color:#8fb8e6;
+word-break:break-all;background:#0a1524;padding:8px;border-radius:6px}
+.cvCode{font:800 14px system-ui,sans-serif;color:#7ee2a8;min-width:52px}
+/* modo jogador */
+.cvPlay{position:fixed;inset:0;z-index:99999;background:#07131f;color:#eaf3ff;
+font:16px/1.4 system-ui,sans-serif;overflow:auto;padding:14px;
+display:flex;flex-direction:column;align-items:center;gap:14px}
+.cvGrid{border-collapse:separate;border-spacing:8px}
+.cvGrid button{width:62px;height:62px;border-radius:10px;border:2px solid #2e5075;
+background:#0f2236;color:#dcebff;font:800 20px system-ui,sans-serif;cursor:pointer}
+.cvGrid button.mk{background:#16a34a;border-color:#22d16b;color:#fff}
+.cvGrid button.centro{background:#123a5c;border-color:#2e5075;color:#78a8d8;font-size:11px}
+@media(max-width:520px){.cvGrid button{width:54px;height:54px;font-size:18px}}
+</style>
+
+<script>
+(function () {
+  'use strict';
+
+  var CHAVE = 'cemtec_links_cartelas_v1';
+  var cartelas = [];
+  try { cartelas = JSON.parse(localStorage.getItem(CHAVE) || '[]') || []; } catch (e) { cartelas = []; }
+
+  function persistir() {
+    try { localStorage.setItem(CHAVE, JSON.stringify(cartelas)); } catch (e) {}
+  }
+
+  function baseUrl() { return location.href.split('#')[0]; }
+
+  function gerarCartela() {
+    var faixas = [[1, 15], [16, 30], [31, 45], [46, 60], [61, 75]];
+    var g = [[], [], [], [], []];
+    for (var c = 0; c < 5; c++) {
+      var pool = [];
+      for (var n = faixas[c][0]; n <= faixas[c][1]; n++) pool.push(n);
+      for (var r = 0; r < 5; r++) {
+        var i = Math.floor(Math.random() * pool.length);
+        g[r][c] = pool.splice(i, 1)[0];
+      }
+    }
+    g[2][2] = null;
+    return g;
+  }
+
+  function planificar(g) {
+    var out = [];
+    for (var r = 0; r < 5; r++)
+      for (var c = 0; c < 5; c++)
+        if (!(r === 2 && c === 2)) out.push(g[r][c]);
+    return out;
+  }
+
+  function linkDe(c) {
+    return baseUrl() + '#c=' + encodeURIComponent(c.codigo) + '&g=' + planificar(c.grid).join('.');
+  }
+
+  function codigoDe(n) {
+    var s = String(n);
+    while (s.length < 3) s = '0' + s;
+    return s;
+  }
+
+  function copiar(txt, btn) {
+    function feito() {
+      if (!btn) return;
+      var antigo = btn.textContent;
+      btn.textContent = 'copiado!';
+      setTimeout(function () { btn.textContent = antigo; }, 1200);
+    }
+    function reserva() {
+      var ta = document.createElement('textarea');
+      ta.value = txt;
+      ta.style.cssText = 'position:fixed;top:-1000px';
+      document.body.appendChild(ta);
+      ta.select();
+      try { document.execCommand('copy'); feito(); }
+      catch (e) { window.prompt('Copie o link:', txt); }
+      document.body.removeChild(ta);
+    }
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(txt).then(feito, reserva);
+    } else { reserva(); }
+  }
+
+  /* ---------- painel de links ---------- */
+  function abrirPainel() {
+    var ov = document.createElement('div');
+    ov.className = 'cvOv';
+    ov.innerHTML =
+      '<div class="cvWrap">' +
+        '<div class="cvTop">' +
+          '<div class="cvTitle">Cartelas e links para celular</div>' +
+          '<button class="cvBtn sec" id="cvFechar">Fechar</button>' +
+        '</div>' +
+        '<div class="cvRow">' +
+          '<label>Quantidade:</label>' +
+          '<input class="cvInp" id="cvQtd" type="number" min="1" max="500" value="30">' +
+          '<button class="cvBtn ok" id="cvGerar">Gerar cartelas</button>' +
+          '<button class="cvBtn sec" id="cvImprimir">Imprimir cartelas</button>' +
+          '<button class="cvBtn" id="cvCopiarTodos">Copiar todos os links</button>' +
+          '<button class="cvBtn red" id="cvLimpar">Limpar lista</button>' +
+        '</div>' +
+        '<div id="cvLista"></div>' +
+      '</div>';
+    document.body.appendChild(ov);
+
+    var lista = ov.querySelector('#cvLista');
+
+    function desenhar() {
+      lista.innerHTML = '';
+      if (!cartelas.length) {
+        lista.innerHTML = '<p style="color:#7f9ac0">Nenhuma cartela gerada ainda.</p>';
+        return;
+      }
+      cartelas.forEach(function (c, idx) {
+        var item = document.createElement('div');
+        item.className = 'cvItem';
+
+        var cod = document.createElement('div');
+        cod.className = 'cvCode';
+        cod.textContent = c.codigo;
+
+        var mini = document.createElement('table');
+        mini.className = 'cvMini';
+        for (var r = 0; r < 5; r++) {
+          var tr = document.createElement('tr');
+          for (var k = 0; k < 5; k++) {
+            var td = document.createElement('td');
+            if (r === 2 && k === 2) { td.textContent = '★'; td.className = 'f'; }
+            else td.textContent = c.grid[r][k];
+            tr.appendChild(td);
+          }
+          mini.appendChild(tr);
+        }
+
+        var lnk = document.createElement('div');
+        lnk.className = 'cvLnk';
+        lnk.textContent = linkDe(c);
+
+        var b1 = document.createElement('button');
+        b1.className = 'cvBtn';
+        b1.textContent = 'Copiar link';
+        b1.onclick = function () { copiar(linkDe(c), b1); };
+
+        var b2 = document.createElement('button');
+        b2.className = 'cvBtn sec';
+        b2.textContent = 'Abrir teste';
+        b2.onclick = function () { window.open(linkDe(c), '_blank'); };
+
+        item.appendChild(cod);
+        item.appendChild(mini);
+        item.appendChild(lnk);
+        item.appendChild(b1);
+        item.appendChild(b2);
+        lista.appendChild(item);
+      });
+    }
+
+    ov.querySelector('#cvFechar').onclick = function () { ov.remove(); };
+
+    ov.querySelector('#cvGerar').onclick = function () {
+      var q = parseInt(ov.querySelector('#cvQtd').value, 10);
+      if (!q || q < 1) return;
+      if (q > 500) q = 500;
+      cartelas = [];
+      for (var i = 1; i <= q; i++) {
+        cartelas.push({ codigo: codigoDe(i), grid: gerarCartela() });
+      }
+      persistir();
+      desenhar();
+    };
+
+    ov.querySelector('#cvLimpar').onclick = function () {
+      if (!confirm('Apagar todas as cartelas e links gerados?')) return;
+      cartelas = [];
+      persistir();
+      desenhar();
+    };
+
+    ov.querySelector('#cvCopiarTodos').onclick = function (ev) {
+      if (!cartelas.length) return;
+      var txt = cartelas.map(function (c) { return c.codigo + ' - ' + linkDe(c); }).join('\n');
+      copiar(txt, ev.target);
+    };
+
+    ov.querySelector('#cvImprimir').onclick = function () {
+      if (!cartelas.length) return alert('Gere as cartelas primeiro.');
+      var w = window.open('', '_blank');
+      if (!w) return alert('Libere pop-ups para imprimir.');
+      var h = '<html><head><meta charset="utf-8"><title>Cartelas</title><style>' +
+        '@page{size:A4;margin:10mm}' +
+        'body{font-family:Arial,sans-serif;margin:0}' +
+        '.pg{display:grid;grid-template-columns:1fr 1fr;gap:8mm;page-break-after:always}' +
+        '.pg:last-child{page-break-after:auto}' +
+        '.cart{border:2px solid #111;border-radius:6px;padding:6px}' +
+        '.cart h3{margin:0 0 6px;font-size:12pt;text-align:center;letter-spacing:1px}' +
+        '.cart table{width:100%;border-collapse:collapse}' +
+        '.cart td{border:1px solid #333;text-align:center;font-size:15pt;font-weight:700;padding:6px 0}' +
+        '.cart .f{background:#e8e8e8;font-size:10pt}' +
+        '</style></head><body>';
+      for (var i = 0; i < cartelas.length; i += 4) {
+        h += '<div class="pg">';
+        for (var j = i; j < i + 4 && j < cartelas.length; j++) {
+          var c = cartelas[j];
+          h += '<div class="cart"><h3>BINGO DO CEMTEC — ' + c.codigo + '</h3><table>';
+          for (var r = 0; r < 5; r++) {
+            h += '<tr>';
+            for (var k = 0; k < 5; k++) {
+              if (r === 2 && k === 2) h += '<td class="f">LIVRE</td>';
+              else h += '<td>' + c.grid[r][k] + '</td>';
+            }
+            h += '</tr>';
+          }
+          h += '</table></div>';
+        }
+        h += '</div>';
+      }
+      h += '</body></html>';
+      w.document.write(h);
+      w.document.close();
+      w.focus();
+      setTimeout(function () { w.print(); }, 400);
+    };
+
+    desenhar();
+  }
+
+  /* ---------- modo jogador ---------- */
+  function lerHash() {
+    var h = location.hash.replace(/^#/, '');
+    if (!h) return null;
+    var partes = {};
+    h.split('&').forEach(function (kv) {
+      var p = kv.split('=');
+      if (p[0]) partes[p[0]] = p[1];
+    });
+    if (!partes.g) return null;
+    var nums = partes.g.split('.').map(Number);
+    if (nums.length !== 24) return null;
+    var grid = [[], [], [], [], []];
+    var i = 0;
+    for (var r = 0; r < 5; r++) {
+      for (var k = 0; k < 5; k++) {
+        grid[r][k] = (r === 2 && k === 2) ? null : nums[i++];
+      }
+    }
+    return { codigo: partes.c ? decodeURIComponent(partes.c) : '', grid: grid };
+  }
+
+  function abrirJogador(c) {
+    var velho = document.getElementById('cvPlay');
+    if (velho) velho.remove();
+
+    var wrap = document.createElement('div');
+    wrap.id = 'cvPlay';
+    wrap.className = 'cvPlay';
+
+    var titulo = document.createElement('div');
+    titulo.style.cssText = 'font-weight:800;font-size:18px;letter-spacing:1px;text-align:center';
+    titulo.textContent = 'BINGO DO CEMTEC';
+    wrap.appendChild(titulo);
+
+    var sub = document.createElement('div');
+    sub.style.cssText = 'color:#8fb4dc;font-size:14px';
+    sub.textContent = 'Cartela ' + (c.codigo || '');
+    wrap.appendChild(sub);
+
+    var marcado = [[], [], [], [], []];
+    var botoes = [];
+    var tabela = document.createElement('table');
+    tabela.className = 'cvGrid';
+    for (var r = 0; r < 5; r++) {
+      var tr = document.createElement('tr');
+      for (var k = 0; k < 5; k++) {
+        var td = document.createElement('td');
+        var b = document.createElement('button');
+        if (r === 2 && k === 2) {
+          b.textContent = 'LIVRE';
+          b.className = 'centro';
+          b.disabled = true;
+          marcado[r][k] = true;
+        } else {
+          b.textContent = c.grid[r][k];
+          marcado[r][k] = false;
+          (function (rr, kk, botao) {
+            botao.onclick = function () {
+              marcado[rr][kk] = !marcado[rr][kk];
+              botao.classList.toggle('mk', marcado[rr][kk]);
+            };
+          })(r, k, b);
+        }
+        botoes.push(b);
+        td.appendChild(b);
+        tr.appendChild(td);
+      }
+      tabela.appendChild(tr);
+    }
+    wrap.appendChild(tabela);
+
+    var painel = document.createElement('div');
+    painel.style.cssText = 'color:#9fc2e6;font-size:14px;text-align:center;min-height:22px';
+    wrap.appendChild(painel);
+
+    function temBingo() {
+      var i, j, ok;
+      for (i = 0; i < 5; i++) { ok = true; for (j = 0; j < 5; j++) if (!marcado[i][j]) ok = false; if (ok) return 'linha ' + (i + 1); }
+      for (j = 0; j < 5; j++) { ok = true; for (i = 0; i < 5; i++) if (!marcado[i][j]) ok = false; if (ok) return 'coluna ' + (j + 1); }
+      ok = true; for (i = 0; i < 5; i++) if (!marcado[i][i]) ok = false; if (ok) return 'diagonal principal';
+      ok = true; for (i = 0; i < 5; i++) if (!marcado[i][4 - i]) ok = false; if (ok) return 'diagonal secundária';
+      return null;
+    }
+
+    var bBingo = document.createElement('button');
+    bBingo.className = 'cvBtn ok';
+    bBingo.style.cssText = 'padding:16px 34px;font-size:17px';
+    bBingo.textContent = 'BINGO!';
+    bBingo.onclick = function () {
+      var res = temBingo();
+      if (res) {
+        painel.innerHTML = '<strong style="color:#4ade80">BINGO CONFIRMADO — ' + res + '</strong>';
+      } else {
+        var faltam = 0;
+        for (var i = 0; i < 5; i++) for (var j = 0; j < 5; j++) if (!marcado[i][j]) faltam++;
+        painel.innerHTML = '<span style="color:#fbbf24">Ainda não. Faltam ' + faltam + ' números.</span>';
+      }
+    };
+    wrap.appendChild(bBingo);
+
+    var bSair = document.createElement('button');
+    bSair.className = 'cvBtn sec';
+    bSair.textContent = 'Ir para o painel do sorteio';
+    bSair.onclick = function () {
+      location.hash = '';
+      location.reload();
+    };
+    wrap.appendChild(bSair);
+
+    document.body.appendChild(wrap);
+  }
+
+  /* ---------- inicialização ---------- */
+  function iniciar() {
+    var c = lerHash();
+    if (c) { abrirJogador(c); return; }
+    var velho = document.getElementById('cvPlay');
+    if (velho) velho.remove();
+
+    if (!document.getElementById('cvFab')) {
+      var fab = document.createElement('button');
+      fab.id = 'cvFab';
+      fab.textContent = '🔗 LINKS';
+      fab.onclick = abrirPainel;
+      document.body.appendChild(fab);
+    }
+  }
+
+  window.addEventListener('hashchange', iniciar);
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', iniciar);
+  } else {
+    iniciar();
+  }
+})();
+</script>
+<!-- ===== FIM DO MODULO ===== -->
 </body>
 </html>
