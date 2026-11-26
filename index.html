@@ -5,11 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>BINGO DO CEMTEC</title>
 <style>
-  * {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
   :root {
     --bg: #0a1024;
     --card: #121e3d;
@@ -21,10 +17,7 @@
     --cel: 44px;
     --bola: 180px;
   }
-  html, body {
-    height: 100%;
-    overflow: hidden;
-  }
+  html, body { height: 100%; overflow: hidden; }
   body {
     display: grid;
     grid-template-rows: auto auto minmax(0, 1fr) auto;
@@ -34,217 +27,108 @@
     color: var(--txt);
     font-family: system-ui, 'Segoe UI', Roboto, sans-serif;
   }
-  body:fullscreen {
-    padding: 12px 15px;
-  }
+  body:fullscreen { padding: 12px 15px; }
 
-  /* ============ CABEÇALHO ============ */
-  header {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    min-height: 50px;
-    flex-wrap: wrap;
-  }
+  header { display: flex; align-items: center; gap: 8px; min-height: 50px; flex-wrap: wrap; }
   .brand {
-    background: #fff;
-    border-radius: 11px;
-    padding: 4px 10px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex: 0 0 auto;
-    box-shadow: 0 3px 16px rgba(0,0,0,.42);
+    background: #fff; border-radius: 11px; padding: 4px 10px;
+    display: flex; align-items: center; justify-content: center;
+    flex: 0 0 auto; box-shadow: 0 3px 16px rgba(0,0,0,.42);
   }
   .brand img {
-    display: block;
-    height: clamp(26px, 3.1vh, 38px);
-    width: auto;
-    max-width: min(210px, 23vw);
-    object-fit: contain;
+    display: block; height: clamp(26px, 3.1vh, 38px); width: auto;
+    max-width: min(210px, 23vw); object-fit: contain;
   }
   .titulo {
-    font-size: clamp(12px, 1.5vw, 23px);
-    font-weight: 900;
-    letter-spacing: .055em;
-    color: #fff;
-    white-space: nowrap;
-    line-height: 1;
-    flex: 0 0 auto;
+    font-size: clamp(12px, 1.5vw, 23px); font-weight: 900;
+    letter-spacing: .055em; color: #fff; white-space: nowrap;
+    line-height: 1; flex: 0 0 auto;
   }
-  .titulo span {
-    color: var(--ciano);
-  }
-  .spacer {
-    flex: 1;
-    min-width: 6px;
-  }
+  .titulo span { color: var(--ciano); }
+  .spacer { flex: 1; min-width: 6px; }
   .pill {
-    border: 1px solid var(--azul);
-    border-radius: 999px;
-    padding: 5px 13px;
-    font-size: clamp(10px, .9vw, 13px);
-    font-weight: 700;
-    color: var(--azul);
-    white-space: nowrap;
+    border: 1px solid var(--azul); border-radius: 999px; padding: 5px 13px;
+    font-size: clamp(10px, .9vw, 13px); font-weight: 700;
+    color: var(--azul); white-space: nowrap;
   }
   .pill.bingo {
-    border-color: #ff5b5b;
-    color: #ff8585;
-    background: rgba(198,40,40,.18);
+    border-color: #ff5b5b; color: #ff8585; background: rgba(198,40,40,.18);
     animation: piscaPill 1s ease-in-out infinite;
   }
-  @keyframes piscaPill {
-    50% { opacity: .55; }
-  }
+  @keyframes piscaPill { 50% { opacity: .55; } }
   .icobtn {
-    width: 39px;
-    height: 39px;
-    border: 1px solid var(--line);
-    border-radius: 11px;
-    background: var(--card);
-    color: var(--dim);
-    cursor: pointer;
-    display: grid;
-    place-items: center;
-    transition: .15s;
-    flex: 0 0 auto;
+    width: 39px; height: 39px; border: 1px solid var(--line);
+    border-radius: 11px; background: var(--card); color: var(--dim);
+    cursor: pointer; display: grid; place-items: center;
+    transition: .15s; flex: 0 0 auto;
   }
-  .icobtn:hover {
-    color: var(--txt);
-    border-color: #3a5480;
-  }
+  .icobtn:hover { color: var(--txt); border-color: #3a5480; }
   .icobtn.on {
-    color: var(--azul);
-    border-color: var(--azul);
-    background: #132a52;
+    color: var(--azul); border-color: var(--azul); background: #132a52;
     box-shadow: 0 0 14px rgba(79,155,255,.28);
   }
   .icobtn.alertaOn {
-    color: #ffd84d;
-    border-color: #ffd84d;
-    background: #3a2f0d;
+    color: #ffd84d; border-color: #ffd84d; background: #3a2f0d;
     box-shadow: 0 0 14px rgba(255,216,77,.35);
   }
   .icobtn.passadorOn {
-    color: #37d67a;
-    border-color: #37d67a;
-    background: #0f2e1c;
+    color: #37d67a; border-color: #37d67a; background: #0f2e1c;
     box-shadow: 0 0 16px rgba(55,214,122,.45);
   }
   .icobtn.travaOn {
-    color: #b57bff;
-    border-color: #b57bff;
-    background: #2a1a4a;
+    color: #b57bff; border-color: #b57bff; background: #2a1a4a;
     box-shadow: 0 0 16px rgba(181,123,255,.42);
   }
   .icobtn.projOn {
-    color: #ff9d3d;
-    border-color: #ff9d3d;
-    background: #3a240d;
+    color: #ff9d3d; border-color: #ff9d3d; background: #3a240d;
     box-shadow: 0 0 16px rgba(255,157,61,.42);
   }
   .icobtn svg {
-    width: 18px;
-    height: 18px;
-    fill: none;
-    stroke: currentColor;
-    stroke-width: 2;
-    stroke-linecap: round;
-    stroke-linejoin: round;
+    width: 18px; height: 18px; fill: none; stroke: currentColor;
+    stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
   }
   #selVoz {
-    height: 37px;
-    max-width: 168px;
-    background: var(--card);
-    border: 1px solid var(--line);
-    color: #cdd9f0;
-    border-radius: 10px;
-    font-size: 10px;
-    font-weight: 600;
-    padding: 0 4px;
-    font-family: inherit;
+    height: 37px; max-width: 168px; background: var(--card);
+    border: 1px solid var(--line); color: #cdd9f0; border-radius: 10px;
+    font-size: 10px; font-weight: 600; padding: 0 4px; font-family: inherit;
   }
   #selVeloc {
-    height: 37px;
-    max-width: 92px;
-    background: var(--card);
-    border: 1px solid var(--line);
-    color: #cdd9f0;
-    border-radius: 10px;
-    font-size: 10px;
-    font-weight: 600;
-    padding: 0 4px;
-    font-family: inherit;
+    height: 37px; max-width: 92px; background: var(--card);
+    border: 1px solid var(--line); color: #cdd9f0; border-radius: 10px;
+    font-size: 10px; font-weight: 600; padding: 0 4px; font-family: inherit;
   }
 
-  /* ============ FAIXA DE MODALIDADES ============ */
   .modbar {
-    display: flex;
-    gap: 7px;
-    align-items: center;
-    justify-content: center;
-    flex-wrap: wrap;
-    padding: 5px 8px;
+    display: flex; gap: 7px; align-items: center; justify-content: center;
+    flex-wrap: wrap; padding: 5px 8px;
     background: linear-gradient(180deg, #101c3a, #0b1428);
-    border: 1px solid var(--line);
-    border-radius: 12px;
+    border: 1px solid var(--line); border-radius: 12px;
   }
   .modbar .rot {
-    font-size: 9px;
-    letter-spacing: .16em;
-    color: var(--dim);
-    font-weight: 800;
-    margin-right: 2px;
+    font-size: 9px; letter-spacing: .16em; color: var(--dim);
+    font-weight: 800; margin-right: 2px;
   }
   .mod {
-    display: inline-flex;
-    align-items: center;
-    gap: 6px;
-    padding: 4px 11px;
-    border-radius: 999px;
-    font-size: 10.5px;
-    font-weight: 800;
-    letter-spacing: .03em;
-    border: 1px solid #1e8e3e;
-    background: rgba(30,142,62,.18);
-    color: #5ddc85;
-    transition: .25s;
+    display: inline-flex; align-items: center; padding: 4px 11px;
+    border-radius: 999px; font-size: 10.5px; font-weight: 800;
+    letter-spacing: .03em; border: 1px solid #1e8e3e;
+    background: rgba(30,142,62,.18); color: #5ddc85; transition: .25s;
   }
   .mod.ganha {
-    border-color: #4a5f88;
-    background: rgba(74,95,136,.12);
-    color: #6b7fa5;
-    text-decoration: line-through;
-  }
-  .mod .cod {
-    font-family: ui-monospace, Consolas, monospace;
-    font-size: 9.5px;
-    background: rgba(0,0,0,.28);
-    border-radius: 4px;
-    padding: 1px 5px;
-    text-decoration: none;
-    display: inline-block;
+    border-color: #4a5f88; background: rgba(74,95,136,.12);
+    color: #6b7fa5; text-decoration: line-through;
   }
 
-  /* ============ ÁREA PRINCIPAL ============ */
   main {
-    display: grid;
-    grid-template-columns: minmax(0, 2.35fr) minmax(245px, .72fr);
-    gap: 10px;
-    min-height: 0;
+    display: grid; grid-template-columns: minmax(0, 2.35fr) minmax(245px, .72fr);
+    gap: 10px; min-height: 0;
   }
   .placar {
     position: relative;
     background: linear-gradient(180deg, #0d1730, #0a1226);
-    border: 1px solid var(--line);
-    border-radius: 16px;
-    padding: 8px;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    min-height: 0;
-    overflow: hidden;
+    border: 1px solid var(--line); border-radius: 16px; padding: 8px;
+    display: flex; flex-direction: column; justify-content: center;
+    min-height: 0; overflow: hidden;
     transition: box-shadow .35s, border-color .35s;
   }
   .placar.quente {
@@ -262,186 +146,105 @@
     animation: bordaPulsaBingo 1s ease-in-out infinite;
   }
   @keyframes bordaPulsa {
-    0%, 100% {
-      box-shadow: 0 0 0 2px rgba(255,216,77,.45), 0 0 26px rgba(255,216,77,.16) inset;
-    }
-    50% {
-      box-shadow: 0 0 0 3px rgba(255,216,77,.9), 0 0 58px rgba(255,216,77,.42) inset;
-    }
+    0%, 100% { box-shadow: 0 0 0 2px rgba(255,216,77,.45), 0 0 26px rgba(255,216,77,.16) inset; }
+    50% { box-shadow: 0 0 0 3px rgba(255,216,77,.9), 0 0 58px rgba(255,216,77,.42) inset; }
   }
   @keyframes bordaPulsaBingo {
-    0%, 100% {
-      box-shadow: 0 0 0 3px rgba(255,91,91,.5), 0 0 34px rgba(255,91,91,.2) inset;
-    }
-    50% {
-      box-shadow: 0 0 0 4px rgba(255,91,91,1), 0 0 70px rgba(255,91,91,.5) inset;
-    }
+    0%, 100% { box-shadow: 0 0 0 3px rgba(255,91,91,.5), 0 0 34px rgba(255,91,91,.2) inset; }
+    50% { box-shadow: 0 0 0 4px rgba(255,91,91,1), 0 0 70px rgba(255,91,91,.5) inset; }
   }
 
-  /* ============ GRADE DE BOLAS ============ */
   .grade {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-    align-items: center;
-    justify-content: center;
-    flex: 1;
-    min-height: 0;
-    padding-top: 20px;
+    display: flex; flex-direction: column; gap: 5px;
+    align-items: center; justify-content: center; flex: 1;
+    min-height: 0; padding-top: 20px;
   }
-  .linha {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    justify-content: center;
-  }
+  .linha { display: flex; align-items: center; gap: 5px; justify-content: center; }
   .letra {
-    width: calc(var(--cel) * .86);
-    height: calc(var(--cel) * .86);
-    flex: 0 0 auto;
-    border-radius: 10px;
+    width: calc(var(--cel) * .86); height: calc(var(--cel) * .86);
+    flex: 0 0 auto; border-radius: 10px;
     background: linear-gradient(160deg, #2f6fd0, #1b4a99);
-    display: grid;
-    place-items: center;
-    font-weight: 800;
-    font-size: calc(var(--cel) * .46);
-    color: #fff;
+    display: grid; place-items: center; font-weight: 800;
+    font-size: calc(var(--cel) * .46); color: #fff;
     box-shadow: 0 2px 8px rgba(0,0,0,.35);
   }
   .cel {
-    width: var(--cel);
-    height: var(--cel);
-    flex: 0 0 auto;
-    border-radius: 50%;
-    display: grid;
-    place-items: center;
-    font-weight: 800;
-    font-size: calc(var(--cel) * .38);
-    position: relative;
-    overflow: hidden;
-    background: #1b2543;
-    color: #3b4b70;
+    width: var(--cel); height: var(--cel); flex: 0 0 auto;
+    border-radius: 50%; display: grid; place-items: center;
+    font-weight: 800; font-size: calc(var(--cel) * .38);
+    position: relative; overflow: hidden; background: #1b2543; color: #3b4b70;
     transition: transform .18s, box-shadow .25s, background .25s, color .25s, filter .25s;
   }
   .cel.aceso {
-    color: #fff;
-    background: var(--cor);
+    color: #fff; background: var(--cor);
     box-shadow: inset 0 -3px 8px rgba(0,0,0,.55), inset 0 3px 6px rgba(255,255,255,.24), 0 3px 9px rgba(0,0,0,.5);
   }
   .cel .brilho {
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    pointer-events: none;
+    position: absolute; inset: 0; border-radius: 50%; pointer-events: none;
     background: radial-gradient(circle at 30% 24%, rgba(255,255,255,.9), rgba(255,255,255,0) 46%);
   }
   .cel .n {
-    position: relative;
-    z-index: 2;
+    position: relative; z-index: 2;
     text-shadow: 0 0 2px rgba(0,0,0,.85), 0 1px 3px rgba(0,0,0,.9);
   }
   .cel.aceso.listrada::before {
-    content: '';
-    position: absolute;
-    left: -12%;
-    right: -12%;
-    top: 30%;
-    height: 40%;
-    background: #fff;
-    z-index: 1;
+    content: ''; position: absolute; left: -12%; right: -12%;
+    top: 30%; height: 40%; background: #fff; z-index: 1;
   }
-  .cel.aceso.listrada .n {
-    color: #1a1a1a;
-    text-shadow: 0 1px 0 rgba(255,255,255,.6);
-  }
+  .cel.aceso.listrada .n { color: #1a1a1a; text-shadow: 0 1px 0 rgba(255,255,255,.6); }
   .cel.piscando {
-    color: #1a1200;
-    background: #ffd84d;
-    transform: scale(1.16);
-    box-shadow: 0 0 20px 5px rgba(255,216,77,.8);
-    z-index: 5;
+    color: #1a1200; background: #ffd84d; transform: scale(1.16);
+    box-shadow: 0 0 20px 5px rgba(255,216,77,.8); z-index: 5;
   }
-  .cel.piscando .n {
-    text-shadow: none;
-  }
+  .cel.piscando .n { text-shadow: none; }
   .cel.marcado {
     box-shadow: inset 0 -3px 8px rgba(0,0,0,.5), inset 0 3px 6px rgba(255,255,255,.2), 0 3px 9px rgba(0,0,0,.45);
   }
   .cel.atual {
-    transform: scale(1.18);
-    z-index: 6;
+    transform: scale(1.18); z-index: 6;
     box-shadow: 0 0 0 3px rgba(79,155,255,.95), 0 0 28px 9px rgba(79,155,255,.6), inset 0 -3px 8px rgba(0,0,0,.5);
   }
 
-  /* ============ ALERTA ============ */
   .alerta {
-    position: absolute;
-    left: 50%;
-    top: 7px;
+    position: absolute; left: 50%; top: 7px;
     transform: translateX(-50%) translateY(-18px) scale(.8);
-    padding: 9px 22px;
-    border-radius: 999px;
-    font-weight: 900;
-    font-size: clamp(10px, 1.08vw, 16px);
-    letter-spacing: .04em;
-    white-space: nowrap;
-    max-width: 96%;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    opacity: 0;
-    pointer-events: none;
-    z-index: 40;
-    transform-origin: center top;
+    padding: 9px 22px; border-radius: 999px; font-weight: 900;
+    font-size: clamp(10px, 1.08vw, 16px); letter-spacing: .04em;
+    white-space: nowrap; max-width: 96%; overflow: hidden;
+    text-overflow: ellipsis; opacity: 0; pointer-events: none;
+    z-index: 40; transform-origin: center top;
   }
-  .alerta.show {
-    opacity: 1;
-  }
+  .alerta.show { opacity: 1; }
   .alerta.n2 {
-    background: linear-gradient(90deg, #ff9d3d, #e8710a);
-    color: #fff;
+    background: linear-gradient(90deg, #ff9d3d, #e8710a); color: #fff;
     box-shadow: 0 8px 26px rgba(232,113,10,.55);
     animation: entraPula .48s cubic-bezier(.2,1.5,.4,1) both, pulsa 1.6s ease-in-out .55s infinite;
   }
   .alerta.n1 {
-    background: linear-gradient(90deg, #ffe27a, #ffc400);
-    color: #241a00;
+    background: linear-gradient(90deg, #ffe27a, #ffc400); color: #241a00;
     box-shadow: 0 0 32px rgba(255,216,77,.95);
     animation: entraPula .48s cubic-bezier(.2,1.5,.4,1) both, pulsaRapido .85s ease-in-out .5s infinite;
   }
   .alerta.n0 {
-    background: linear-gradient(90deg, #37d67a, #0f9d58);
-    color: #04240f;
+    background: linear-gradient(90deg, #37d67a, #0f9d58); color: #04240f;
     box-shadow: 0 0 34px rgba(55,214,122,.95);
     animation: entraPula .48s cubic-bezier(.2,1.5,.4,1) both, pulsaRapido .8s ease-in-out .5s infinite;
   }
   .alerta.np {
-    background: linear-gradient(90deg, #3a86d4, #1b4a99);
-    color: #fff;
+    background: linear-gradient(90deg, #3a86d4, #1b4a99); color: #fff;
     box-shadow: 0 8px 26px rgba(58,134,212,.55);
     animation: entraPula .48s cubic-bezier(.2,1.5,.4,1) both;
   }
   .alerta.npk {
-    background: linear-gradient(90deg, #ff5b5b, #c62828);
-    color: #fff;
+    background: linear-gradient(90deg, #ff5b5b, #c62828); color: #fff;
     box-shadow: 0 8px 30px rgba(198,40,40,.7);
     animation: entraPula .48s cubic-bezier(.2,1.5,.4,1) both, pulsaRapido .9s ease-in-out .5s infinite;
   }
   @keyframes entraPula {
-    0% {
-      opacity: 0;
-      transform: translateX(-50%) translateY(-22px) scale(.75);
-    }
-    55% {
-      opacity: 1;
-      transform: translateX(-50%) translateY(2px) scale(1.09);
-    }
-    75% {
-      transform: translateX(-50%) translateY(0) scale(.97);
-    }
-    100% {
-      opacity: 1;
-      transform: translateX(-50%) translateY(0) scale(1);
-    }
+    0% { opacity: 0; transform: translateX(-50%) translateY(-22px) scale(.75); }
+    55% { opacity: 1; transform: translateX(-50%) translateY(2px) scale(1.09); }
+    75% { transform: translateX(-50%) translateY(0) scale(.97); }
+    100% { opacity: 1; transform: translateX(-50%) translateY(0) scale(1); }
   }
   @keyframes pulsa {
     0%, 100% { transform: translateX(-50%) scale(1); }
@@ -452,259 +255,118 @@
     50% { transform: translateX(-50%) scale(1.055); }
   }
   .alerta.show::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    width: 36%;
-    left: -45%;
-    pointer-events: none;
+    content: ''; position: absolute; top: 0; bottom: 0; width: 36%;
+    left: -45%; pointer-events: none;
     background: linear-gradient(100deg, transparent, rgba(255,255,255,.55), transparent);
     animation: varre 2.1s ease-in-out infinite;
   }
-  @keyframes varre {
-    0% { left: -45%; }
-    55%, 100% { left: 115%; }
-  }
+  @keyframes varre { 0% { left: -45%; } 55%, 100% { left: 115%; } }
 
-  /* ============ PAINEL DIREITO ============ */
   .painel {
     background: linear-gradient(180deg, #101c3a, #0b1428);
-    border: 1px solid var(--line);
-    border-radius: 16px;
-    padding: 10px 9px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 6px;
-    min-height: 0;
-    overflow: hidden;
+    border: 1px solid var(--line); border-radius: 16px;
+    padding: 10px 9px; display: flex; flex-direction: column;
+    align-items: center; gap: 6px; min-height: 0; overflow: hidden;
   }
   .rotulo {
-    font-size: 9.5px;
-    letter-spacing: .19em;
-    color: var(--azul);
-    font-weight: 800;
-    margin-bottom: -2px;
+    font-size: 9.5px; letter-spacing: .19em; color: var(--azul);
+    font-weight: 800; margin-bottom: -2px;
   }
   .selo-letra {
-    width: clamp(36px, 4.4vh, 52px);
-    height: clamp(36px, 4.4vh, 52px);
-    border-radius: 12px;
-    flex: 0 0 auto;
+    width: clamp(36px, 4.4vh, 52px); height: clamp(36px, 4.4vh, 52px);
+    border-radius: 12px; flex: 0 0 auto;
     background: linear-gradient(160deg, #2f6fd0, #1b4a99);
-    display: grid;
-    place-items: center;
-    font-size: clamp(18px, 2.2vh, 27px);
-    font-weight: 900;
-    color: #fff;
+    display: grid; place-items: center;
+    font-size: clamp(18px, 2.2vh, 27px); font-weight: 900; color: #fff;
     box-shadow: 0 3px 12px rgba(31,111,208,.5), inset 0 2px 5px rgba(255,255,255,.25);
     line-height: 1;
   }
   .selo-letra.vazio {
-    background: #1b2543;
-    color: #3b4b70;
-    box-shadow: inset 0 0 0 1px var(--line);
+    background: #1b2543; color: #3b4b70; box-shadow: inset 0 0 0 1px var(--line);
   }
   .bola {
-    width: var(--bola);
-    height: var(--bola);
-    aspect-ratio: 1 / 1;
-    min-width: var(--bola);
-    min-height: var(--bola);
-    flex: 0 0 auto;
-    flex-shrink: 0;
-    border-radius: 50%;
-    position: relative;
-    overflow: hidden;
-    display: grid;
-    place-items: center;
-    background: #16223f;
-    color: #3b4b70;
+    width: var(--bola); height: var(--bola);
+    aspect-ratio: 1 / 1; min-width: var(--bola); min-height: var(--bola);
+    flex: 0 0 auto; flex-shrink: 0; border-radius: 50%;
+    position: relative; overflow: hidden; display: grid; place-items: center;
+    background: #16223f; color: #3b4b70;
     box-shadow: inset 0 -9px 20px rgba(0,0,0,.6), inset 0 9px 15px rgba(255,255,255,.16), 0 10px 28px rgba(0,0,0,.55);
     transition: .3s;
   }
-  .bola.aceso {
-    background: var(--cor);
-    color: #fff;
-  }
+  .bola.aceso { background: var(--cor); color: #fff; }
   .bola .brilho {
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    pointer-events: none;
+    position: absolute; inset: 0; border-radius: 50%; pointer-events: none;
     background: radial-gradient(circle at 30% 22%, rgba(255,255,255,.88), rgba(255,255,255,0) 44%);
   }
   .bola.aceso.listrada::before {
-    content: '';
-    position: absolute;
-    left: -12%;
-    right: -12%;
-    top: 30%;
-    height: 40%;
-    background: #fff;
-    z-index: 1;
+    content: ''; position: absolute; left: -12%; right: -12%;
+    top: 30%; height: 40%; background: #fff; z-index: 1;
   }
-  .bola.aceso.listrada .n {
-    color: #1a1a1a;
-    text-shadow: 0 2px 0 rgba(255,255,255,.55);
-  }
+  .bola.aceso.listrada .n { color: #1a1a1a; text-shadow: 0 2px 0 rgba(255,255,255,.55); }
   .bola .n {
-    position: relative;
-    z-index: 2;
-    font-weight: 800;
-    line-height: 1;
+    position: relative; z-index: 2; font-weight: 800; line-height: 1;
     font-size: calc(var(--bola) * .40);
     text-shadow: 0 0 4px rgba(0,0,0,.9), 0 2px 7px rgba(0,0,0,.95);
   }
   .bola.vazia .n {
-    font-size: calc(var(--bola) * .115);
-    font-weight: 600;
-    color: #5a6f96;
-    text-shadow: none;
-    text-align: center;
-    padding: 0 14px;
-    line-height: 1.4;
+    font-size: calc(var(--bola) * .115); font-weight: 600;
+    color: #5a6f96; text-shadow: none; text-align: center;
+    padding: 0 14px; line-height: 1.4;
   }
   .frase {
-    font-size: clamp(10.5px, 1.05vw, 15.5px);
-    line-height: 1.36;
-    text-align: center;
-    color: #dbe6ff;
-    max-width: 100%;
-    min-height: 2.6em;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    padding: 0 3px;
+    font-size: clamp(10.5px, 1.05vw, 15.5px); line-height: 1.36;
+    text-align: center; color: #dbe6ff; max-width: 100%;
+    min-height: 2.6em; display: flex; align-items: center;
+    justify-content: center; padding: 0 3px;
   }
-  .frase.ativa {
-    color: #fff;
-    font-weight: 600;
-  }
-  .ultimos {
-    margin-top: auto;
-    width: 100%;
-  }
+  .frase.ativa { color: #fff; font-weight: 600; }
+  .ultimos { margin-top: auto; width: 100%; }
   .ultimos .t {
-    font-size: 8.5px;
-    letter-spacing: .15em;
-    color: var(--dim);
-    margin-bottom: 5px;
-    font-weight: 700;
+    font-size: 8.5px; letter-spacing: .15em; color: var(--dim);
+    margin-bottom: 5px; font-weight: 700;
   }
-  .ultimos .lista {
-    display: flex;
-    gap: 5px;
-    flex-wrap: wrap;
-  }
+  .ultimos .lista { display: flex; gap: 5px; flex-wrap: wrap; }
   .mini {
-    width: 32px;
-    height: 32px;
-    border-radius: 50%;
-    display: grid;
-    place-items: center;
-    font-size: 12px;
-    font-weight: 800;
-    color: #fff;
-    position: relative;
-    overflow: hidden;
-    background: var(--cor);
-    box-shadow: inset 0 -2px 4px rgba(0,0,0,.5);
-    flex: 0 0 auto;
+    width: 32px; height: 32px; border-radius: 50%; display: grid;
+    place-items: center; font-size: 12px; font-weight: 800; color: #fff;
+    position: relative; overflow: hidden; background: var(--cor);
+    box-shadow: inset 0 -2px 4px rgba(0,0,0,.5); flex: 0 0 auto;
   }
   .mini.listrada::before {
-    content: '';
-    position: absolute;
-    left: -12%;
-    right: -12%;
-    top: 31%;
-    height: 38%;
-    background: #fff;
-    z-index: 1;
+    content: ''; position: absolute; left: -12%; right: -12%;
+    top: 31%; height: 38%; background: #fff; z-index: 1;
   }
-  .mini span {
-    position: relative;
-    z-index: 2;
-    text-shadow: 0 0 2px #000;
-  }
-  .mini.listrada span {
-    color: #1a1a1a;
-    text-shadow: 0 1px 0 rgba(255,255,255,.5);
-  }
+  .mini span { position: relative; z-index: 2; text-shadow: 0 0 2px #000; }
+  .mini.listrada span { color: #1a1a1a; text-shadow: 0 1px 0 rgba(255,255,255,.5); }
 
-  /* ============ BARRA INFERIOR ============ */
   footer {
-    display: flex;
-    gap: 8px;
-    align-items: center;
-    flex-wrap: wrap;
-    justify-content: center;
+    display: flex; gap: 8px; align-items: center;
+    flex-wrap: wrap; justify-content: center;
   }
-  button {
-    font-family: inherit;
-    cursor: pointer;
-    transition: .15s;
-    border-radius: 11px;
-  }
+  button { font-family: inherit; cursor: pointer; transition: .15s; border-radius: 11px; }
   footer > button {
-    flex: 0 0 100px;
-    width: 100px;
-    height: 46px;
-    padding: 0 3px;
-    border-radius: 11px;
-    font-size: 9.5px;
-    font-weight: 700;
-    letter-spacing: .01em;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    line-height: 1.1;
+    flex: 0 0 100px; width: 100px; height: 46px; padding: 0 3px;
+    border-radius: 11px; font-size: 9.5px; font-weight: 700;
+    letter-spacing: .01em; display: inline-flex; align-items: center;
+    justify-content: center; text-align: center; line-height: 1.1;
     box-sizing: border-box;
   }
-  .btn {
-    background: var(--card);
-    border: 1px solid var(--line);
-    color: #cdd9f0;
-  }
-  .btn:hover {
-    background: #17264a;
-    border-color: #39547f;
-    color: #fff;
-  }
-  .btn:active {
-    transform: scale(.97);
-  }
-  #btnModalidades {
-    border-color: #b57bff;
-    color: #cfa8ff;
-  }
-  #btnProjecao {
-    border-color: #ff9d3d;
-    color: #ffc07a;
-  }
+  .btn { background: var(--card); border: 1px solid var(--line); color: #cdd9f0; }
+  .btn:hover { background: #17264a; border-color: #39547f; color: #fff; }
+  .btn:active { transform: scale(.97); }
+  #btnModalidades { border-color: #b57bff; color: #cfa8ff; }
+  #btnProjecao { border-color: #ff9d3d; color: #ffc07a; }
   #btnSortear {
     background: linear-gradient(180deg, #4f9bff, #2f74db);
-    border: none;
-    color: #fff;
-    font-size: 11.5px;
-    letter-spacing: .06em;
+    border: none; color: #fff; font-size: 11.5px; letter-spacing: .06em;
     box-shadow: 0 7px 22px rgba(79,155,255,.38);
   }
-  #btnSortear:hover {
-    background: linear-gradient(180deg, #63a8ff, #3b81e8);
-  }
-  #btnSortear:disabled {
-    opacity: .5;
-    cursor: not-allowed;
-    box-shadow: none;
-  }
+  #btnSortear:hover { background: linear-gradient(180deg, #63a8ff, #3b81e8); }
+  #btnSortear:disabled { opacity: .5; cursor: not-allowed; box-shadow: none; }
   #btnSortear.narrando {
     background: linear-gradient(180deg, #6a4fbf, #4b3390);
     box-shadow: 0 0 0 2px rgba(181,123,255,.6);
-    font-size: 9px;
-    cursor: wait;
+    font-size: 9px; cursor: wait;
   }
   #btnSortear.narrando.agendado {
     background: linear-gradient(180deg, #8a5f2a, #6b4516);
@@ -712,23 +374,15 @@
   }
   #btnSortear.paradoBtn {
     background: linear-gradient(180deg, #6b6b6b, #4a4a4a);
-    box-shadow: none;
-    font-size: 10px;
+    box-shadow: none; font-size: 10px;
   }
   #btnBingo {
     background: linear-gradient(180deg, #ff5b5b, #c62828);
-    border: none;
-    color: #fff;
-    font-size: 11.5px;
-    letter-spacing: .05em;
+    border: none; color: #fff; font-size: 11.5px; letter-spacing: .05em;
     box-shadow: 0 7px 22px rgba(198,40,40,.45);
   }
-  #btnBingo:hover {
-    background: linear-gradient(180deg, #ff7373, #d93a3a);
-  }
-  #btnBingo:active {
-    transform: scale(.97);
-  }
+  #btnBingo:hover { background: linear-gradient(180deg, #ff7373, #d93a3a); }
+  #btnBingo:active { transform: scale(.97); }
   #btnBingo.ativo {
     animation: piscaBingo .9s ease-in-out infinite;
     box-shadow: 0 0 0 3px rgba(255,91,91,.85), 0 7px 26px rgba(198,40,40,.6);
@@ -738,526 +392,239 @@
     50% { transform: scale(1.055); }
   }
 
-  /* ============ MODAL ============ */
   .overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(4,8,18,.86);
-    backdrop-filter: blur(6px);
-    display: none;
-    place-items: center;
-    padding: 20px;
-    z-index: 100;
+    position: fixed; inset: 0; background: rgba(4,8,18,.86);
+    backdrop-filter: blur(6px); display: none; place-items: center;
+    padding: 20px; z-index: 100;
   }
-  .overlay.show {
-    display: grid;
-  }
+  .overlay.show { display: grid; }
   .modal {
     background: linear-gradient(180deg, #101c3a, #0a1226);
-    border: 1px solid #2c4370;
-    border-radius: 16px;
-    width: min(700px, 100%);
-    max-height: 90vh;
-    display: flex;
-    flex-direction: column;
+    border: 1px solid #2c4370; border-radius: 16px;
+    width: min(700px, 100%); max-height: 90vh;
+    display: flex; flex-direction: column;
     box-shadow: 0 30px 80px rgba(0,0,0,.75);
   }
   .modal.bingoM {
     border-color: #c62828;
     box-shadow: 0 0 0 2px rgba(198,40,40,.5), 0 30px 80px rgba(0,0,0,.8);
   }
-  .modal header {
-    padding: 15px 19px;
-    border-bottom: 1px solid var(--line);
-  }
-  .modal header h3 {
-    font-size: 15px;
-    letter-spacing: .04em;
-  }
-  .modal .corpo {
-    padding: 17px 19px;
-    overflow-y: auto;
-  }
+  .modal header { padding: 15px 19px; border-bottom: 1px solid var(--line); }
+  .modal header h3 { font-size: 15px; letter-spacing: .04em; }
+  .modal .corpo { padding: 17px 19px; overflow-y: auto; }
   .modal footer {
-    padding: 13px 19px;
-    border-top: 1px solid var(--line);
-    display: flex;
-    gap: 8px;
-    justify-content: flex-end;
-    flex-wrap: wrap;
+    padding: 13px 19px; border-top: 1px solid var(--line);
+    display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap;
   }
-  .modal p {
-    font-size: 13px;
-    line-height: 1.58;
-    color: #c3d0e8;
-  }
+  .modal p { font-size: 13px; line-height: 1.58; color: #c3d0e8; }
   .modal label {
-    display: block;
-    font-size: 11px;
-    letter-spacing: .11em;
-    color: var(--dim);
-    margin-bottom: 6px;
-    font-weight: 700;
+    display: block; font-size: 11px; letter-spacing: .11em;
+    color: var(--dim); margin-bottom: 6px; font-weight: 700;
   }
-  .modal input[type=number],
-  .modal input[type=text] {
-    width: 100%;
-    background: #0c1730;
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: 11px 13px;
-    color: #fff;
-    font-size: 15px;
-    font-family: inherit;
-    font-weight: 600;
+  .modal input[type=number], .modal input[type=text] {
+    width: 100%; background: #0c1730; border: 1px solid var(--line);
+    border-radius: 10px; padding: 11px 13px; color: #fff;
+    font-size: 15px; font-family: inherit; font-weight: 600;
   }
-  .modal input:focus {
-    outline: 2px solid var(--azul);
-    outline-offset: 1px;
-  }
+  .modal input:focus { outline: 2px solid var(--azul); outline-offset: 1px; }
   .modal .btn {
-    flex: 0 0 auto;
-    width: auto;
-    padding: 0 16px;
-    height: 40px;
-    font-size: 12px;
-    font-weight: 700;
+    flex: 0 0 auto; width: auto; padding: 0 16px; height: 40px;
+    font-size: 12px; font-weight: 700;
   }
-  .aviso {
-    font-size: 11.5px;
-    color: var(--dim);
-    line-height: 1.55;
-    margin-top: 9px;
-  }
-  .aviso b {
-    color: #cdd9f0;
-  }
+  .aviso { font-size: 11.5px; color: var(--dim); line-height: 1.55; margin-top: 9px; }
+  .aviso b { color: #cdd9f0; }
   .resultado {
-    margin-top: 13px;
-    padding: 14px;
-    border-radius: 11px;
-    text-align: center;
-    font-weight: 800;
-    font-size: 14px;
-    display: none;
+    margin-top: 13px; padding: 14px; border-radius: 11px;
+    text-align: center; font-weight: 800; font-size: 14px; display: none;
   }
   .resultado.ok {
-    display: block;
-    background: rgba(30,142,62,.18);
-    border: 1px solid #1e8e3e;
-    color: #5ddc85;
+    display: block; background: rgba(30,142,62,.18);
+    border: 1px solid #1e8e3e; color: #5ddc85;
   }
   .resultado.err {
-    display: block;
-    background: rgba(198,40,40,.18);
-    border: 1px solid #c62828;
-    color: #ff8585;
+    display: block; background: rgba(198,40,40,.18);
+    border: 1px solid #c62828; color: #ff8585;
   }
   .resultado small {
-    display: block;
-    font-weight: 500;
-    font-size: 11.5px;
-    margin-top: 7px;
-    opacity: .9;
-    line-height: 1.55;
+    display: block; font-weight: 500; font-size: 11.5px;
+    margin-top: 7px; opacity: .9; line-height: 1.55;
   }
-  table.hist {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 12.5px;
-  }
+  table.hist { width: 100%; border-collapse: collapse; font-size: 12.5px; }
   table.hist th {
-    text-align: left;
-    color: var(--dim);
-    font-size: 10.5px;
-    letter-spacing: .1em;
-    padding: 6px 8px;
-    border-bottom: 1px solid var(--line);
+    text-align: left; color: var(--dim); font-size: 10.5px;
+    letter-spacing: .1em; padding: 6px 8px; border-bottom: 1px solid var(--line);
   }
   table.hist td {
-    padding: 6px 8px;
-    border-bottom: 1px solid rgba(34,49,79,.5);
+    padding: 6px 8px; border-bottom: 1px solid rgba(34,49,79,.5);
     color: #d5e0f5;
   }
   table.quentes {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 12px;
-    margin-top: 10px;
+    width: 100%; border-collapse: collapse; font-size: 12px; margin-top: 10px;
   }
   table.quentes th {
-    text-align: left;
-    color: var(--dim);
-    font-size: 10px;
-    padding: 6px 7px;
-    border-bottom: 1px solid var(--line);
+    text-align: left; color: var(--dim); font-size: 10px;
+    padding: 6px 7px; border-bottom: 1px solid var(--line);
   }
   table.quentes td {
-    padding: 5px 7px;
-    border-bottom: 1px solid rgba(34,49,79,.5);
+    padding: 5px 7px; border-bottom: 1px solid rgba(34,49,79,.5);
     color: #d5e0f5;
   }
-  table.quentes td.f {
-    text-align: right;
-    font-weight: 800;
-    white-space: nowrap;
-  }
-  table.quentes td.n {
-    color: #9fb3d4;
-    font-size: 11.5px;
-  }
-  table.quentes td.nm {
-    color: #ffd84d;
-    font-weight: 700;
-  }
+  table.quentes td.f { text-align: right; font-weight: 800; white-space: nowrap; }
+  table.quentes td.n { color: #9fb3d4; font-size: 11.5px; }
+  table.quentes td.nm { color: #ffd84d; font-weight: 700; }
   .q1 { color: #ffd84d; }
   .q2 { color: #ffb066; }
   .listaNomes {
-    max-height: 46vh;
-    overflow-y: auto;
-    margin-top: 12px;
-    border: 1px solid var(--line);
-    border-radius: 10px;
+    max-height: 46vh; overflow-y: auto; margin-top: 12px;
+    border: 1px solid var(--line); border-radius: 10px;
   }
   .linhaNome {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    padding: 8px 10px;
-    border-bottom: 1px solid rgba(34,49,79,.5);
+    display: flex; align-items: center; gap: 8px;
+    padding: 8px 10px; border-bottom: 1px solid rgba(34,49,79,.5);
   }
   .cod {
-    flex: 0 0 auto;
-    font-family: ui-monospace, Consolas, monospace;
-    font-size: 12px;
-    font-weight: 800;
-    color: #9fc4ff;
-    background: #1b2b4d;
-    border: 1px solid #2c4370;
-    border-radius: 6px;
-    padding: 4px 9px;
-    min-width: 52px;
-    text-align: center;
+    flex: 0 0 auto; font-family: ui-monospace, Consolas, monospace;
+    font-size: 12px; font-weight: 800; color: #9fc4ff;
+    background: #1b2b4d; border: 1px solid #2c4370; border-radius: 6px;
+    padding: 4px 9px; min-width: 52px; text-align: center;
   }
   .linhaNome input {
-    flex: 1;
-    min-width: 0;
-    background: #0c1730;
-    border: 1px solid var(--line);
-    border-radius: 8px;
-    padding: 8px 11px;
-    color: #fff;
-    font-size: 13px;
-    font-weight: 600;
-    font-family: inherit;
+    flex: 1; min-width: 0; background: #0c1730;
+    border: 1px solid var(--line); border-radius: 8px;
+    padding: 8px 11px; color: #fff; font-size: 13px;
+    font-weight: 600; font-family: inherit;
   }
-  .linhaNome input.tel {
-    flex: 0 0 130px;
-    font-size: 12px;
-  }
+  .linhaNome input.tel { flex: 0 0 130px; font-size: 12px; }
   .minicart {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 4px;
-    margin-top: 14px;
-    max-width: 280px;
-    margin-left: auto;
-    margin-right: auto;
+    display: grid; grid-template-columns: repeat(5, 1fr); gap: 4px;
+    margin-top: 14px; max-width: 280px;
+    margin-left: auto; margin-right: auto;
   }
   .minicart div {
-    aspect-ratio: 1;
-    display: grid;
-    place-items: center;
-    border-radius: 6px;
-    background: #0c1730;
-    border: 1px solid #1d2e50;
-    font-size: 11px;
-    font-weight: 700;
-    color: #4a5f88;
-    overflow: hidden;
+    aspect-ratio: 1; display: grid; place-items: center; border-radius: 6px;
+    background: #0c1730; border: 1px solid #1d2e50; font-size: 11px;
+    font-weight: 700; color: #4a5f88; overflow: hidden;
   }
-  .minicart div.mk {
-    background: #1e8e3e;
-    border-color: #2bb355;
-    color: #fff;
-  }
-  .minicart div.livre {
-    background: #fff;
-    border-color: #1BA7EC;
-    padding: 2px;
-  }
+  .minicart div.mk { background: #1e8e3e; border-color: #2bb355; color: #fff; }
+  .minicart div.livre { background: #fff; border-color: #1BA7EC; padding: 2px; }
   .minicart div.livre img {
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    display: block;
+    width: 100%; height: 100%; object-fit: contain; display: block;
   }
-  .logo-fb {
-    font-weight: 900;
-    color: #0B2F6B;
-    font-size: 8pt;
-    display: none;
+  .logo-fb { font-weight: 900; color: #0B2F6B; font-size: 8pt; display: none; }
+  .modbox { display: flex; flex-direction: column; gap: 8px; margin-top: 12px; }
+  .modrow {
+    display: flex; align-items: center; gap: 10px; padding: 10px 12px;
+    border: 1px solid var(--line); border-radius: 10px; background: #0c1730;
+  }
+  .modrow .nm { flex: 1; font-size: 13px; font-weight: 700; color: #dbe6ff; }
+  .modrow .st {
+    font-size: 10.5px; font-weight: 800; letter-spacing: .05em;
+    padding: 3px 9px; border-radius: 999px;
+  }
+  .modrow .st.aberta {
+    background: rgba(30,142,62,.2); border: 1px solid #1e8e3e; color: #5ddc85;
+  }
+  .modrow .st.ganha {
+    background: rgba(74,95,136,.2); border: 1px solid #4a5f88; color: #8fa2c7;
   }
 
-  /* ============ IMPRESSÃO ============ */
-  #printArea {
-    display: none;
-  }
+  #printArea { display: none; }
   @media print {
-    @page {
-      size: A4 portrait;
-      margin: 7mm;
-    }
+    @page { size: A4 portrait; margin: 7mm; }
     html, body {
-      overflow: visible;
-      height: auto;
-      background: #fff;
-      color: #000;
-      display: block;
-      padding: 0;
+      overflow: visible; height: auto; background: #fff; color: #000;
+      display: block; padding: 0;
     }
-    body > *:not(#printArea) {
-      display: none !important;
-    }
-    #printArea {
-      display: block !important;
-    }
+    body > *:not(#printArea) { display: none !important; }
+    #printArea { display: block !important; }
     .folha {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      grid-template-rows: 1fr 1fr;
-      height: 283mm;
-      page-break-after: always;
-      border: 1px dashed #999;
+      display: grid; grid-template-columns: 1fr 1fr; grid-template-rows: 1fr 1fr;
+      height: 283mm; page-break-after: always; border: 1px dashed #999;
     }
-    .folha:last-child {
-      page-break-after: auto;
-    }
+    .folha:last-child { page-break-after: auto; }
     .cp {
-      border: 1px dashed #999;
-      padding: 4mm;
-      box-sizing: border-box;
-      display: flex;
-      flex-direction: column;
-      color: #000;
+      border: 1px dashed #999; padding: 4mm; box-sizing: border-box;
+      display: flex; flex-direction: column; color: #000;
     }
     .cp .topo {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1.5mm;
-      gap: 2mm;
+      display: flex; justify-content: space-between; align-items: center;
+      margin-bottom: 1.5mm; gap: 2mm;
     }
     .cp .marca img {
-      display: block;
-      height: 12mm;
-      width: auto;
-      max-width: 40mm;
-      object-fit: contain;
+      display: block; height: 12mm; width: auto; max-width: 40mm; object-fit: contain;
     }
     .cp .topo i {
-      font-size: 9pt;
-      font-style: normal;
-      font-weight: 700;
-      border: 1.2px solid #000;
-      padding: .6mm 2mm;
-      border-radius: 2mm;
+      font-size: 9pt; font-style: normal; font-weight: 700;
+      border: 1.2px solid #000; padding: .6mm 2mm; border-radius: 2mm;
       white-space: nowrap;
     }
     .cp .dono {
-      font-size: 8pt;
-      font-weight: 700;
-      border-bottom: .4mm solid #000;
-      padding: 0 1mm 1mm;
-      margin-bottom: 1.5mm;
-      min-height: 5mm;
-      display: flex;
-      align-items: flex-end;
+      font-size: 8pt; font-weight: 700; border-bottom: .4mm solid #000;
+      padding: 0 1mm 1mm; margin-bottom: 1.5mm; min-height: 5mm;
+      display: flex; align-items: flex-end;
     }
-    .cp table {
-      width: 100%;
-      border-collapse: collapse;
-      flex: 1;
-    }
+    .cp table { width: 100%; border-collapse: collapse; flex: 1; }
     .cp th {
-      font-size: 10pt;
-      padding: 1.1mm 0;
-      border: 1px solid #000;
-      background: #eee;
+      font-size: 10pt; padding: 1.1mm 0; border: 1px solid #000; background: #eee;
     }
     .cp td {
-      border: 1px solid #000;
-      text-align: center;
-      font-size: 13pt;
-      font-weight: 700;
-      padding: 1.5mm 0;
-      width: 20%;
+      border: 1px solid #000; text-align: center; font-size: 13pt;
+      font-weight: 700; padding: 1.5mm 0; width: 20%;
     }
     .cp td.lv {
-      background: #fff;
-      padding: .8mm;
-      vertical-align: middle;
-      text-align: center;
+      background: #fff; padding: .8mm; vertical-align: middle; text-align: center;
     }
     .cp td.lv img {
-      display: block;
-      margin: 0 auto;
-      max-width: 96%;
-      max-height: 20mm;
-      width: auto;
-      height: auto;
-      object-fit: contain;
+      display: block; margin: 0 auto; max-width: 96%; max-height: 20mm;
+      width: auto; height: auto; object-fit: contain;
     }
     .cp .pe {
-      font-size: 6.5pt;
-      text-align: center;
-      margin-top: 1.5mm;
-      letter-spacing: .09em;
-      font-weight: 700;
+      font-size: 6.5pt; text-align: center; margin-top: 1.5mm;
+      letter-spacing: .09em; font-weight: 700;
     }
   }
 
-  /* ============ MODO JOGADOR ============ */
   #cvPlay {
-    position: fixed;
-    inset: 0;
-    z-index: 99999;
-    background: #07131f;
-    color: #eaf3ff;
-    font: 16px/1.4 system-ui, sans-serif;
-    overflow: auto;
-    padding: 14px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 12px;
+    position: fixed; inset: 0; z-index: 99999; background: #07131f;
+    color: #eaf3ff; font: 16px/1.4 system-ui, sans-serif; overflow: auto;
+    padding: 14px; display: flex; flex-direction: column;
+    align-items: center; gap: 12px;
   }
-  #cvPlay .logoTop {
-    background: #fff;
-    border-radius: 10px;
-    padding: 6px 14px;
-  }
-  #cvPlay .logoTop img {
-    display: block;
-    height: 46px;
-    width: auto;
-    object-fit: contain;
-  }
-  #cvPlay .tt {
-    font-weight: 900;
-    font-size: 17px;
-    letter-spacing: 1px;
-    text-align: center;
-  }
-  #cvPlay .sub {
-    color: #ffd84d;
-    font-size: 15px;
-    font-weight: 800;
-  }
-  .cvGrid {
-    border-collapse: separate;
-    border-spacing: 7px;
-  }
+  #cvPlay .logoTop { background: #fff; border-radius: 10px; padding: 6px 14px; }
+  #cvPlay .logoTop img { display: block; height: 46px; width: auto; object-fit: contain; }
+  #cvPlay .tt { font-weight: 900; font-size: 17px; letter-spacing: 1px; text-align: center; }
+  #cvPlay .sub { color: #ffd84d; font-size: 15px; font-weight: 800; }
+  .cvGrid { border-collapse: separate; border-spacing: 7px; }
   .cvGrid th {
-    color: #4f9bff;
-    font: 900 17px system-ui, sans-serif;
-    padding: 0 0 2px;
-    text-align: center;
-    letter-spacing: 1px;
+    color: #4f9bff; font: 900 17px system-ui, sans-serif;
+    padding: 0 0 2px; text-align: center; letter-spacing: 1px;
   }
   .cvGrid button {
-    width: 60px;
-    height: 60px;
-    border-radius: 10px;
-    border: 2px solid #2e5075;
-    background: #0f2236;
-    color: #dcebff;
-    font: 800 19px system-ui, sans-serif;
-    cursor: pointer;
-    padding: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    width: 60px; height: 60px; border-radius: 10px;
+    border: 2px solid #2e5075; background: #0f2236; color: #dcebff;
+    font: 800 19px system-ui, sans-serif; cursor: pointer; padding: 0;
+    display: flex; align-items: center; justify-content: center;
   }
-  .cvGrid button.mk {
-    background: #16a34a;
-    border-color: #22d16b;
-    color: #fff;
-  }
+  .cvGrid button.mk { background: #16a34a; border-color: #22d16b; color: #fff; }
   .cvGrid button.centro {
-    background: #fff;
-    border-color: #2e5075;
-    cursor: default;
-    padding: 3px;
+    background: #fff; border-color: #2e5075; cursor: default; padding: 3px;
   }
   .cvGrid button.centro img {
-    max-width: 100%;
-    max-height: 100%;
-    object-fit: contain;
-    display: block;
+    max-width: 100%; max-height: 100%; object-fit: contain; display: block;
   }
   @media (max-width: 520px) {
-    .cvGrid button {
-      width: 53px;
-      height: 53px;
-      font-size: 17px;
-    }
+    .cvGrid button { width: 53px; height: 53px; font-size: 17px; }
   }
   .cvBtn {
-    border: 0;
-    border-radius: 9px;
-    padding: 12px 20px;
-    font: 700 15px system-ui, sans-serif;
-    cursor: pointer;
-    color: #fff;
-    background: #1e6fd9;
+    border: 0; border-radius: 9px; padding: 12px 20px;
+    font: 700 15px system-ui, sans-serif; cursor: pointer;
+    color: #fff; background: #1e6fd9;
   }
   .cvBtn.ok { background: #16a34a; }
   .cvBtn.sec { background: #2b3c55; }
   .cvInfo {
-    color: #9fc2e6;
-    font-size: 13px;
-    text-align: center;
-    min-height: 20px;
-    max-width: 340px;
-  }
-  .modbox {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    margin-top: 12px;
-  }
-  .modrow {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 10px 12px;
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    background: #0c1730;
-  }
-  .modrow .nm {
-    flex: 1;
-    font-size: 13px;
-    font-weight: 700;
-    color: #dbe6ff;
-  }
-  .modrow .st {
-    font-size: 10.5px;
-    font-weight: 800;
-    letter-spacing: .05em;
-    padding: 3px 9px;
-    border-radius: 999px;
-  }
-  .modrow .st.aberta {
-    background: rgba(30,142,62,.2);
-    border: 1px solid #1e8e3e;
-    color: #5ddc85;
-  }
-  .modrow .st.ganha {
-    background: rgba(74,95,136,.2);
-    border: 1px solid #4a5f88;
-    color: #8fa2c7;
+    color: #9fc2e6; font-size: 13px; text-align: center;
+    min-height: 20px; max-width: 340px;
   }
 </style>
 </head>
@@ -1373,16 +740,17 @@
 
 <script>
 /* =====================================================================
-   BINGO DO CEMTEC — v7
+   BINGO DO CEMTEC — v9
+   - Narração anônima: nunca nome, nunca número de cartela
+   - Alerta de "falta" só com a contagem, sem listar pedras
+   - Fila de voz única: a pedra sorteada nunca é interrompida
    - Cabeçalho B-I-N-G-O e colunas em ordem crescente
-   - Modalidades por eliminação (cinco abertas ao mesmo tempo)
-   - Projeção em segunda janela (Blob URL)
+   - Modalidades por eliminação, projeção em segunda janela
    ===================================================================== */
 
-/* ================= LOGO ================= */
 var LOGO_DRIVE = 'https://drive.google.com/thumbnail?id=1VXP8DuDTlzu9seXpK8uESk-4d5LDItJA&sz=w1024';
 var LOGO_LOCAL = 'logo-cemtec.png';
-var WEBHOOK_KEY = 'bingo_webhook_v7';
+var WEBHOOK_KEY = 'bingo_webhook_v9';
 
 function logoImg() {
   return '<img src="' + LOGO_DRIVE + '" data-local="' + LOGO_LOCAL + '" ' +
@@ -1393,7 +761,6 @@ function logoImg() {
 }
 document.getElementById('brandBox').innerHTML = logoImg();
 
-/* ================= FRASES ================= */
 var FRASES = [
 "Começou o jogo, o número é 1",
 "Um patinho na lagoa, o número é 2",
@@ -1473,21 +840,21 @@ var FRASES = [
 ];
 
 var AL2 = [
-  { t:'🔥 DUAS PEDRAS! Tem cartela quase lá!', f:'Atenção, gente! O clima tá esquentando! Tem cartela a duas pedras do bingo!' },
-  { t:'🔥 TÁ ESQUENTANDO! Faltam 2 pedras!', f:'Olha a tensão no ar, gente! Faltam só duas pedrinhas!' },
-  { t:'🔥 OLHA A TENSÃO! Duas pedras só!', f:'Fica ligado, fica ligado! Tem gente quase gritando bingo!' },
-  { t:'🔥 FICA LIGADO! Faltam 2 pedras!', f:'Uuuuh, a coisa tá ficando boa! Duas pedras e o bingo estoura!' },
-  { t:'🔥 A COISA TÁ BOA! Duas pedras!', f:'Atenção total! Duas pedras separam a alegria do bingo!' }
+  { t:'🔥 DUAS PEDRAS! Tem cartela quase lá!', f:'Atenção, gente! O clima tá esquentando! Tem cartela faltando duas pedras!' },
+  { t:'🔥 TÁ ESQUENTANDO! Faltam 2 pedras!', f:'Olha a tensão no ar, gente! Tem cartela faltando duas pedrinhas!' },
+  { t:'🔥 OLHA A TENSÃO! Duas pedras só!', f:'Fica ligado, fica ligado! Tem cartela faltando duas pedras!' },
+  { t:'🔥 FICA LIGADO! Faltam 2 pedras!', f:'Uuuuh, a coisa tá ficando boa! Tem cartela faltando duas pedras!' },
+  { t:'🔥 A COISA TÁ BOA! Duas pedras!', f:'Atenção total! Tem cartela faltando só duas pedras!' }
 ];
 var AL1 = [
-  { t:'⚡ FALTA UMA! Segura o coração!', f:'É agora, gente! É agora! Falta uma pedra só! Segura o coração!' },
-  { t:'⚡ É AGORA! Uma pedra só!', f:'Atenção total! Uma pedra separa a vitória do grito!' },
-  { t:'⚡ QUASE! Falta 1 pedra!', f:'Chegou! Chegou! Falta uma pedra para o bingo!' }
+  { t:'⚡ FALTA UMA! Segura o coração!', f:'É agora, gente! É agora! Tem cartela faltando uma pedra só! Segura o coração!' },
+  { t:'⚡ É AGORA! Uma pedra só!', f:'Atenção total! Tem cartela faltando uma pedra!' },
+  { t:'⚡ QUASE! Falta 1 pedra!', f:'Chegou! Chegou! Tem cartela faltando uma pedra para o bingo!' }
 ];
 var AL0 = [
-  { t:'🎉 BINGO!!! Temos um campeão!', f:'Bingo! Bingo! Que emoção! Temos um campeão!' },
+  { t:'🎉 BINGO!!! Temos um campeão!', f:'Bingo! Bingo! Que emoção! Uma cartela fechou!' },
   { t:'🎉 BIIINGOOO!', f:'Biiingooo! Saiu o bingo!' },
-  { t:'🎉 BINGO! Parabéns!', f:'É bingo! Que alegria! Temos um vencedor!' }
+  { t:'🎉 BINGO! Parabéns!', f:'É bingo! Que alegria! Uma cartela fechou!' }
 ];
 
 var UNI = ['zero','um','dois','três','quatro','cinco','seis','sete','oito','nove','dez','onze','doze','treze','quatorze','quinze','dezesseis','dezessete','dezoito','dezenove'];
@@ -1511,7 +878,6 @@ function letraDe(n) {
   return n <= 15 ? 'B' : n <= 30 ? 'I' : n <= 45 ? 'N' : n <= 60 ? 'G' : 'O';
 }
 
-/* ================= MODALIDADES ================= */
 var MODALIDADES = [
   { id:'vertical',   nome:'Vertical',      curto:'VERTICAL' },
   { id:'horizontal', nome:'Horizontal',    curto:'HORIZONTAL' },
@@ -1529,8 +895,13 @@ function nomeMod(id) {
   }
   return id;
 }
+function curtoMod(id) {
+  for (var i = 0; i < MODALIDADES.length; i++) {
+    if (MODALIDADES[i].id === id) return MODALIDADES[i].curto;
+  }
+  return id;
+}
 
-/* ================= ESTADO ================= */
 var S = {
   fila: [],
   sorteados: [],
@@ -1549,8 +920,8 @@ var S = {
 
 var cartelas = [], proximoCodigo = 0, rodando = false;
 var falando = false, pendente = false;
-var KEY_S = 'bingo_estado_v7';
-var KEY_C = 'bingo_cartelas_v7';
+var KEY_S = 'bingo_estado_v9';
+var KEY_C = 'bingo_cartelas_v9';
 
 /* ================= ÁUDIO ================= */
 var AC = null;
@@ -1657,9 +1028,11 @@ function somBingo() {
   }
 }
 
-/* ================= VOZ ================= */
+/* ================= VOZ — FILA ÚNICA, NUNCA INTERROMPE ================= */
 var temSintese = ('speechSynthesis' in window);
 var vozEscolhida = null;
+var filaVoz = [];
+var processandoVoz = false;
 
 function ehPtBR(v) {
   if (!v || !v.lang) return false;
@@ -1713,28 +1086,6 @@ function inicializarVozes() {
   }, 150);
 }
 
-/* ================= TRAVA DE NARRAÇÃO ================= */
-var btnSortear = document.getElementById('btnSortear');
-
-function atualizarTravaUI() {
-  btnSortear.classList.remove('narrando', 'agendado', 'paradoBtn');
-  if (S.pausado) {
-    btnSortear.classList.add('paradoBtn');
-    btnSortear.textContent = '⏸ PAUSADO';
-    btnSortear.disabled = true;
-    return;
-  }
-  var bloqueado = S.travaFala && falando;
-  if (!bloqueado) {
-    btnSortear.textContent = 'SORTEAR';
-    btnSortear.disabled = rodando;
-  } else {
-    btnSortear.classList.add('narrando');
-    btnSortear.classList.toggle('agendado', pendente);
-    btnSortear.textContent = pendente ? '⏳ AGENDADO' : '🔒 NARRANDO';
-    btnSortear.disabled = true;
-  }
-}
 function marcarFalando(v) {
   falando = v;
   if (!v) {
@@ -1746,44 +1097,124 @@ function marcarFalando(v) {
     atualizarTravaUI();
   }
 }
-var tokenFala = 0;
 
 function falarBlocos(blocos) {
-  if (!temSintese || !blocos.length) { marcarFalando(false); return; }
-  var meu = ++tokenFala;
-  try { speechSynthesis.cancel(); } catch (e) {}
-  marcarFalando(true);
-  var i = 0;
-  function seguir() {
-    if (meu !== tokenFala) return;
-    if (i >= blocos.length) {
-      setTimeout(function () { if (meu === tokenFala) marcarFalando(false); }, 120);
-      return;
-    }
-    var b = blocos[i++];
-    if (b.pausa != null) { setTimeout(seguir, b.pausa); return; }
-    var u = new SpeechSynthesisUtterance(b.texto);
-    if (vozEscolhida) u.voice = vozEscolhida;
-    u.lang = 'pt-BR';
-    u.rate = b.rate || S.velocidade;
-    u.pitch = b.pitch || 1;
-    u.volume = 1;
-    var concluido = false;
-    function avancar() {
-      if (concluido) return;
-      concluido = true;
-      if (meu !== tokenFala) return;
-      setTimeout(seguir, 150);
-    }
-    u.onend = avancar;
-    u.onerror = avancar;
-    try { speechSynthesis.speak(u); }
-    catch (e) { avancar(); return; }
-    setTimeout(avancar, Math.max(1400, b.texto.length * 105));
+  if (!temSintese || !blocos) return;
+  for (var i = 0; i < blocos.length; i++) filaVoz.push(blocos[i]);
+  if (!processandoVoz) {
+    processandoVoz = true;
+    marcarFalando(true);
+    setTimeout(processarFilaVoz, 120);
   }
-  setTimeout(seguir, 260);
+}
+
+function processarFilaVoz() {
+  if (!temSintese) {
+    filaVoz = [];
+    processandoVoz = false;
+    marcarFalando(false);
+    return;
+  }
+  if (!filaVoz.length) {
+    processandoVoz = false;
+    marcarFalando(false);
+    return;
+  }
+  var b = filaVoz.shift();
+
+  if (b.pausa != null) {
+    setTimeout(processarFilaVoz, b.pausa);
+    return;
+  }
+
+  var texto = String(b.texto || '').trim();
+  if (!texto) {
+    setTimeout(processarFilaVoz, 60);
+    return;
+  }
+
+  var u = new SpeechSynthesisUtterance(texto);
+  if (vozEscolhida) u.voice = vozEscolhida;
+  u.lang = 'pt-BR';
+  u.rate = b.rate || S.velocidade;
+  u.pitch = b.pitch || 1;
+  u.volume = 1;
+
+  var seguiu = false;
+  function seguir() {
+    if (seguiu) return;
+    seguiu = true;
+    setTimeout(processarFilaVoz, 130);
+  }
+  u.onend = seguir;
+  u.onerror = seguir;
+
+  try {
+    speechSynthesis.speak(u);
+  } catch (e) {
+    seguir();
+    return;
+  }
+  setTimeout(seguir, Math.max(2600, texto.length * 130));
+}
+
+function limparFilaVoz() {
+  filaVoz = [];
+  processandoVoz = false;
+  try { speechSynthesis.cancel(); } catch (e) {}
+  marcarFalando(false);
 }
 function falarCurto(t) { falarBlocos([{ texto: t }]); }
+
+function narrarNumero(n, al) {
+  var blocos = [];
+
+  if (S.voz) {
+    blocos.push({ texto:'Letra ' + letraDe(n) + '.' });
+    blocos.push({ pausa: 900 });
+    blocos.push({ texto: FRASES[n - 1] + '.' });
+    blocos.push({ pausa: 1100 });
+    blocos.push({ texto:'Número ' + extenso(n) + '.' });
+  }
+
+  if (S.vozAlerta && al && al.fala) {
+    if (blocos.length) blocos.push({ pausa: 900 });
+    blocos.push({
+      texto: al.fala,
+      rate: Math.min(1.05, S.velocidade + 0.14),
+      pitch: al.nivel === 0 ? 1.1 : 1.16
+    });
+  }
+
+  if (!blocos.length) {
+    if (!processandoVoz) marcarFalando(false);
+    return;
+  }
+  falarBlocos(blocos);
+}
+
+/* ================= TRAVA DE NARRAÇÃO ================= */
+var btnSortear = document.getElementById('btnSortear');
+
+function atualizarTravaUI() {
+  btnSortear.classList.remove('narrando', 'agendado', 'paradoBtn');
+  if (S.pausado) {
+    btnSortear.classList.add('paradoBtn');
+    btnSortear.textContent = '⏸ PAUSADO';
+    btnSortear.disabled = true;
+    return;
+  }
+  var bloqueado = S.travaFala && (falando || processandoVoz);
+  if (!bloqueado) {
+    btnSortear.textContent = 'SORTEAR';
+    btnSortear.disabled = rodando;
+  } else {
+    btnSortear.classList.add('narrando');
+    btnSortear.classList.toggle('agendado', pendente);
+    btnSortear.textContent = pendente ? '⏳ AGENDADO' : '🔒 NARRANDO';
+    btnSortear.disabled = true;
+  }
+}
 
 /* ================= PLACAR ================= */
 var placar = document.getElementById('placar');
@@ -1922,8 +1353,7 @@ function avaliarModalidade(nums, set, id) {
   }
   var grupos = GRUPOS[id];
   if (!grupos) return { fechou:false, faltam:99, nums:[] };
-  var min = 99;
-  var k, j;
+  var min = 99, k, j;
   for (k = 0; k < grupos.length; k++) {
     var falta = [];
     for (j = 0; j < grupos[k].length; j++) {
@@ -1993,14 +1423,7 @@ function renderModbar() {
   for (var i = 0; i < MODALIDADES.length; i++) {
     var m = MODALIDADES[i];
     var aberta = S.abertas[m.id];
-    var cod = '';
-    for (var k = 0; k < S.ganhos.length; k++) {
-      if (S.ganhos[k].mod === m.id && S.ganhos[k].codigo) cod = S.ganhos[k].codigo;
-    }
-    html += '<span class="mod ' + (aberta ? '' : 'ganha') + '">' +
-      m.curto +
-      (!aberta && cod ? ' <span class="cod">' + cod + '</span>' : '') +
-      '</span>';
+    html += '<span class="mod ' + (aberta ? '' : 'ganha') + '">' + m.curto + '</span>';
   }
   modbar.innerHTML = html;
   var nenhuma = true;
@@ -2012,7 +1435,7 @@ function renderModbar() {
   }
 }
 
-/* ================= ALERTAS ================= */
+/* ================= ALERTAS — ANÔNIMOS, SÓ CONTAGEM ================= */
 var ultimoIdx = { 0:-1, 1:-1, 2:-1 };
 
 function escolhe(arr, nivel) {
@@ -2031,6 +1454,7 @@ function limparAlerta() {
   }
   placar.classList.remove('quente', 'urgente');
 }
+
 function avaliarAlerta() {
   if (!alertaEl) return null;
   if (S.pausado) return null;
@@ -2042,53 +1466,37 @@ function avaliarAlerta() {
   for (var i = 0; i < S.sorteados.length; i++) set[S.sorteados[i].n] = 1;
 
   var min = 99;
-  var codigos = [];
-  var numsTodos = [];
-  var nomeMin = '';
+  var quantasPerto = 0;
   var modMin = '';
-  var comBingo = [];
+  var comBingo = false;
 
   for (var k = 0; k < cartelas.length; k++) {
     var c = cartelas[k];
     var fechadas = modalidadesFechadas(c, set, S.abertas);
     if (fechadas.length) {
-      comBingo.push({ c:c, mods:fechadas });
+      comBingo = true;
       continue;
     }
     var mf = melhorFalta(c, set, S.abertas);
     if (mf.faltam < min) {
       min = mf.faltam;
-      codigos = [c.codigo];
-      numsTodos = mf.nums.slice();
-      nomeMin = (c.nome || '').trim();
+      quantasPerto = 1;
       modMin = mf.mod;
     } else if (mf.faltam === min && min < 99) {
-      codigos.push(c.codigo);
-      for (var t = 0; t < mf.nums.length; t++) {
-        if (numsTodos.indexOf(mf.nums[t]) === -1) numsTodos.push(mf.nums[t]);
-      }
+      quantasPerto++;
     }
   }
 
-  if (comBingo.length) {
-    var primeiro = comBingo[0];
+  if (comBingo) {
     var fr0 = escolhe(AL0, 0);
     placar.classList.remove('quente');
     placar.classList.add('urgente');
     alertaEl.className = 'alerta show n0';
-    var modsTxt = '';
-    for (var q = 0; q < primeiro.mods.length; q++) {
-      if (q) modsTxt += ' + ';
-      modsTxt += MODALIDADES.filter(function (m) { return m.id === primeiro.mods[q]; })[0].curto;
-    }
-    var ident = (primeiro.c.nome || '').trim() || ('Cartela ' + primeiro.c.codigo);
-    alertaEl.textContent = fr0.t + ' — ' + ident + ' · ' + primeiro.c.codigo + ' · ' + modsTxt;
+    alertaEl.textContent = fr0.t;
     chamada(true);
     return {
       nivel: 0,
-      fala: 'Bingo! Cartela ' + primeiro.c.codigo + ' fechou ' + modsTxt + '!',
-      fechadas: primeiro.mods,
-      cartela: primeiro.c
+      fala: 'Bingo! Uma cartela fechou!'
     };
   }
 
@@ -2096,53 +1504,33 @@ function avaliarAlerta() {
     limparAlerta();
     return null;
   }
+
+  var quem = quantasPerto > 1 ? 'cartelas' : 'uma cartela';
+
   if (min === 1) {
     var fr1 = escolhe(AL1, 1);
     placar.classList.remove('quente');
     placar.classList.add('urgente');
     alertaEl.className = 'alerta show n1';
-    var quem = nomeMin ? nomeMin : (codigos.length > 1 ? codigos.length + ' cartelas' : 'Cartela ' + codigos[0]);
-    alertaEl.textContent = fr1.t + ' (' + quem + ' — ' + nomeMod(modMin) + ': falta ' + listaFalta(numsTodos, 4) + ')';
+    alertaEl.textContent = fr1.t + ' — ' + quem + ' faltando 1 pedra';
     chamada(false);
     return {
-      nivel:1,
-      fala: nomeMin
-        ? ('Atenção! ' + nomeMin + ' está a uma pedra do bingo!')
-        : 'Falta uma pedra para o bingo!'
+      nivel: 1,
+      fala: 'Atenção! ' + (quantasPerto > 1 ? 'Tem cartelas faltando' : 'Tem cartela faltando') +
+        ' uma pedra do bingo!'
     };
   }
+
   var fr2 = escolhe(AL2, 2);
   placar.classList.remove('urgente');
   placar.classList.add('quente');
   alertaEl.className = 'alerta show n2';
-  var quem2 = nomeMin ? (nomeMin + ' está perto') : (codigos.length > 1 ? codigos.length + ' cartelas' : 'Cartela ' + codigos[0]);
-  alertaEl.textContent = fr2.t + ' (' + quem2 + ' · ' + nomeMod(modMin) + ')';
+  alertaEl.textContent = fr2.t + ' — ' + quem + ' faltando 2 pedras';
   return {
-    nivel:2,
-    fala: nomeMin
-      ? ('Fica de olho! ' + nomeMin + ' está a duas pedras do bingo!')
-      : 'Faltam duas pedras para o bingo!'
+    nivel: 2,
+    fala: 'Fica de olho! ' + (quantasPerto > 1 ? 'Tem cartelas faltando' : 'Tem cartela faltando') +
+      ' duas pedras do bingo!'
   };
-}
-function narrarNumero(n, al) {
-  var blocos = [];
-  if (S.voz) {
-    blocos.push({ texto:'Letra ' + letraDe(n) + '.' });
-    blocos.push({ pausa:1000 });
-    blocos.push({ texto: FRASES[n - 1] + '.' });
-    blocos.push({ pausa:1200 });
-    blocos.push({ texto:'Número ' + extenso(n) + '.' });
-  }
-  if (S.vozAlerta && al && al.fala) {
-    if (blocos.length) blocos.push({ pausa:700 });
-    blocos.push({
-      texto: al.fala,
-      rate: Math.min(1.05, S.velocidade + 0.14),
-      pitch: al.nivel === 0 ? 1.1 : 1.16
-    });
-  }
-  if (!blocos.length) { marcarFalando(false); return; }
-  falarBlocos(blocos);
 }
 
 /* ================= SORTEIO ================= */
@@ -2178,7 +1566,7 @@ function piscar() {
 function sortear() {
   if (rodando) return;
   if (S.pausado) { abrirTelaBingo(); return; }
-  if (S.travaFala && falando) {
+  if (S.travaFala && (falando || processandoVoz)) {
     if (!pendente) { pendente = true; atualizarTravaUI(); }
     return;
   }
@@ -2412,7 +1800,10 @@ function abrirNomes() {
       '<p>Nenhuma cartela gerada ainda.</p><p class="aviso">Gere as cartelas primeiro.</p>', []);
     return;
   }
-  var h = '<p>Nome e telefone de quem recebeu cada cartela.</p><div class="listaNomes">';
+  var h = '<p>Nome e telefone de quem recebeu cada cartela.</p>' +
+    '<p class="aviso">Estes dados servem para o envio por WhatsApp e para o seu ' +
+    '<b>histórico</b>. O anúncio no telão continua anônimo.</p>' +
+    '<div class="listaNomes">';
   for (var i = 0; i < cartelas.length; i++) {
     var c = cartelas[i];
     h += '<div class="linhaNome"><span class="cod">' + c.codigo + '</span>' +
@@ -2644,9 +2035,7 @@ function pausarNoBingo() {
   if (S.pausado) { abrirTelaBingo(); return; }
   S.pausado = true;
   pendente = false;
-  tokenFala++;
-  try { speechSynthesis.cancel(); } catch (e) {}
-  falando = false;
+  limparFilaVoz();
   atualizarTravaUI();
   btnBingo.classList.add('ativo');
   placar.classList.remove('quente', 'urgente');
@@ -2656,7 +2045,6 @@ function pausarNoBingo() {
   alertaEl.className = 'alerta show npk';
   alertaEl.textContent = '🛑 JOGO PAUSADO — alguém bateu BINGO!';
   somBingo();
-  if (S.vozAlerta && temSintese) falarCurto('Atenção! Vamos conferir a cartela do bingo!');
   abrirTelaBingo();
 }
 function retomarJogo() {
@@ -2681,7 +2069,8 @@ function abrirTelaBingo() {
   }
   h += '</div>';
 
-  h += '<p style="color:#fff;font-weight:700">Digite o código ou escolha na lista.</p>' +
+  h += '<p style="color:#fff;font-weight:700">Digite o código da cartela ou escolha na lista.</p>' +
+    '<p class="aviso">O resultado sai sem nome e sem código. O registro fica no Histórico.</p>' +
     '<div style="margin-top:12px"><label>Código da cartela</label>' +
     '<input type="text" id="codBingo" placeholder="Ex: 027" maxlength="4" inputmode="numeric" autocomplete="off"></div>' +
     '<div class="resultado" id="resBingo"></div><div id="miniBingo"></div>';
@@ -2695,7 +2084,7 @@ function abrirTelaBingo() {
       lista.push({ c:cartelas[k], f:mf.faltam, mod:mf.mod });
     }
     lista.sort(function (a, b) { return a.f - b.f; });
-    h += '<p class="aviso" style="margin-top:14px"><b>Mais próximas</b></p>' +
+    h += '<p class="aviso" style="margin-top:14px"><b>Mais próximas (uso interno do narrador)</b></p>' +
       '<div class="listaNomes" style="max-height:200px">';
     for (var q = 0; q < Math.min(10, lista.length); q++) {
       var it = lista[q];
@@ -2741,20 +2130,21 @@ function validarBingo(codFixo) {
   var set = {};
   for (var j = 0; j < S.sorteados.length; j++) set[S.sorteados[j].n] = 1;
   var fechadas = modalidadesFechadas(c, set, S.abertas);
-  var quem = (c.nome || '').trim();
 
   if (fechadas.length) {
     var nomes = [];
     for (var q = 0; q < fechadas.length; q++) nomes.push(nomeMod(fechadas[q]));
     res.className = 'resultado ok';
     res.innerHTML = '✅ BINGO VÁLIDO<small>' +
-      (quem ? '<b>' + quem + '</b> — cartela ' + c.codigo : 'Cartela ' + c.codigo) +
-      '<br><b>' + nomes.join(' + ') + '</b>' +
+      '<b>' + nomes.join(' + ') + '</b>' +
       (fechadas.length > 1 ? '<br>PRÊMIO MÚLTIPLO — fechou em ' + fechadas.length + ' modalidades' : '') +
+      '<br>Registro guardado no Histórico.' +
       '</small>';
 
     var roda = document.getElementById('mRodape');
-    if (roda && !roda.querySelector('.confirmar')) {
+    var antigo = roda ? roda.querySelector('.confirmar') : null;
+    if (antigo) antigo.parentNode.removeChild(antigo);
+    if (roda) {
       var el = document.createElement('button');
       el.className = 'btn confirmar';
       el.textContent = 'Confirmar ganhador';
@@ -2762,9 +2152,6 @@ function validarBingo(codFixo) {
       el.style.color = '#5ddc85';
       el.onclick = function () { confirmarGanhador(fechadas, c); };
       roda.appendChild(el);
-    }
-    if (S.vozAlerta && temSintese) {
-      falarCurto('Bingo confirmado! ' + (quem ? (quem + ' é o campeão!') : 'Temos um campeão!'));
     }
     somBingo();
   } else {
@@ -2807,14 +2194,12 @@ function confirmarGanhador(mods, c) {
 
   alertaEl.className = 'alerta show n0';
   if (restantes.length) {
-    alertaEl.textContent = nomesMods.join(' + ') + ' — CARTELA ' + c.codigo +
-      '. Ainda vale: ' + restantes.join(', ') + '.';
+    alertaEl.textContent = nomesMods.join(' + ') + ' — UMA CARTELA FECHOU. ' +
+      'Ainda vale: ' + restantes.join(', ') + '.';
     if (S.vozAlerta && temSintese) {
       falarBlocos([
-        { texto: 'Bateu em ' + nomesMods.join(' e ') + '!' },
-        { pausa: 600 },
-        { texto: 'CARTELA ' + c.codigo.split('').join(' ') + '.' },
-        { pausa: 600 },
+        { texto: 'Uma cartela fechou ' + nomesMods.join(' e ') + '!' },
+        { pausa: 700 },
         { texto: 'Agora vale ' + restantes.join(', ') + '.' }
       ]);
     }
@@ -2850,18 +2235,12 @@ function minicartela(nums, set) {
 /* ================= MODALIDADES (MANUAL) ================= */
 function abrirModalidades() {
   var h = '<p>Ao confirmar um ganhador, a modalidade fecha automaticamente. ' +
-    'Aqui você pode corrigir manualmente.</p><div class="modbox">';
+    'Aqui você corrige manualmente se precisar.</p><div class="modbox">';
   for (var i = 0; i < MODALIDADES.length; i++) {
     var m = MODALIDADES[i];
     var aberta = S.abertas[m.id];
-    var cod = '';
-    for (var k = 0; k < S.ganhos.length; k++) {
-      if (S.ganhos[k].mod === m.id && S.ganhos[k].codigo) cod = S.ganhos[k].codigo;
-    }
     h += '<div class="modrow">' +
-      '<span class="nm">' + m.nome +
-      (cod ? ' <span style="color:#8fa2c7;font-size:11px">· cartela ' + cod + '</span>' : '') +
-      '</span>' +
+      '<span class="nm">' + m.nome + '</span>' +
       '<span class="st ' + (aberta ? 'aberta' : 'ganha') + '">' +
       (aberta ? 'ABERTA' : 'GANHA') + '</span>' +
       (aberta
@@ -2895,7 +2274,7 @@ function abrirModalidades() {
   });
 }
 
-/* ================= MAIS PERTO ================= */
+/* ================= MAIS PERTO (INTERNO) ================= */
 function abrirQuentes() {
   if (!cartelas.length) {
     abrirModal('Mais perto', '<p>Nenhuma cartela gerada.</p>', []);
@@ -2919,9 +2298,10 @@ function abrirQuentes() {
     });
   }
   lista.sort(function (a, b) { return a.faltam - b.faltam; });
-  var h = '<p>' + S.sorteados.length + ' sorteados · ' + cartelas.length + ' cartelas</p>' +
+  var h = '<p class="aviso">Painel interno do narrador. Não é exibido no telão.</p>' +
+    '<p>' + S.sorteados.length + ' sorteados · ' + cartelas.length + ' cartelas</p>' +
     '<table class="quentes"><thead><tr><th>Cartela</th><th>Nome</th><th>Modalidade</th>' +
-    '<th>Falta</th><th></th></tr></thead><tbody>';
+    '<th>Falta</th><th>Pedras</th></tr></thead><tbody>';
   for (var q = 0; q < Math.min(15, lista.length); q++) {
     var x = lista[q];
     var cls = x.faltam <= 1 ? 'q1' : (x.faltam === 2 ? 'q2' : '');
@@ -2936,7 +2316,7 @@ function abrirQuentes() {
   abrirModal('Cartelas mais próximas', h, []);
 }
 
-/* ================= HISTÓRICO ================= */
+/* ================= HISTÓRICO (REGISTRO INTERNO) ================= */
 function abrirHistorico() {
   var h;
   if (!S.sorteados.length) {
@@ -2953,14 +2333,22 @@ function abrirHistorico() {
     h += '</tbody></table>';
   }
   if (S.ganhos.length) {
-    h += '<p class="aviso" style="margin-top:16px"><b>Ganhadores desta rodada</b></p>' +
-      '<table class="hist"><thead><tr><th>Modalidade</th><th>Cartela</th><th>Nome</th></tr></thead><tbody>';
+    h += '<p class="aviso" style="margin-top:16px"><b>Ganhadores desta rodada — registro interno</b></p>' +
+      '<table class="hist"><thead><tr><th>Modalidade</th><th>Cartela</th><th>Nome</th>' +
+      '<th>Pedra</th><th>Hora</th></tr></thead><tbody>';
     for (var k = 0; k < S.ganhos.length; k++) {
       var g = S.ganhos[k];
-      h += '<tr><td>' + nomeMod(g.mod) + '</td><td>' + (g.codigo || '—') +
-        '</td><td>' + (g.nome || '—') + '</td></tr>';
+      var hh = g.hora ? new Date(g.hora).toLocaleTimeString('pt-BR', {
+        hour:'2-digit', minute:'2-digit'
+      }) : '—';
+      h += '<tr><td>' + nomeMod(g.mod) + '</td>' +
+        '<td>' + (g.codigo || '—') + '</td>' +
+        '<td>' + (g.nome || '—') + '</td>' +
+        '<td>' + (g.numero != null ? g.numero : '—') + '</td>' +
+        '<td>' + hh + '</td></tr>';
     }
     h += '</tbody></table>';
+    h += '<p class="aviso">Este é o único lugar onde cartela e nome aparecem.</p>';
   }
   abrirModal('Histórico de sorteios', h, []);
 }
@@ -2973,7 +2361,7 @@ function exportarBackup() {
   }
   var pacote = {
     app: 'Bingo do CEMTEC',
-    versao: 7,
+    versao: 9,
     geradoEm: new Date().toISOString(),
     estado: {
       fila: S.fila,
@@ -3086,7 +2474,7 @@ function aplicarBackup(p) {
 function abrirNovaRodada() {
   abrirModal('Nova rodada',
     '<p>Isso apaga <b>todos os números sorteados</b> e reabre as <b>cinco modalidades</b>.</p>' +
-    '<p class="aviso">As cartelas e os nomes NÃO são apagados.</p>',
+    '<p class="aviso">As cartelas e os nomes NÃO são apagados. O histórico de ganhadores da rodada é limpo.</p>',
     [
       { r:'Cancelar', a:function () {
           if (S.pausado) abrirTelaBingo();
@@ -3100,6 +2488,7 @@ function abrirNovaRodada() {
           S.abertas = todasAbertas();
           S.ganhos = [];
           pendente = false;
+          limparFilaVoz();
           btnBingo.classList.remove('ativo');
           placar.classList.remove('parado');
           limparAlerta();
@@ -3240,19 +2629,10 @@ overlay.addEventListener('click', function (e) {
   if (e.target === overlay) fecharModal();
 });
 
-/* ================= PROJEÇÃO ================= */
-var canalProj = null;
+/* ================= PROJEÇÃO — ANÔNIMA ================= */
 var janelaProj = null;
 var urlProj = null;
 var filaProj = null;
-
-try {
-  if (typeof BroadcastChannel !== 'undefined') {
-    canalProj = new BroadcastChannel('bingo_cemtec');
-  }
-} catch (e) {
-  canalProj = null;
-}
 
 function estadoProjecao() {
   var ultimos = [];
@@ -3296,7 +2676,7 @@ function estadoProjecao() {
   var ganho = null;
   if (S.ganhos.length) {
     var g = S.ganhos[S.ganhos.length - 1];
-    ganho = { codigo:g.codigo, rotulo:nomeMod(g.mod).toUpperCase(), hora:g.hora };
+    ganho = { rotulo: nomeMod(g.mod).toUpperCase(), hora: g.hora };
   }
 
   return {
@@ -3316,9 +2696,6 @@ function estadoProjecao() {
 
 function publicarProjecao() {
   var st = estadoProjecao();
-  if (canalProj) {
-    try { canalProj.postMessage({ tipo:'estado', dados:st }); } catch (e) {}
-  }
   try {
     if (janelaProj && !janelaProj.closed) {
       janelaProj.postMessage({ tipo:'estado', dados:st }, '*');
@@ -3400,8 +2777,6 @@ function htmlProjecao() {
     + 'letter-spacing:.06em}'
     + '.g2{font-size:clamp(20px,3.4vw,52px);font-weight:900;color:#fff;'
     + 'letter-spacing:.14em;margin-top:14px}'
-    + '.g3{font-size:clamp(14px,2vw,30px);font-weight:800;color:#ffd84d;'
-    + 'letter-spacing:.1em;margin-top:10px}'
     + '.dica{position:absolute;bottom:8px;left:0;right:0;text-align:center;'
     + 'font-size:11px;color:#33456b;letter-spacing:.1em}';
 
@@ -3418,7 +2793,6 @@ function htmlProjecao() {
     + 'var faltaEl=document.getElementById("falta");'
     + 'var modfaixa=document.getElementById("modfaixa");'
     + 'var ganhoEl=document.getElementById("ganho");'
-    + 'var gcod=document.getElementById("gcod");'
     + 'var gmod=document.getElementById("gmod");'
     + 'var verGrade=false,verMods=false,verFalta=false;'
     + 'var ultimoGanho=null,timerGanho=null,modsAnteriores=[];'
@@ -3482,7 +2856,6 @@ function htmlProjecao() {
     + '  else{faltaEl.className="falta";}'
     + '  if(d.ganho&&d.ganho.hora!==ultimoGanho){'
     + '    ultimoGanho=d.ganho.hora;'
-    + '    gcod.textContent="CARTELA "+d.ganho.codigo;'
     + '    gmod.textContent=d.ganho.rotulo;'
     + '    ganhoEl.className="ganho on";'
     + '    if(timerGanho){clearTimeout(timerGanho);}'
@@ -3495,12 +2868,6 @@ function htmlProjecao() {
     + '  else if(k==="f"){verMods=!verMods;if(ultimoEstado){desenharMods(ultimoEstado);}}'
     + '  else if(k==="a"){verFalta=!verFalta;if(ultimoEstado){aplicar(ultimoEstado);}}'
     + '});'
-    + 'try{'
-    + '  var ch=new BroadcastChannel("bingo_cemtec");'
-    + '  ch.onmessage=function(ev){'
-    + '    if(ev.data&&ev.data.tipo==="estado"){aplicar(ev.data.dados);}'
-    + '  };'
-    + '}catch(e){}'
     + 'window.addEventListener("message",function(ev){'
     + '  if(ev.data&&ev.data.tipo==="estado"){aplicar(ev.data.dados);}'
     + '});';
@@ -3520,8 +2887,7 @@ function htmlProjecao() {
     + '<div class="grade" id="grade"></div>'
     + '<div class="ganho" id="ganho">'
     + '<div><div class="g1">BINGO!</div>'
-    + '<div class="g2" id="gcod"></div>'
-    + '<div class="g3" id="gmod"></div></div></div>'
+    + '<div class="g2" id="gmod"></div></div></div>'
     + '<div class="dica">G grade · F modalidades · A falta uma</div>'
     + '<script>' + js + fecha
     + '</body></html>';
@@ -3608,11 +2974,7 @@ btnVoz.onclick = function () {
     }
     falarCurto('Narração ativada.');
   } else {
-    tokenFala++;
-    try { speechSynthesis.cancel(); } catch (e) {}
-    falando = false;
-    pendente = false;
-    atualizarTravaUI();
+    limparFilaVoz();
   }
   salvar();
 };
