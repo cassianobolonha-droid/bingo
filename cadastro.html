@@ -1,1 +1,210 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+<title>Bingo do CEMTEC — Pegue sua cartela</title>
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{min-height:100vh;background:radial-gradient(ellipse at 50% 0%,#14224a,#060c1a 70%);
+    color:#eaf0ff;font-family:system-ui,'Segoe UI',Roboto,sans-serif;
+    display:flex;flex-direction:column;align-items:center;padding:20px 16px 40px;gap:16px}
+  .logo{background:#fff;border-radius:12px;padding:8px 18px;box-shadow:0 4px 20px rgba(0,0,0,.4)}
+  .logo img{display:block;height:44px;width:auto;object-fit:contain}
+  h1{font-size:22px;font-weight:900;letter-spacing:.04em;text-align:center;line-height:1.2}
+  h1 span{color:#1BA7EC}
+  .sub{color:#8fa2c7;font-size:14px;text-align:center;max-width:340px;line-height:1.5}
+  .card{width:100%;max-width:400px;background:linear-gradient(180deg,#101c3a,#0b1428);
+    border:1px solid #22314f;border-radius:16px;padding:20px;margin-top:16px}
+  label{display:block;font-size:11px;letter-spacing:.12em;color:#8fa2c7;font-weight:700;margin-bottom:8px}
+  input{width:100%;background:#0c1730;border:1px solid #22314f;border-radius:10px;
+    padding:14px;color:#fff;font-size:17px;font-weight:600;font-family:inherit}
+  input:focus{outline:2px solid #4f9bff;outline-offset:1px}
+  button{width:100%;margin-top:14px;border:0;border-radius:11px;padding:16px;
+    font-size:16px;font-weight:800;font-family:inherit;cursor:pointer;
+    background:linear-gradient(180deg,#4f9bff,#2f74db);color:#fff;
+    box-shadow:0 8px 24px rgba(79,155,255,.35);transition:.15s}
+  button:active{transform:scale(.98)}
+  button:disabled{opacity:.5;cursor:not-allowed;box-shadow:none}
+  .msg{margin-top:14px;padding:12px;border-radius:10px;text-align:center;
+    font-weight:700;font-size:14px;display:none}
+  .msg.err{display:block;background:rgba(198,40,40,.18);border:1px solid #c62828;color:#ff8585}
+  #cartela{display:none;width:100%;max-width:400px;flex-direction:column;align-items:center;gap:14px}
+  .dono{font-size:15px;color:#ffd84d;font-weight:800;text-align:center;line-height:1.4}
+  table{border-collapse:separate;border-spacing:6px}
+  th{color:#4f9bff;font-size:16px;font-weight:900;padding-bottom:2px;letter-spacing:1px}
+  td button{width:58px;height:58px;margin:0;border-radius:10px;border:2px solid #2e5075;
+    background:#0f2236;color:#dcebff;font-size:18px;font-weight:800;box-shadow:none;padding:0}
+  td button.mk{background:#16a34a;border-color:#22d16b;color:#fff}
+  td button.centro{background:#fff;border-color:#2e5075;padding:4px;cursor:default}
+  td button.centro img{max-width:100%;max-height:100%;object-fit:contain;display:block}
+  .aviso{font-size:12px;color:#5f7fa6;text-align:center;line-height:1.5;max-width:320px}
+  .rodape{font-size:11px;color:#33456b;text-align:center;margin-top:10px;letter-spacing:.08em}
+</style>
+</head>
+<body>
 
+<div class="logo" id="logoBox"></div>
+<h1>BINGO DO <span>CEMTEC</span></h1>
+
+<div id="form">
+  <p class="sub">Digite seu nome e receba sua cartela para participar.</p>
+  <div class="card">
+    <label>SEU NOME</label>
+    <input id="nome" type="text" maxlength="40" placeholder="Ex: Maria Silva"
+           autocomplete="name" autocapitalize="words">
+    <button id="btnGerar">RECEBER MINHA CARTELA</button>
+    <div class="msg" id="msg"></div>
+  </div>
+</div>
+
+<div id="cartela">
+  <div class="dono" id="dono"></div>
+  <table>
+    <thead><tr><th>B</th><th>I</th><th>N</th><th>G</th><th>O</th></tr></thead>
+    <tbody id="grade"></tbody>
+  </table>
+  <div class="aviso">Esta é a sua cartela. Toque nos números conforme forem sorteados.
+    Não feche esta página — ela fica salva no seu celular.</div>
+  <button id="btnLimpar"
+    style="background:#2b3c55;box-shadow:none;font-size:13px;padding:11px;max-width:320px">
+    Limpar marcações
+  </button>
+  <div class="rodape">CEMTEC · Bingo</div>
+</div>
+
+<script>
+var API = 'https://script.google.com/macros/s/AKfycbx0h6vOEiH14EP-li-z9hV8qqNNrShpQKOzB-t16QYv5XZ17tOlLNrypClOPRBVFaNI/exec';
+
+var LOGO = 'logo-cemtec.png';
+document.getElementById('logoBox').innerHTML =
+  '<img src="' + LOGO + '" alt="CEMTEC" ' +
+  'onerror="this.outerHTML=\'<b style=color:#0B2F6B;font-size:15px>CEMTEC</b>\'">';
+
+var cartelaAtual = null;
+
+function mostrar(tipo, texto) {
+  var m = document.getElementById('msg');
+  m.className = 'msg ' + tipo;
+  m.textContent = texto;
+}
+
+function limparMsg() {
+  var m = document.getElementById('msg');
+  m.className = 'msg';
+  m.textContent = '';
+}
+
+document.getElementById('btnGerar').onclick = function () {
+  var campo = document.getElementById('nome');
+  var nome = campo.value.trim();
+  limparMsg();
+
+  if (nome.length < 2) {
+    mostrar('err', 'Digite seu nome completo.');
+    campo.focus();
+    return;
+  }
+
+  var btn = this;
+  btn.disabled = true;
+  btn.textContent = 'GERANDO...';
+
+  fetch(API, {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body: JSON.stringify({ acao: 'cartela', nome: nome })
+  })
+  .then(function (r) { return r.json(); })
+  .then(function (d) {
+    if (!d || d.ok !== true) {
+      var erros = {
+        esgotado: 'As cartelas acabaram. Procure o organizador.',
+        nome_invalido: 'Nome inválido. Tente novamente.',
+        ocupado: 'Muitas pessoas ao mesmo tempo. Tente de novo em 5 segundos.',
+        cartela_corrompida: 'Erro na cartela. Procure o organizador.',
+        lote_vazio: 'As cartelas ainda não foram publicadas. Procure o organizador.'
+      };
+      mostrar('err', erros[d && d.erro] || 'Não foi possível gerar sua cartela.');
+      btn.disabled = false;
+      btn.textContent = 'RECEBER MINHA CARTELA';
+      return;
+    }
+    try {
+      localStorage.setItem('bingo_dados_' + d.codigo,
+        JSON.stringify({ codigo: d.codigo, nome: d.nome, nums: d.nums }));
+      localStorage.setItem('bingo_ultima', d.codigo);
+    } catch (e) {}
+    abrirCartela(d.codigo, d.nome, d.nums);
+  })
+  .catch(function () {
+    mostrar('err', 'Sem conexão. Verifique a internet e tente de novo.');
+    btn.disabled = false;
+    btn.textContent = 'RECEBER MINHA CARTELA';
+  });
+};
+
+function abrirCartela(codigo, nome, nums) {
+  cartelaAtual = { codigo: codigo, nums: nums };
+
+  document.getElementById('form').style.display = 'none';
+  document.getElementById('cartela').style.display = 'flex';
+  document.getElementById('dono').textContent = nome + ' — cartela ' + codigo;
+
+  var chave = 'bingo_marks_' + codigo;
+  var marcado = {};
+  try { marcado = JSON.parse(localStorage.getItem(chave) || '{}'); } catch (e) { marcado = {}; }
+
+  var grade = document.getElementById('grade');
+  grade.innerHTML = '';
+  var idx = 0;
+
+  for (var l = 0; l < 5; l++) {
+    var tr = document.createElement('tr');
+    for (var c = 0; c < 5; c++) {
+      var td = document.createElement('td');
+      if (l === 2 && c === 2) {
+        td.innerHTML = '<button class="centro" disabled>' +
+          '<img src="' + LOGO + '" alt="" ' +
+          'onerror="this.outerHTML=\'<b style=color:#0B2F6B;font-size:10px>CEMTEC</b>\'">' +
+          '</button>';
+      } else {
+        var n = nums[idx++];
+        var b = document.createElement('button');
+        b.textContent = n;
+        b.dataset.n = n;
+        if (marcado[n]) b.className = 'mk';
+        b.onclick = function () {
+          var v = this.dataset.n;
+          if (marcado[v]) { delete marcado[v]; this.className = ''; }
+          else { marcado[v] = 1; this.className = 'mk'; }
+          try { localStorage.setItem(chave, JSON.stringify(marcado)); } catch (e) {}
+        };
+        td.appendChild(b);
+      }
+      tr.appendChild(td);
+    }
+    grade.appendChild(tr);
+  }
+}
+
+document.getElementById('btnLimpar').onclick = function () {
+  if (!cartelaAtual) return;
+  try { localStorage.removeItem('bingo_marks_' + cartelaAtual.codigo); } catch (e) {}
+  var marcas = document.querySelectorAll('#grade button.mk');
+  for (var i = 0; i < marcas.length; i++) marcas[i].className = '';
+};
+
+(function () {
+  var ultimo = null;
+  try { ultimo = localStorage.getItem('bingo_ultima'); } catch (e) {}
+  if (!ultimo) return;
+  var g = null;
+  try { g = JSON.parse(localStorage.getItem('bingo_dados_' + ultimo)); } catch (e) {}
+  if (g && g.nums && g.nums.length === 24) {
+    abrirCartela(g.codigo, g.nome, g.nums);
+  }
+})();
+</script>
+</body>
+</html>
