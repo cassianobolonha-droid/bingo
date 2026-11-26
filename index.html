@@ -21,8 +21,8 @@
   }
   body:fullscreen{padding:12px 15px}
 
+  /* ============ CABEÇALHO ============ */
   header{display:flex;align-items:center;gap:8px;min-height:50px;flex-wrap:wrap}
-
   .brand{
     background:#fff;border-radius:11px;padding:4px 10px;
     display:flex;align-items:center;justify-content:center;
@@ -33,7 +33,6 @@
     max-width:min(210px,23vw);object-fit:contain;
   }
   @media(max-width:900px){ .brand img{max-width:125px} }
-
   .titulo{
     font-size:clamp(12px,1.5vw,23px);font-weight:900;
     letter-spacing:.055em;color:#fff;white-space:nowrap;
@@ -41,7 +40,6 @@
   }
   .titulo span{color:var(--ciano)}
   @media(max-width:840px){ .titulo{display:none} }
-
   .spacer{flex:1;min-width:6px}
   .pill{
     border:1px solid var(--azul);border-radius:999px;
@@ -52,30 +50,54 @@
     border-color:#ff5b5b;color:#ff8585;background:rgba(198,40,40,.18);
     animation:piscaPill 1s ease-in-out infinite;
   }
-  @keyframes piscaPill{50%{opacity:.55}}
+  @keyframes piscaPill{
+    50%{opacity:.55}
+  }
   .icobtn{
     width:39px;height:39px;border:1px solid var(--line);border-radius:11px;
     background:var(--card);color:var(--dim);cursor:pointer;
     display:grid;place-items:center;transition:.15s;flex:0 0 auto;
   }
   .icobtn:hover{color:var(--txt);border-color:#3a5480}
-  .icobtn.on{color:var(--azul);border-color:var(--azul);background:#132a52;
-    box-shadow:0 0 14px rgba(79,155,255,.28)}
-  .icobtn.alertaOn{color:#ffd84d;border-color:#ffd84d;background:#3a2f0d;
-    box-shadow:0 0 14px rgba(255,216,77,.35)}
-  .icobtn.passadorOn{color:#37d67a;border-color:#37d67a;background:#0f2e1c;
-    box-shadow:0 0 16px rgba(55,214,122,.45)}
-  .icobtn.travaOn{color:#b57bff;border-color:#b57bff;background:#2a1a4a;
-    box-shadow:0 0 16px rgba(181,123,255,.42)}
-  .icobtn svg{width:18px;height:18px;fill:none;stroke:currentColor;
-    stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+  .icobtn.on{
+    color:var(--azul);border-color:var(--azul);background:#132a52;
+    box-shadow:0 0 14px rgba(79,155,255,.28);
+  }
+  .icobtn.alertaOn{
+    color:#ffd84d;border-color:#ffd84d;background:#3a2f0d;
+    box-shadow:0 0 14px rgba(255,216,77,.35);
+  }
+  .icobtn.passadorOn{
+    color:#37d67a;border-color:#37d67a;background:#0f2e1c;
+    box-shadow:0 0 16px rgba(55,214,122,.45);
+  }
+  .icobtn.travaOn{
+    color:#b57bff;border-color:#b57bff;background:#2a1a4a;
+    box-shadow:0 0 16px rgba(181,123,255,.42);
+  }
+  .icobtn svg{
+    width:18px;height:18px;fill:none;stroke:currentColor;
+    stroke-width:2;stroke-linecap:round;stroke-linejoin:round;
+  }
+  #selVoz{
+    height:37px;max-width:170px;background:var(--card);
+    border:1px solid var(--line);color:#cdd9f0;border-radius:10px;
+    font-size:10px;font-weight:600;padding:0 4px;font-family:inherit;
+  }
+  #selVeloc{
+    height:37px;max-width:92px;background:var(--card);
+    border:1px solid var(--line);color:#cdd9f0;border-radius:10px;
+    font-size:10px;font-weight:600;padding:0 4px;font-family:inherit;
+  }
 
-  main{display:grid;grid-template-columns:minmax(0,2.35fr) minmax(245px,.72fr);
-    gap:10px;min-height:0}
+  /* ============ ÁREA PRINCIPAL ============ */
+  main{
+    display:grid;grid-template-columns:minmax(0,2.35fr) minmax(245px,.72fr);
+    gap:10px;min-height:0;
+  }
   @media(max-width:1040px){
     main{grid-template-columns:minmax(0,2.1fr) minmax(210px,.8fr)}
   }
-
   .placar{
     position:relative;
     background:linear-gradient(180deg,#0d1730,#0a1226);
@@ -102,21 +124,32 @@
     animation:bordaPulsaBingo 1s ease-in-out infinite;
   }
   @keyframes bordaPulsa{
-    0%,100%{box-shadow:0 0 0 2px rgba(255,216,77,.45),
-                        0 0 26px rgba(255,216,77,.16) inset}
-    50%{box-shadow:0 0 0 3px rgba(255,216,77,.9),
-                    0 0 58px rgba(255,216,77,.42) inset}
+    0%,100%{
+      box-shadow:0 0 0 2px rgba(255,216,77,.45),
+                 0 0 26px rgba(255,216,77,.16) inset;
+    }
+    50%{
+      box-shadow:0 0 0 3px rgba(255,216,77,.9),
+                 0 0 58px rgba(255,216,77,.42) inset;
+    }
   }
   @keyframes bordaPulsaBingo{
-    0%,100%{box-shadow:0 0 0 3px rgba(255,91,91,.5),
-                        0 0 34px rgba(255,91,91,.2) inset}
-    50%{box-shadow:0 0 0 4px rgba(255,91,91,1),
-                    0 0 70px rgba(255,91,91,.5) inset}
+    0%,100%{
+      box-shadow:0 0 0 3px rgba(255,91,91,.5),
+                 0 0 34px rgba(255,91,91,.2) inset;
+    }
+    50%{
+      box-shadow:0 0 0 4px rgba(255,91,91,1),
+                 0 0 70px rgba(255,91,91,.5) inset;
+    }
   }
 
-  .grade{display:flex;flex-direction:column;gap:5px;
+  /* ============ GRADE DE BOLAS ============ */
+  .grade{
+    display:flex;flex-direction:column;gap:5px;
     align-items:center;justify-content:center;flex:1;min-height:0;
-    padding-top:20px}
+    padding-top:20px;
+  }
   .linha{display:flex;align-items:center;gap:5px;justify-content:center}
   .letra{
     width:calc(var(--cel)*.86);height:calc(var(--cel)*.86);flex:0 0 auto;
@@ -140,17 +173,23 @@
                inset 0 3px 6px rgba(255,255,255,.24),
                0 3px 9px rgba(0,0,0,.5);
   }
-  .cel .brilho{position:absolute;inset:0;border-radius:50%;pointer-events:none;
+  .cel .brilho{
+    position:absolute;inset:0;border-radius:50%;pointer-events:none;
     background:radial-gradient(circle at 30% 24%,
-      rgba(255,255,255,.9), rgba(255,255,255,0) 46%)}
-  .cel .n{position:relative;z-index:2;
-    text-shadow:0 0 2px rgba(0,0,0,.85), 0 1px 3px rgba(0,0,0,.9)}
+      rgba(255,255,255,.9), rgba(255,255,255,0) 46%);
+  }
+  .cel .n{
+    position:relative;z-index:2;
+    text-shadow:0 0 2px rgba(0,0,0,.85), 0 1px 3px rgba(0,0,0,.9);
+  }
   .cel.aceso.listrada::before{
     content:'';position:absolute;left:-12%;right:-12%;
     top:30%;height:40%;background:#fff;z-index:1;
   }
-  .cel.aceso.listrada .n{color:#1a1a1a;
-    text-shadow:0 1px 0 rgba(255,255,255,.6)}
+  .cel.aceso.listrada .n{
+    color:#1a1a1a;
+    text-shadow:0 1px 0 rgba(255,255,255,.6);
+  }
   .cel.piscando{
     color:#1a1200;background:#ffd84d;transform:scale(1.16);
     box-shadow:0 0 20px 5px rgba(255,216,77,.8);z-index:5;
@@ -173,6 +212,7 @@
                inset 0 -3px 8px rgba(0,0,0,.5);
   }
 
+  /* ============ ALERTA ============ */
   .alerta{
     position:absolute;left:50%;top:7px;
     transform:translateX(-50%) translateY(-18px) scale(.8);
@@ -184,25 +224,35 @@
     transform-origin:center top;
   }
   .alerta.show{opacity:1}
-  .alerta.n2{background:linear-gradient(90deg,#ff9d3d,#e8710a);color:#fff;
+  .alerta.n2{
+    background:linear-gradient(90deg,#ff9d3d,#e8710a);color:#fff;
     box-shadow:0 8px 26px rgba(232,113,10,.55);
     animation:entraPula .48s cubic-bezier(.2,1.5,.4,1) both,
-              pulsa 1.6s ease-in-out .55s infinite}
-  .alerta.n1{background:linear-gradient(90deg,#ffe27a,#ffc400);color:#241a00;
+              pulsa 1.6s ease-in-out .55s infinite;
+  }
+  .alerta.n1{
+    background:linear-gradient(90deg,#ffe27a,#ffc400);color:#241a00;
     box-shadow:0 0 32px rgba(255,216,77,.95);
     animation:entraPula .48s cubic-bezier(.2,1.5,.4,1) both,
-              pulsaRapido .85s ease-in-out .5s infinite}
-  .alerta.n0{background:linear-gradient(90deg,#37d67a,#0f9d58);color:#04240f;
+              pulsaRapido .85s ease-in-out .5s infinite;
+  }
+  .alerta.n0{
+    background:linear-gradient(90deg,#37d67a,#0f9d58);color:#04240f;
     box-shadow:0 0 34px rgba(55,214,122,.95);
     animation:entraPula .48s cubic-bezier(.2,1.5,.4,1) both,
-              pulsaRapido .8s ease-in-out .5s infinite}
-  .alerta.np{background:linear-gradient(90deg,#3a86d4,#1b4a99);color:#fff;
+              pulsaRapido .8s ease-in-out .5s infinite;
+  }
+  .alerta.np{
+    background:linear-gradient(90deg,#3a86d4,#1b4a99);color:#fff;
     box-shadow:0 8px 26px rgba(58,134,212,.55);
-    animation:entraPula .48s cubic-bezier(.2,1.5,.4,1) both}
-  .alerta.npk{background:linear-gradient(90deg,#ff5b5b,#c62828);color:#fff;
+    animation:entraPula .48s cubic-bezier(.2,1.5,.4,1) both;
+  }
+  .alerta.npk{
+    background:linear-gradient(90deg,#ff5b5b,#c62828);color:#fff;
     box-shadow:0 8px 30px rgba(198,40,40,.7);
     animation:entraPula .48s cubic-bezier(.2,1.5,.4,1) both,
-              pulsaRapido .9s ease-in-out .5s infinite}
+              pulsaRapido .9s ease-in-out .5s infinite;
+  }
   @keyframes entraPula{
     0%{opacity:0;transform:translateX(-50%) translateY(-22px) scale(.75)}
     55%{opacity:1;transform:translateX(-50%) translateY(2px) scale(1.09)}
@@ -224,17 +274,22 @@
       rgba(255,255,255,.55),transparent);
     animation:varre 2.1s ease-in-out infinite;
   }
-  @keyframes varre{0%{left:-45%}55%,100%{left:115%}}
+  @keyframes varre{
+    0%{left:-45%}
+    55%,100%{left:115%}
+  }
 
+  /* ============ PAINEL DIREITO ============ */
   .painel{
     background:linear-gradient(180deg,#101c3a,#0b1428);
     border:1px solid var(--line);border-radius:16px;
     padding:10px 9px;display:flex;flex-direction:column;
     align-items:center;gap:6px;min-height:0;overflow:hidden;
   }
-  .rotulo{font-size:9.5px;letter-spacing:.19em;color:var(--azul);
-    font-weight:800;margin-bottom:-2px}
-
+  .rotulo{
+    font-size:9.5px;letter-spacing:.19em;color:var(--azul);
+    font-weight:800;margin-bottom:-2px;
+  }
   .selo-letra{
     width:clamp(36px,4.4vh,52px);height:clamp(36px,4.4vh,52px);
     border-radius:12px;flex:0 0 auto;
@@ -245,9 +300,10 @@
                inset 0 2px 5px rgba(255,255,255,.25);
     line-height:1;
   }
-  .selo-letra.vazio{background:#1b2543;color:#3b4b70;
-    box-shadow:inset 0 0 0 1px var(--line)}
-
+  .selo-letra.vazio{
+    background:#1b2543;color:#3b4b70;
+    box-shadow:inset 0 0 0 1px var(--line);
+  }
   .bola{
     width:var(--bola);height:var(--bola);
     aspect-ratio:1/1;min-width:var(--bola);min-height:var(--bola);
@@ -260,23 +316,29 @@
     transition:.3s;
   }
   .bola.aceso{background:var(--cor);color:#fff}
-  .bola .brilho{position:absolute;inset:0;border-radius:50%;pointer-events:none;
+  .bola .brilho{
+    position:absolute;inset:0;border-radius:50%;pointer-events:none;
     background:radial-gradient(circle at 30% 22%,
-      rgba(255,255,255,.88), rgba(255,255,255,0) 44%)}
+      rgba(255,255,255,.88), rgba(255,255,255,0) 44%);
+  }
   .bola.aceso.listrada::before{
     content:'';position:absolute;left:-12%;right:-12%;
     top:30%;height:40%;background:#fff;z-index:1;
   }
-  .bola.aceso.listrada .n{color:#1a1a1a;
-    text-shadow:0 2px 0 rgba(255,255,255,.55)}
+  .bola.aceso.listrada .n{
+    color:#1a1a1a;
+    text-shadow:0 2px 0 rgba(255,255,255,.55);
+  }
   .bola .n{
     position:relative;z-index:2;font-weight:800;line-height:1;
     font-size:calc(var(--bola)*.40);
     text-shadow:0 0 4px rgba(0,0,0,.9), 0 2px 7px rgba(0,0,0,.95);
   }
-  .bola.vazia .n{font-size:calc(var(--bola)*.115);font-weight:600;
+  .bola.vazia .n{
+    font-size:calc(var(--bola)*.115);font-weight:600;
     color:#5a6f96;text-shadow:none;text-align:center;padding:0 14px;
-    line-height:1.4}
+    line-height:1.4;
+  }
   .frase{
     font-size:clamp(10.5px,1.05vw,15.5px);line-height:1.36;text-align:center;
     color:#dbe6ff;max-width:100%;min-height:2.6em;
@@ -285,8 +347,10 @@
   }
   .frase.ativa{color:#fff;font-weight:600}
   .ultimos{margin-top:auto;width:100%}
-  .ultimos .t{font-size:8.5px;letter-spacing:.15em;color:var(--dim);
-    margin-bottom:5px;font-weight:700}
+  .ultimos .t{
+    font-size:8.5px;letter-spacing:.15em;color:var(--dim);
+    margin-bottom:5px;font-weight:700;
+  }
   .ultimos .lista{display:flex;gap:5px;flex-wrap:wrap}
   .mini{
     width:32px;height:32px;border-radius:50%;display:grid;place-items:center;
@@ -301,50 +365,65 @@
   .mini span{position:relative;z-index:2;text-shadow:0 0 2px #000}
   .mini.listrada span{color:#1a1a1a;text-shadow:0 1px 0 rgba(255,255,255,.5)}
 
-  footer{display:flex;gap:10px;align-items:center;flex-wrap:wrap;justify-content:center}
+  /* ============ BARRA INFERIOR ============ */
+  footer{
+    display:flex;gap:10px;align-items:center;
+    flex-wrap:wrap;justify-content:center;
+  }
   button{font-family:inherit;cursor:pointer;transition:.15s;border-radius:11px}
+  footer > button,
+  footer > select{
+    flex:0 0 104px;
+    width:104px;
+    height:46px;
+    padding:0 4px;
+    border-radius:11px;
+    font-size:10px;
+    font-weight:700;
+    letter-spacing:.01em;
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    line-height:1.1;
+    box-sizing:border-box;
+  }
   .btn{
     background:var(--card);border:1px solid var(--line);color:#cdd9f0;
-    padding:0 6px;height:46px;font-size:10.5px;font-weight:700;flex:0 0 112px;max-width:112px;
-    letter-spacing:.02em;
   }
   .btn:hover{background:#17264a;border-color:#39547f;color:#fff}
   .btn:active{transform:scale(.97)}
   .btn:focus-visible,.icobtn:focus-visible{
-    outline:2px solid var(--azul);outline-offset:2px}
-  .sortear{
-    flex:0 0 auto;min-width:0;height:44px;padding:0 20px;font-size:13px;border:none;
+    outline:2px solid var(--azul);outline-offset:2px;
+  }
+  #btnSortear{
     background:linear-gradient(180deg,#4f9bff,#2f74db);
-    color:#fff;font-size:16px;font-weight:800;letter-spacing:.12em;
+    border:none;color:#fff;font-size:11.5px;letter-spacing:.06em;
     box-shadow:0 7px 22px rgba(79,155,255,.38);
-    transition:.2s;
   }
-  .sortear:hover{background:linear-gradient(180deg,#63a8ff,#3b81e8)}
-  .sortear:active{transform:scale(.985)}
-  .sortear:disabled{opacity:.5;cursor:not-allowed;box-shadow:none}
-  .sortear.narrando{
+  #btnSortear:hover{background:linear-gradient(180deg,#63a8ff,#3b81e8)}
+  #btnSortear:disabled{opacity:.5;cursor:not-allowed;box-shadow:none}
+  #btnSortear.narrando{
     background:linear-gradient(180deg,#6a4fbf,#4b3390);
-    box-shadow:0 0 0 2px rgba(181,123,255,.6),
-               0 7px 22px rgba(181,123,255,.3);
-    font-size:12px;letter-spacing:.07em;cursor:wait;
+    box-shadow:0 0 0 2px rgba(181,123,255,.6);
+    font-size:9px;letter-spacing:.04em;cursor:wait;
   }
-  .sortear.narrando.agendado{
+  #btnSortear.narrando.agendado{
     background:linear-gradient(180deg,#8a5f2a,#6b4516);
     box-shadow:0 0 0 2px rgba(255,180,80,.7);
   }
-  .sortear.paradoBtn{
+  #btnSortear.paradoBtn{
     background:linear-gradient(180deg,#6b6b6b,#4a4a4a);
-    box-shadow:none;font-size:12px;
+    box-shadow:none;font-size:10px;
   }
-  .bingoBtn{
-    flex:0 0 112px;min-width:112px;max-width:112px;height:46px;border:none;padding:0 6px;font-size:12px;letter-spacing:.06em;
+  #btnBingo{
     background:linear-gradient(180deg,#ff5b5b,#c62828);
-    color:#fff;font-size:15px;font-weight:900;letter-spacing:.1em;
+    border:none;color:#fff;font-size:11.5px;letter-spacing:.05em;
     box-shadow:0 7px 22px rgba(198,40,40,.45);
   }
-  .bingoBtn:hover{background:linear-gradient(180deg,#ff7373,#d93a3a)}
-  .bingoBtn:active{transform:scale(.97)}
-  .bingoBtn.ativo{
+  #btnBingo:hover{background:linear-gradient(180deg,#ff7373,#d93a3a)}
+  #btnBingo:active{transform:scale(.97)}
+  #btnBingo.ativo{
     animation:piscaBingo .9s ease-in-out infinite;
     box-shadow:0 0 0 3px rgba(255,91,91,.85),0 7px 26px rgba(198,40,40,.6);
   }
@@ -352,15 +431,23 @@
     0%,100%{transform:scale(1)}
     50%{transform:scale(1.055)}
   }
-  select{
+  footer select{
     background:var(--card);border:1px solid var(--line);color:#cdd9f0;
-    border-radius:11px;padding:0 16px 0 6px;height:46px;font-size:10px;flex:0 0 112px;max-width:112px;
-    font-family:inherit;font-weight:600;cursor:pointer;
+    padding:0 12px 0 4px;font-size:9.5px;
   }
-  select:focus-visible{outline:2px solid var(--azul);outline-offset:2px}
-  #selVeloc{height:38px;font-size:10.5px}
-  #selVoz{height:38px;font-size:10.5px;max-width:215px}
+  footer select:focus-visible{outline:2px solid var(--azul);outline-offset:2px}
 
+  /* ============ BOTÃO FLUTUANTE DE LINKS (original) ============ */
+  #cvFab{
+    position:fixed;right:16px;bottom:14px;z-index:9000;
+    padding:12px 18px;border:0;border-radius:999px;
+    background:#16a34a;color:#fff;
+    font:700 14px system-ui,sans-serif;cursor:pointer;
+    box-shadow:0 6px 18px rgba(0,0,0,.45);
+  }
+  #cvFab:hover{background:#128a3e}
+
+  /* ============ MODAL ============ */
   .overlay{
     position:fixed;inset:0;background:rgba(4,8,18,.86);
     backdrop-filter:blur(6px);display:none;place-items:center;
@@ -370,63 +457,91 @@
   .modal{
     background:linear-gradient(180deg,#101c3a,#0a1226);
     border:1px solid #2c4370;border-radius:16px;
-    width:min(660px,100%);max-height:90vh;display:flex;flex-direction:column;
+    width:min(680px,100%);max-height:90vh;display:flex;flex-direction:column;
     box-shadow:0 30px 80px rgba(0,0,0,.75);
   }
-  .modal.bingoM{border-color:#c62828;
-    box-shadow:0 0 0 2px rgba(198,40,40,.5),0 30px 80px rgba(0,0,0,.8)}
+  .modal.bingoM{
+    border-color:#c62828;
+    box-shadow:0 0 0 2px rgba(198,40,40,.5),0 30px 80px rgba(0,0,0,.8);
+  }
   .modal header{padding:15px 19px;border-bottom:1px solid var(--line)}
   .modal header h3{font-size:15px;letter-spacing:.04em}
   .modal .corpo{padding:17px 19px;overflow-y:auto}
-  .modal footer{padding:13px 19px;border-top:1px solid var(--line);
-    display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+  .modal footer{
+    padding:13px 19px;border-top:1px solid var(--line);
+    display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap;
+  }
   .modal p{font-size:13px;line-height:1.58;color:#c3d0e8}
-  .modal label{display:block;font-size:11px;letter-spacing:.11em;
-    color:var(--dim);margin-bottom:6px;font-weight:700}
-  .modal input[type=number],.modal input[type=text]{
+  .modal label{
+    display:block;font-size:11px;letter-spacing:.11em;
+    color:var(--dim);margin-bottom:6px;font-weight:700;
+  }
+  .modal input[type=number],
+  .modal input[type=text]{
     width:100%;background:#0c1730;border:1px solid var(--line);
     border-radius:10px;padding:11px 13px;color:#fff;font-size:16px;
     font-family:inherit;font-weight:600;
   }
   .modal input:focus{outline:2px solid var(--azul);outline-offset:1px}
   .modal select{width:100%;height:46px}
+  .modal .btn{
+    flex:0 0 auto;width:auto;padding:0 16px;height:40px;
+    background:var(--card);border:1px solid var(--line);color:#cdd9f0;
+    font-size:12px;font-weight:700;
+  }
+  .modal .btn:hover{background:#17264a;border-color:#39547f;color:#fff}
   .aviso{font-size:11.5px;color:var(--dim);line-height:1.55;margin-top:9px}
   .aviso b{color:#cdd9f0}
   .resultado{
     margin-top:13px;padding:14px;border-radius:11px;text-align:center;
     font-weight:800;font-size:14px;letter-spacing:.06em;display:none;
   }
-  .resultado.ok{display:block;background:rgba(30,142,62,.18);
-    border:1px solid #1e8e3e;color:#5ddc85}
-  .resultado.err{display:block;background:rgba(198,40,40,.18);
-    border:1px solid #c62828;color:#ff8585}
-  .resultado small{display:block;font-weight:500;font-size:11.5px;
-    margin-top:7px;line-height:1.5;letter-spacing:0;opacity:.9}
-
+  .resultado.ok{
+    display:block;background:rgba(30,142,62,.18);
+    border:1px solid #1e8e3e;color:#5ddc85;
+  }
+  .resultado.err{
+    display:block;background:rgba(198,40,40,.18);
+    border:1px solid #c62828;color:#ff8585;
+  }
+  .resultado small{
+    display:block;font-weight:500;font-size:11.5px;
+    margin-top:7px;line-height:1.5;letter-spacing:0;opacity:.9;
+  }
   table.hist{width:100%;border-collapse:collapse;font-size:12.5px}
-  table.hist th{text-align:left;color:var(--dim);font-size:10.5px;
-    letter-spacing:.1em;padding:6px 8px;border-bottom:1px solid var(--line)}
-  table.hist td{padding:6px 8px;border-bottom:1px solid rgba(34,49,79,.5);
-    color:#d5e0f5}
+  table.hist th{
+    text-align:left;color:var(--dim);font-size:10.5px;
+    letter-spacing:.1em;padding:6px 8px;border-bottom:1px solid var(--line);
+  }
+  table.hist td{
+    padding:6px 8px;border-bottom:1px solid rgba(34,49,79,.5);
+    color:#d5e0f5;
+  }
   table.hist tr:last-child td{border-bottom:none}
-
-  table.quentes{width:100%;border-collapse:collapse;font-size:12px;
-    margin-top:10px}
-  table.quentes th{text-align:left;color:var(--dim);font-size:10px;
-    letter-spacing:.09em;padding:6px 7px;border-bottom:1px solid var(--line)}
-  table.quentes td{padding:5px 7px;
-    border-bottom:1px solid rgba(34,49,79,.5);color:#d5e0f5}
+  table.quentes{
+    width:100%;border-collapse:collapse;font-size:12px;margin-top:10px;
+  }
+  table.quentes th{
+    text-align:left;color:var(--dim);font-size:10px;
+    letter-spacing:.09em;padding:6px 7px;border-bottom:1px solid var(--line);
+  }
+  table.quentes td{
+    padding:5px 7px;border-bottom:1px solid rgba(34,49,79,.5);color:#d5e0f5;
+  }
   table.quentes tr:last-child td{border-bottom:none}
   table.quentes td.f{text-align:right;font-weight:800;white-space:nowrap}
   table.quentes td.n{color:#9fb3d4;font-size:11.5px}
   table.quentes td.nm{color:#ffd84d;font-weight:700;font-size:11.5px}
   .q1{color:#ffd84d}
   .q2{color:#ffb066}
-
-  .listaNomes{max-height:46vh;overflow-y:auto;margin-top:12px;
-    border:1px solid var(--line);border-radius:10px}
-  .linhaNome{display:flex;align-items:center;gap:10px;
-    padding:8px 10px;border-bottom:1px solid rgba(34,49,79,.5)}
+  .listaNomes{
+    max-height:46vh;overflow-y:auto;margin-top:12px;
+    border:1px solid var(--line);border-radius:10px;
+  }
+  .linhaNome{
+    display:flex;align-items:center;gap:8px;
+    padding:8px 10px;border-bottom:1px solid rgba(34,49,79,.5);
+  }
   .linhaNome:last-child{border-bottom:none}
   .cod{
     flex:0 0 auto;font-family:ui-monospace,Consolas,monospace;
@@ -435,15 +550,17 @@
     padding:4px 9px;min-width:52px;text-align:center;
   }
   .linhaNome input{
-    flex:1;background:#0c1730;border:1px solid var(--line);
-    border-radius:8px;padding:8px 11px;color:#fff;font-size:13.5px;
-    font-family:inherit;font-weight:600;min-width:0;
+    flex:1;min-width:0;background:#0c1730;border:1px solid var(--line);
+    border-radius:8px;padding:8px 11px;color:#fff;font-size:13px;
+    font-family:inherit;font-weight:600;
   }
   .linhaNome input:focus{outline:2px solid var(--azul);outline-offset:1px}
   .linhaNome input::placeholder{color:#4a5f88;font-weight:500}
-
-  .minicart{display:grid;grid-template-columns:repeat(5,1fr);gap:4px;
-    margin-top:14px;max-width:280px;margin-left:auto;margin-right:auto}
+  .linhaNome input.tel{flex:0 0 130px;font-size:12px}
+  .minicart{
+    display:grid;grid-template-columns:repeat(5,1fr);gap:4px;
+    margin-top:14px;max-width:280px;margin-left:auto;margin-right:auto;
+  }
   .minicart div{
     aspect-ratio:1;display:grid;place-items:center;border-radius:6px;
     background:#0c1730;border:1px solid #1d2e50;font-size:11px;
@@ -451,58 +568,123 @@
   }
   .minicart div.mk{background:#1e8e3e;border-color:#2bb355;color:#fff}
   .minicart div.livre{background:#fff;border-color:#1BA7EC;padding:2px}
-  .minicart div.livre img{width:100%;height:100%;object-fit:contain;display:block}
+  .minicart div.livre img{
+    width:100%;height:100%;object-fit:contain;display:block;
+  }
+  .logo-fb{font-weight:900;color:#0B2F6B;font-size:8pt;display:none}
 
+  /* ============ IMPRESSÃO ============ */
   #printArea{display:none}
   @media print{
     @page{size:A4 portrait;margin:7mm}
-    html,body{overflow:visible;height:auto;background:#fff;color:#000;
-      display:block;padding:0}
+    html,body{
+      overflow:visible;height:auto;background:#fff;color:#000;
+      display:block;padding:0;
+    }
     body > *:not(#printArea){display:none !important}
     #printArea{display:block !important}
-    .folha{display:grid;grid-template-columns:1fr 1fr;
+    .folha{
+      display:grid;grid-template-columns:1fr 1fr;
       grid-template-rows:1fr 1fr;height:283mm;
-      page-break-after:always;border:1px dashed #999}
+      page-break-after:always;border:1px dashed #999;
+    }
     .folha:last-child{page-break-after:auto}
-    .cp{border:1px dashed #999;padding:4mm;box-sizing:border-box;
-      display:flex;flex-direction:column;color:#000}
-    .cp .topo{display:flex;justify-content:space-between;align-items:center;
-      margin-bottom:1.5mm;gap:2mm}
-    .cp .marca img{display:block;height:10mm;width:auto;max-width:36mm;
-      object-fit:contain}
-    .cp .topo i{font-size:9pt;font-style:normal;font-weight:700;
+    .cp{
+      border:1px dashed #999;padding:4mm;box-sizing:border-box;
+      display:flex;flex-direction:column;color:#000;
+    }
+    .cp .topo{
+      display:flex;justify-content:space-between;align-items:center;
+      margin-bottom:1.5mm;gap:2mm;
+    }
+    .cp .marca img{
+      display:block;height:12mm;width:auto;max-width:40mm;
+      object-fit:contain;
+    }
+    .cp .topo i{
+      font-size:9pt;font-style:normal;font-weight:700;
       border:1.2px solid #000;padding:.6mm 2mm;border-radius:2mm;
-      white-space:nowrap}
+      white-space:nowrap;
+    }
     .cp .dono{
       font-size:8pt;font-weight:700;border-bottom:.4mm solid #000;
       padding:0 1mm 1mm;margin-bottom:1.5mm;min-height:5mm;
       display:flex;align-items:flex-end;
     }
     .cp table{width:100%;border-collapse:collapse;flex:1}
-    .cp th{font-size:10pt;padding:1.1mm 0;border:1px solid #000;
-      background:#eee}
-    .cp td{border:1px solid #000;text-align:center;font-size:13pt;
-      font-weight:700;padding:1.5mm 0;width:20%}
-    .cp td.lv{padding:1mm;background:#fff;vertical-align:middle}
-    .cp td.lv img{display:block;margin:0 auto;max-width:100%;max-height:14mm;
-      width:auto;height:auto;object-fit:contain}
-    .cp .pe{font-size:6.5pt;text-align:center;margin-top:1.5mm;
-      letter-spacing:.09em;font-weight:700}
+    .cp th{
+      font-size:10pt;padding:1.1mm 0;border:1px solid #000;background:#eee;
+    }
+    .cp td{
+      border:1px solid #000;text-align:center;font-size:13pt;
+      font-weight:700;padding:1.5mm 0;width:20%;
+    }
+    .cp td.lv{
+      background:#fff;padding:.8mm;
+      vertical-align:middle;text-align:center;
+    }
+    .cp td.lv img{
+      display:block;margin:0 auto;max-width:96%;max-height:20mm;
+      width:auto;height:auto;object-fit:contain;
+    }
+    .cp .pe{
+      font-size:6.5pt;text-align:center;margin-top:1.5mm;
+      letter-spacing:.09em;font-weight:700;
+    }
+  }
+
+  /* ============ MODO JOGADOR ============ */
+  #cvPlay{
+    position:fixed;inset:0;z-index:99999;background:#07131f;color:#eaf3ff;
+    font:16px/1.4 system-ui,sans-serif;overflow:auto;padding:14px;
+    display:flex;flex-direction:column;align-items:center;gap:12px;
+  }
+  #cvPlay .logoTop{
+    background:#fff;border-radius:10px;padding:6px 14px;
+  }
+  #cvPlay .logoTop img{
+    display:block;height:46px;width:auto;object-fit:contain;
+  }
+  #cvPlay .tt{
+    font-weight:900;font-size:17px;letter-spacing:1px;text-align:center;
+  }
+  #cvPlay .sub{color:#ffd84d;font-size:15px;font-weight:800}
+  .cvGrid{border-collapse:separate;border-spacing:7px}
+  .cvGrid button{
+    width:60px;height:60px;border-radius:10px;
+    border:2px solid #2e5075;background:#0f2236;color:#dcebff;
+    font:800 19px system-ui,sans-serif;cursor:pointer;padding:0;
+    display:flex;align-items:center;justify-content:center;
+  }
+  .cvGrid button.mk{background:#16a34a;border-color:#22d16b;color:#fff}
+  .cvGrid button.centro{
+    background:#fff;border-color:#2e5075;cursor:default;padding:3px;
+  }
+  .cvGrid button.centro img{
+    max-width:100%;max-height:100%;object-fit:contain;display:block;
+  }
+  @media(max-width:520px){
+    .cvGrid button{width:53px;height:53px;font-size:17px}
+  }
+  .cvBtn{
+    border:0;border-radius:9px;padding:12px 20px;
+    font:700 15px system-ui,sans-serif;cursor:pointer;color:#fff;
+    background:#1e6fd9;
+  }
+  .cvBtn.ok{background:#16a34a}
+  .cvBtn.sec{background:#2b3c55}
+  .cvInfo{
+    color:#9fc2e6;font-size:13px;text-align:center;
+    min-height:20px;max-width:340px;
   }
 </style>
 </head>
 <body>
 
+<!-- ================= CABEÇALHO ================= -->
 <header>
-  <div class="brand">
-    <img src="logo-cemtec.png"
-         data-drive="https://drive.google.com/thumbnail?id=1Wr0oaQn3PFDETlL2jskRZJlaZdeVxRCW&sz=w1024"
-         onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src=this.dataset.drive}"
-         alt="CEMTEC">
-  </div>
-
+  <div class="brand" id="brandBox"></div>
   <div class="titulo">BINGO DO <span>CEMTEC</span></div>
-
   <div class="spacer"></div>
   <div class="pill" id="contador">0 / 75</div>
   <select id="selVoz" title="Voz da narração"></select>
@@ -523,14 +705,13 @@
       <path d="M5 11a7 7 0 0 0 14 0M12 18v4M8 22h8"></path>
     </svg>
   </button>
-  <button class="icobtn alertaOn" id="btnAlerta" title="Narração dos alertas: LIGADA">
+  <button class="icobtn alertaOn" id="btnAlerta" title="Narração dos alertas: LIGADA (A)">
     <svg viewBox="0 0 24 24">
       <path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"></path>
       <path d="M13.7 21a2 2 0 0 1-3.4 0"></path>
     </svg>
   </button>
-  <button class="icobtn travaOn" id="btnTrava"
-          title="Trava de narração: ATIVA (T)">
+  <button class="icobtn travaOn" id="btnTrava" title="Trava de narração: ATIVA (T)">
     <svg viewBox="0 0 24 24">
       <rect x="4" y="10" width="16" height="11" rx="2.5"></rect>
       <path d="M8 10V7a4 4 0 0 1 8 0v3"></path>
@@ -554,6 +735,7 @@
   </button>
 </header>
 
+<!-- ================= ÁREA PRINCIPAL ================= -->
 <main>
   <section class="placar" id="placar" aria-label="Placar de 75 números">
     <div class="alerta" id="alerta" role="status" aria-live="polite"></div>
@@ -574,14 +756,15 @@
   </aside>
 </main>
 
+<!-- ================= BARRA INFERIOR ================= -->
 <footer>
-  <button class="sortear" id="btnSortear">SORTEAR</button>
-  <button class="bingoBtn" id="btnBingo" title="PAUSAR O JOGO — alguém bateu bingo! (B)">BINGO!</button>
+  <button id="btnSortear">SORTEAR</button>
+  <button id="btnBingo" title="PAUSAR O JOGO — alguém bateu bingo! (B)">BINGO!</button>
   <select id="selPadrao" title="Padrão de vitória">
     <option value="cantos">Quatro cantos</option>
     <option value="x">X</option>
     <option value="borda">Borda</option>
-    <option value="linha">Linha ou coluna</option>
+    <option value="linha">Linha/Coluna</option>
     <option value="cheia">Cartela cheia</option>
   </select>
   <button class="btn" id="btnCartelas">Cartelas</button>
@@ -592,6 +775,7 @@
   <button class="btn" id="btnNova">Nova Rodada</button>
 </footer>
 
+<!-- ================= MODAL ================= -->
 <div class="overlay" id="overlay">
   <div class="modal" id="modalBox">
     <header><h3 id="mTitulo">Título</h3></header>
@@ -606,11 +790,26 @@
 <script>
 /* =====================================================================
    BINGO DO CEMTEC — arquivo único, 100% offline
-   v4: mostra TODAS as pedras possíveis no "falta 1",
-       código no alerta de bingo, botão Limpar cartelas.
+   v5: cartelas UNIFICADAS (celular = telão), logo no centro,
+       conferência por código e por lista, WhatsApp, CSV.
    ===================================================================== */
 
-const FRASES = [
+/* ================= LOGO ================= */
+var LOGO_DRIVE = 'https://drive.google.com/thumbnail?id=1VXP8DuDTlzu9seXpK8uESk-4d5LDItJA&sz=w1024';
+var LOGO_LOCAL = 'logo-cemtec.png';
+var WEBHOOK_KEY = 'bingo_webhook_v5';
+
+function logoImg(){
+  return '<img src="' + LOGO_DRIVE + '" data-local="' + LOGO_LOCAL + '" ' +
+    'onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src=this.dataset.local}' +
+    'else{this.style.display=\'none\';if(this.nextElementSibling)this.nextElementSibling.style.display=\'block\'}" ' +
+    'alt="CEMTEC">' +
+    '<span class="logo-fb">CEMTEC</span>';
+}
+document.getElementById('brandBox').innerHTML = logoImg();
+
+/* ================= FRASES ================= */
+var FRASES = [
 "Começou o jogo, o número é 1",
 "Um patinho na lagoa, o número é 2",
 "Três corações ou o número do amor, é 3",
@@ -688,7 +887,8 @@ const FRASES = [
 "Terminou o jogo, o número é 75"
 ];
 
-const AL2 = [
+/* ---------- FRASES VARIADAS DOS ALERTAS (original) ---------- */
+var AL2 = [
   {t:'🔥 DUAS PEDRAS! Tem cartela quase lá!',
    f:'Atenção, gente! O clima tá esquentando! Tem cartela a duas pedras do bingo!'},
   {t:'🔥 TÁ ESQUENTANDO! Faltam 2 pedras!',
@@ -700,7 +900,7 @@ const AL2 = [
   {t:'🔥 A COISA TÁ BOA! Duas pedras!',
    f:'Atenção total! Duas pedras separam a alegria do bingo!'}
 ];
-const AL1 = [
+var AL1 = [
   {t:'⚡ FALTA UMA! Segura o coração!',
    f:'É agora, gente! É agora! Falta uma pedra só! Segura o coração!'},
   {t:'⚡ É AGORA! Uma pedra só!',
@@ -708,53 +908,50 @@ const AL1 = [
   {t:'⚡ QUASE! Falta 1 pedra!',
    f:'Chegou! Chegou! Falta uma pedra para o bingo!'}
 ];
-const AL0 = [
+var AL0 = [
   {t:'🎉 BINGO!!! Temos um campeão!',
    f:'Bingo! Bingo! Que emoção! Temos um campeão!'},
   {t:'🎉 BIIINGOOO!', f:'Biiingooo! Saiu o bingo!'},
   {t:'🎉 BINGO! Parabéns!', f:'É bingo! Que alegria! Temos um vencedor!'}
 ];
 
-const UNI = ['zero','um','dois','três','quatro','cinco','seis','sete','oito',
+var UNI = ['zero','um','dois','três','quatro','cinco','seis','sete','oito',
   'nove','dez','onze','doze','treze','quatorze','quinze','dezesseis',
   'dezessete','dezoito','dezenove'];
-const DEZ = ['','','vinte','trinta','quarenta','cinquenta','sessenta','setenta'];
+var DEZ = ['','','vinte','trinta','quarenta','cinquenta','sessenta','setenta'];
+
 function extenso(n){
   if(n < 20) return UNI[n];
-  const d = Math.floor(n/10), u = n % 10;
+  var d = Math.floor(n/10), u = n % 10;
   return DEZ[d] + (u ? ' e ' + UNI[u] : '');
 }
 
-const CORES = ['#e8b400','#1a5fd0','#c62828','#6a2fa0',
-               '#e8710a','#1e8e3e','#6d1a1a','#1a1a1a'];
+var CORES = ['#e8b400','#1a5fd0','#c62828','#6a2fa0',
+             '#e8710a','#1e8e3e','#6d1a1a','#1a1a1a'];
+
 function estilo(n){
-  const cor = CORES[(n-1) % 8];
-  const listrada = Math.floor((n-1)/8) % 2 === 1;
-  return {cor, listrada};
+  var cor = CORES[(n-1) % 8];
+  var listrada = Math.floor((n-1)/8) % 2 === 1;
+  return {cor:cor, listrada:listrada};
 }
-const letraDe = n => n<=15?'B':n<=30?'I':n<=45?'N':n<=60?'G':'O';
-
-const S = {fila:[], sorteados:[], atual:null, som:true, voz:false,
-           vozAlerta:true, modoPassador:false, travaFala:true,
-           pausado:false, padrao:'cantos', velocidade:0.8, vozNome:''};
-let cartelas = [], proximoCodigo = 0, rodando = false;
-
-let falando = false;
-let pendente = false;
-
-const KEY_S = 'bingo_estado_v4';
-const KEY_C = 'bingo_cartelas_v4';
-
-const LOGO_DRIVE = 'https://drive.google.com/thumbnail?id=1Wr0oaQn3PFDETlL2jskRZJlaZdeVxRCW&sz=w1024';
-const LOGO_LOCAL = 'logo-cemtec.png';
-function logoImg(){
-  return '<img src="'+LOGO_LOCAL+'" data-drive="'+LOGO_DRIVE+'" '+
-    'onerror="if(!this.dataset.fb){this.dataset.fb=1;this.src=this.dataset.drive}" '+
-    'alt="CEMTEC">';
+function letraDe(n){
+  return n<=15?'B':n<=30?'I':n<=45?'N':n<=60?'G':'O';
 }
 
-/* ---------- ÁUDIO ---------- */
-let AC = null;
+/* ================= ESTADO ================= */
+var S = {
+  fila:[], sorteados:[], atual:null,
+  som:true, voz:false, vozAlerta:true, travaFala:true,
+  modoPassador:false, pausado:false, padrao:'cantos',
+  velocidade:0.8, vozNome:''
+};
+var cartelas = [], proximoCodigo = 0, rodando = false;
+var falando = false, pendente = false;
+var KEY_S = 'bingo_estado_v5';
+var KEY_C = 'bingo_cartelas_v5';
+
+/* ================= ÁUDIO ================= */
+var AC = null;
 function ac(){
   if(!AC){
     try{ AC = new (window.AudioContext||window.webkitAudioContext)(); }
@@ -764,8 +961,8 @@ function ac(){
   return AC;
 }
 function tique(p){
-  if(!S.som) return; const c = ac(); if(!c) return;
-  const o = c.createOscillator(), g = c.createGain();
+  if(!S.som) return; var c = ac(); if(!c) return;
+  var o = c.createOscillator(), g = c.createGain();
   o.type='square'; o.frequency.value = 620 + p*520;
   g.gain.setValueAtTime(0.055 + p*0.03, c.currentTime);
   g.gain.exponentialRampToValueAtTime(0.0008, c.currentTime+0.05);
@@ -773,16 +970,16 @@ function tique(p){
   o.start(); o.stop(c.currentTime+0.06);
 }
 function balanco(){
-  if(!S.som) return; const c = ac(); if(!c) return;
-  const dur = 0.9, sr = c.sampleRate;
-  const buf = c.createBuffer(1, sr*dur, sr);
-  const d = buf.getChannelData(0);
-  for(let i=0;i<d.length;i++) d[i] = (Math.random()*2-1)*0.5;
-  const src = c.createBufferSource(); src.buffer = buf;
-  const f = c.createBiquadFilter(); f.type='bandpass'; f.Q.value=1.1;
+  if(!S.som) return; var c = ac(); if(!c) return;
+  var dur = 0.9, sr = c.sampleRate;
+  var buf = c.createBuffer(1, sr*dur, sr);
+  var d = buf.getChannelData(0);
+  for(var i=0;i<d.length;i++) d[i] = (Math.random()*2-1)*0.5;
+  var src = c.createBufferSource(); src.buffer = buf;
+  var f = c.createBiquadFilter(); f.type='bandpass'; f.Q.value=1.1;
   f.frequency.setValueAtTime(700, c.currentTime);
   f.frequency.linearRampToValueAtTime(1900, c.currentTime+dur);
-  const g = c.createGain();
+  var g = c.createGain();
   g.gain.setValueAtTime(0.0001, c.currentTime);
   g.gain.linearRampToValueAtTime(0.13, c.currentTime+0.14);
   g.gain.linearRampToValueAtTime(0.0001, c.currentTime+dur);
@@ -790,16 +987,16 @@ function balanco(){
   src.start(); src.stop(c.currentTime+dur);
 }
 function revelacao(){
-  if(!S.som) return; const c = ac(); if(!c) return;
-  const o = c.createOscillator(), g = c.createGain();
+  if(!S.som) return; var c = ac(); if(!c) return;
+  var o = c.createOscillator(), g = c.createGain();
   o.type='sine'; o.frequency.setValueAtTime(180, c.currentTime);
   o.frequency.exponentialRampToValueAtTime(55, c.currentTime+0.3);
   g.gain.setValueAtTime(0.26, c.currentTime);
   g.gain.exponentialRampToValueAtTime(0.001, c.currentTime+0.34);
   o.connect(g).connect(c.destination); o.start(); o.stop(c.currentTime+0.35);
-  [523.25,659.25,783.99].forEach((f,i)=>{
-    const oo=c.createOscillator(), gg=c.createGain();
-    const t=c.currentTime+0.10+i*0.10;
+  [523.25,659.25,783.99].forEach(function(f,i){
+    var oo=c.createOscillator(), gg=c.createGain();
+    var t=c.currentTime+0.10+i*0.10;
     oo.type='triangle'; oo.frequency.value=f;
     gg.gain.setValueAtTime(0.0001,t);
     gg.gain.linearRampToValueAtTime(0.12,t+0.02);
@@ -808,12 +1005,12 @@ function revelacao(){
   });
 }
 function chamada(nivel){
-  if(!S.som) return; const c = ac(); if(!c) return;
-  const notas = (nivel === 0) ? [880, 1108.73, 1318.51, 1760]
-                              : [880, 1108.73, 1318.51];
-  notas.forEach((f,i)=>{
-    const o=c.createOscillator(), g=c.createGain();
-    const t=c.currentTime+i*0.14;
+  if(!S.som) return; var c = ac(); if(!c) return;
+  var notas = (nivel === 0) ? [880, 1108.73, 1318.51, 1760]
+                            : [880, 1108.73, 1318.51];
+  notas.forEach(function(f,i){
+    var o=c.createOscillator(), g=c.createGain();
+    var t=c.currentTime+i*0.14;
     o.type='square'; o.frequency.value=f;
     g.gain.setValueAtTime(0.0001,t);
     g.gain.linearRampToValueAtTime(0.085,t+0.02);
@@ -822,10 +1019,10 @@ function chamada(nivel){
   });
 }
 function somBingo(){
-  if(!S.som) return; const c = ac(); if(!c) return;
-  [523.25, 659.25, 783.99, 1046.5].forEach((f,i)=>{
-    const o=c.createOscillator(), g=c.createGain();
-    const t=c.currentTime+i*0.11;
+  if(!S.som) return; var c = ac(); if(!c) return;
+  [523.25, 659.25, 783.99, 1046.5].forEach(function(f,i){
+    var o=c.createOscillator(), g=c.createGain();
+    var t=c.currentTime+i*0.11;
     o.type='square'; o.frequency.value=f;
     g.gain.setValueAtTime(0.0001,t);
     g.gain.linearRampToValueAtTime(0.10,t+0.02);
@@ -834,9 +1031,9 @@ function somBingo(){
   });
 }
 
-/* ---------- VOZ ---------- */
-const temSintese = ('speechSynthesis' in window);
-let vozEscolhida = null;
+/* ================= VOZ ================= */
+var temSintese = ('speechSynthesis' in window);
+var vozEscolhida = null;
 
 function ehPtBR(v){
   if(!v || !v.lang) return false;
@@ -845,29 +1042,30 @@ function ehPtBR(v){
 function listarVozesPtBR(){
   if(!temSintese) return [];
   return speechSynthesis.getVoices().filter(ehPtBR)
-    .sort((a,b)=>a.name.localeCompare(b.name));
+    .sort(function(a,b){ return a.name.localeCompare(b.name); });
 }
 function montarSeletorVoz(){
-  const sel = document.getElementById('selVoz');
+  var sel = document.getElementById('selVoz');
   if(!sel) return;
   if(!temSintese){
     sel.innerHTML = '<option>Voz indisponível</option>';
     sel.disabled = true; return;
   }
-  const vozes = listarVozesPtBR();
+  var vozes = listarVozesPtBR();
   if(!vozes.length){
     sel.innerHTML = '<option>Nenhuma voz pt-BR</option>';
     sel.disabled = true; vozEscolhida = null; return;
   }
   sel.disabled = false; sel.innerHTML = '';
-  vozes.forEach(v=>{
-    const op = document.createElement('option');
+  vozes.forEach(function(v){
+    var op = document.createElement('option');
     op.value = v.name; op.textContent = v.name; op.title = v.name;
     sel.appendChild(op);
   });
-  let idx = 0;
+  var idx = 0;
   if(S.vozNome){
-    const i = vozes.findIndex(v => v.name === S.vozNome);
+    var i = -1;
+    for(var k=0;k<vozes.length;k++){ if(vozes[k].name === S.vozNome){ i = k; break; } }
     if(i >= 0) idx = i;
   }
   sel.selectedIndex = idx;
@@ -878,99 +1076,89 @@ function inicializarVozes(){
   if(!temSintese) return;
   montarSeletorVoz();
   if(speechSynthesis.getVoices().length) return;
-  try{ speechSynthesis.onvoiceschanged = ()=>montarSeletorVoz(); }catch(e){}
-  let n = 0;
-  const iv = setInterval(()=>{
+  try{ speechSynthesis.onvoiceschanged = montarSeletorVoz; }catch(e){}
+  var n = 0;
+  var iv = setInterval(function(){
     n++; montarSeletorVoz();
     if(speechSynthesis.getVoices().length || n > 15) clearInterval(iv);
   }, 120);
 }
 
-/* ---------- TRAVA DE NARRAÇÃO ---------- */
-const btnSortear = document.getElementById('btnSortear');
+/* ================= TRAVA DE NARRAÇÃO ================= */
+var btnSortear = document.getElementById('btnSortear');
 
 function atualizarTravaUI(){
   btnSortear.classList.remove('narrando','agendado','paradoBtn');
-
   if(S.pausado){
     btnSortear.classList.add('paradoBtn');
-    btnSortear.textContent = '⏸ JOGO PAUSADO';
+    btnSortear.textContent = '⏸ PAUSADO';
     btnSortear.disabled = true;
     return;
   }
-
-  const bloqueado = S.travaFala && falando;
+  var bloqueado = S.travaFala && falando;
   if(!bloqueado){
     btnSortear.textContent = 'SORTEAR';
     btnSortear.disabled = rodando;
   }else{
     btnSortear.classList.add('narrando');
     btnSortear.classList.toggle('agendado', pendente);
-    btnSortear.textContent = pendente
-      ? '⏳ AGENDADO — AGUARDE A FALA'
-      : '🔒 NARRANDO...';
+    btnSortear.textContent = pendente ? '⏳ AGENDADO' : '🔒 NARRANDO';
     btnSortear.disabled = true;
   }
 }
-
 function marcarFalando(v){
   falando = v;
   if(!v){
-    const tinhaPendente = pendente;
+    var tinhaPendente = pendente;
     pendente = false;
     atualizarTravaUI();
-    if(tinhaPendente) setTimeout(()=>{ sortear(); }, 220);
+    if(tinhaPendente) setTimeout(function(){ sortear(); }, 220);
   }else{
     atualizarTravaUI();
   }
 }
-
-let tokenFala = 0;
+var tokenFala = 0;
 function falarBlocos(blocos){
   if(!temSintese || !blocos.length){ marcarFalando(false); return; }
-  const meu = ++tokenFala;
+  var meu = ++tokenFala;
   try{ speechSynthesis.cancel(); }catch(e){}
-
   marcarFalando(true);
-
-  let i = 0;
-  const seguir = ()=>{
+  var i = 0;
+  function seguir(){
     if(meu !== tokenFala) return;
     if(i >= blocos.length){
-      setTimeout(()=>{ if(meu === tokenFala) marcarFalando(false); }, 120);
+      setTimeout(function(){ if(meu === tokenFala) marcarFalando(false); }, 120);
       return;
     }
-    const b = blocos[i++];
+    var b = blocos[i++];
     if(b.pausa != null){ setTimeout(seguir, b.pausa); return; }
-
-    const u = new SpeechSynthesisUtterance(b.texto);
-    if(vozEscolhida){ u.voice = vozEscolhida; u.lang = 'pt-BR'; }
-    else{ u.lang = 'pt-BR'; }
+    var u = new SpeechSynthesisUtterance(b.texto);
+    if(vozEscolhida){ u.voice = vozEscolhida; }
+    u.lang = 'pt-BR';
     u.rate = b.rate || S.velocidade;
     u.pitch = b.pitch || 1.0;
     u.volume = b.volume || 1;
-
-    let concluido = false;
-    const avancar = ()=>{
+    var concluido = false;
+    function avancar(){
       if(concluido) return;
       concluido = true;
       if(meu !== tokenFala) return;
       setTimeout(seguir, 150);
-    };
+    }
     u.onend = avancar; u.onerror = avancar;
     try{ speechSynthesis.speak(u); }
     catch(e){ avancar(); return; }
     setTimeout(avancar, Math.max(1400, b.texto.length * 105));
-  };
+  }
   setTimeout(seguir, 260);
 }
 function falarCurto(texto){ falarBlocos([{texto: texto}]); }
 
 function narrarNumero(n, al){
-  const temNumero = S.voz;
-  const temAlerta = S.vozAlerta && al && al.fala;
+  var temNumero = S.voz;
+  var temAlerta = S.vozAlerta && al && al.fala;
   if(!temNumero && !temAlerta){ marcarFalando(false); return; }
-  const blocos = [];
+  var blocos = [];
   if(temNumero){
     blocos.push({texto:'Letra ' + letraDe(n) + '.'});
     blocos.push({pausa:1100});
@@ -980,31 +1168,34 @@ function narrarNumero(n, al){
   }
   if(temAlerta){
     if(blocos.length) blocos.push({pausa:750});
-    blocos.push({texto: al.fala,
+    blocos.push({
+      texto: al.fala,
       rate: Math.min(1.05, S.velocidade + 0.14),
-      pitch: al.nivel === 1 ? 1.16 : 1.08});
+      pitch: al.nivel === 1 ? 1.16 : 1.08
+    });
   }
   falarBlocos(blocos);
 }
 
-/* ---------- PLACAR ---------- */
-const placar = document.getElementById('placar');
-const grade = document.getElementById('grade');
+/* ================= PLACAR ================= */
+var placar = document.getElementById('placar');
+var grade = document.getElementById('grade');
+
 function montarPlacar(){
   grade.innerHTML = '';
-  for(let l=0; l<5; l++){
-    const linha = document.createElement('div');
+  for(var l=0; l<5; l++){
+    var linha = document.createElement('div');
     linha.className = 'linha';
-    const letra = document.createElement('div');
+    var letra = document.createElement('div');
     letra.className = 'letra';
     letra.textContent = 'BINGO'[l];
     linha.appendChild(letra);
-    for(let c=0; c<15; c++){
-      const n = l*15 + c + 1;
-      const cel = document.createElement('div');
+    for(var c=0; c<15; c++){
+      var n = l*15 + c + 1;
+      var cel = document.createElement('div');
       cel.className = 'cel';
       cel.dataset.n = n;
-      cel.innerHTML = '<div class="brilho"></div><span class="n">'+n+'</span>';
+      cel.innerHTML = '<div class="brilho"></div><span class="n">' + n + '</span>';
       linha.appendChild(cel);
     }
     grade.appendChild(linha);
@@ -1012,172 +1203,171 @@ function montarPlacar(){
   ajustarTamanho();
   pintarPlacar();
 }
-function celulaDe(n){ return grade.querySelector('.cel[data-n="'+n+'"]'); }
+function celulaDe(n){
+  return grade.querySelector('.cel[data-n="' + n + '"]');
+}
 function setEstado(n, estado){
-  const el = celulaDe(n); if(!el) return;
-  const {cor, listrada} = estilo(n);
+  var el = celulaDe(n); if(!el) return;
+  var e = estilo(n);
   el.classList.remove('marcado','atual','piscando','aceso','listrada');
   if(estado === 'apagado'){ el.style.removeProperty('--cor'); return; }
   el.classList.add('aceso');
-  el.style.setProperty('--cor', cor);
-  if(listrada) el.classList.add('listrada');
+  el.style.setProperty('--cor', e.cor);
+  if(e.listrada) el.classList.add('listrada');
   if(estado === 'piscando') el.classList.add('piscando');
   if(estado === 'marcado')  el.classList.add('marcado');
   if(estado === 'atual')    el.classList.add('atual');
 }
 function pintarPlacar(){
-  const set = new Set(S.sorteados.map(x=>x.n));
-  for(let n=1; n<=75; n++){
+  var set = {};
+  for(var i=0;i<S.sorteados.length;i++) set[S.sorteados[i].n] = 1;
+  for(var n=1; n<=75; n++){
     if(n === S.atual) setEstado(n,'atual');
-    else if(set.has(n)) setEstado(n,'marcado');
+    else if(set[n]) setEstado(n,'marcado');
     else setEstado(n,'apagado');
   }
 }
-
 function ajustarTamanho(){
-  const r = placar.getBoundingClientRect();
+  var r = placar.getBoundingClientRect();
   if(!r.width || !r.height) return;
-  const pad = 16, gap = 5, letraFrac = 0.86;
-  const wCel = (r.width - pad - gap*16) / (15 + letraFrac);
-  const hCel = (r.height - pad - 24 - gap*4) / 5;
-  const cel = Math.max(12, Math.floor(Math.min(wCel, hCel)));
+  var pad = 16, gap = 5, letraFrac = 0.86;
+  var wCel = (r.width - pad - gap*16) / (15 + letraFrac);
+  var hCel = (r.height - pad - 24 - gap*4) / 5;
+  var cel = Math.max(12, Math.floor(Math.min(wCel, hCel)));
   document.documentElement.style.setProperty('--cel', cel + 'px');
-  const painel = document.querySelector('.painel');
-  const pr = painel.getBoundingClientRect();
-  const selo = document.getElementById('seloLetra');
-  const seloH = selo ? selo.getBoundingClientRect().height : 0;
-  const disp = pr.height - seloH - 95;
-  const bola = Math.max(64, Math.min(pr.width - 24, disp));
+  var painel = document.querySelector('.painel');
+  var pr = painel.getBoundingClientRect();
+  var selo = document.getElementById('seloLetra');
+  var seloH = selo ? selo.getBoundingClientRect().height : 0;
+  var disp = pr.height - seloH - 95;
+  var bola = Math.max(64, Math.min(pr.width - 24, disp));
   document.documentElement.style.setProperty('--bola', Math.floor(bola) + 'px');
 }
-window.addEventListener('resize', ()=>requestAnimationFrame(ajustarTamanho));
-window.addEventListener('orientationchange', ()=>setTimeout(ajustarTamanho, 220));
+window.addEventListener('resize', function(){ requestAnimationFrame(ajustarTamanho); });
+window.addEventListener('orientationchange', function(){ setTimeout(ajustarTamanho, 220); });
 
-/* ---------- PAINEL ---------- */
-const bola = document.getElementById('bola');
-const bolaNum = document.getElementById('bolaNum');
-const seloLetra = document.getElementById('seloLetra');
-const fraseEl = document.getElementById('frase');
-const ultimosEl = document.getElementById('ultimos');
-const contadorEl = document.getElementById('contador');
-const alertaEl = document.getElementById('alerta');
+/* ================= PAINEL ================= */
+var bolaEl = document.getElementById('bola');
+var bolaNum = document.getElementById('bolaNum');
+var seloLetra = document.getElementById('seloLetra');
+var fraseEl = document.getElementById('frase');
+var ultimosEl = document.getElementById('ultimos');
+var contadorEl = document.getElementById('contador');
+var alertaEl = document.getElementById('alerta');
 
 function pintar(estado){
-  const n = S.atual;
+  var n = S.atual;
   contadorEl.textContent = S.sorteados.length + ' / 75';
   contadorEl.className = 'pill' + (S.pausado ? ' bingo' : '');
-
   if(!estado){
-    bola.className = 'bola vazia';
-    bola.style.removeProperty('--cor');
+    bolaEl.className = 'bola vazia';
+    bolaEl.style.removeProperty('--cor');
     bolaNum.innerHTML = 'Aguardando<br>o sorteio';
     seloLetra.className = 'selo-letra vazio';
     seloLetra.textContent = '—';
     fraseEl.className = 'frase';
     fraseEl.textContent = 'Clique em SORTEAR ou use o passador.';
   }else{
-    const {cor, listrada} = estilo(n);
-    bola.className = 'bola aceso' + (listrada?' listrada':'');
-    bola.style.setProperty('--cor', cor);
+    var e = estilo(n);
+    bolaEl.className = 'bola aceso' + (e.listrada ? ' listrada' : '');
+    bolaEl.style.setProperty('--cor', e.cor);
     bolaNum.textContent = n;
     seloLetra.className = 'selo-letra';
     seloLetra.textContent = letraDe(n);
     fraseEl.className = 'frase ativa';
     fraseEl.textContent = 'Letra ' + letraDe(n) + ' — ' + FRASES[n-1];
   }
-
   ultimosEl.innerHTML = '';
-  S.sorteados.slice(-8).reverse().forEach(item=>{
-    const {cor, listrada} = estilo(item.n);
-    const m = document.createElement('div');
-    m.className = 'mini' + (listrada?' listrada':'');
-    m.style.setProperty('--cor', cor);
-    m.innerHTML = '<span>'+item.n+'</span>';
+  var ult = S.sorteados.slice(-8).reverse();
+  for(var i=0;i<ult.length;i++){
+    var ee = estilo(ult[i].n);
+    var m = document.createElement('div');
+    m.className = 'mini' + (ee.listrada ? ' listrada' : '');
+    m.style.setProperty('--cor', ee.cor);
+    m.innerHTML = '<span>' + ult[i].n + '</span>';
     ultimosEl.appendChild(m);
-  });
+  }
 }
 
-/* =====================================================================
-   ANÁLISE DA CARTELA
-   Em "Linha ou coluna" avalia as 5 linhas E as 5 colunas e devolve
-   TODOS os números de TODOS os grupos que estão na melhor situação.
-   Ex.: se a cartela fecha a linha 1 com o 50 OU a coluna 3 com o 6,
-   devolve nums = [6, 50] e faltam = 1.
-   ===================================================================== */
-const PADROES = {
+/* ================= ANÁLISE DA CARTELA ================= */
+var PADROES = {
   cantos: [0,4,20,24],
   x:      [0,4,6,8,12,16,18,20,24],
   borda:  [0,1,2,3,4,5,9,10,14,15,19,20,21,22,23,24],
-  cheia:  Array.from({length:25},(_,i)=>i)
+  cheia:  []
 };
-const NOME_PADRAO = {cantos:'Quatro cantos', x:'X', borda:'Borda',
-                     linha:'Linha ou coluna', cheia:'Cartela cheia'};
+for(var pi=0; pi<25; pi++) PADROES.cheia.push(pi);
 
-function analisar(cartela, set, padrao){
+var NOME_PADRAO = {
+  cantos:'Quatro cantos', x:'X', borda:'Borda',
+  linha:'Linha ou coluna', cheia:'Cartela cheia'
+};
+
+function analisar(nums, set, padrao){
   if(padrao === 'linha'){
-    const grupos = [];
-    for(let l=0; l<5; l++){
-      const nums = [];
-      for(let c=0; c<5; c++){
-        const v = cartela[l*5+c];
+    var grupos = [], l, c, v;
+    for(l=0; l<5; l++){
+      var gl = [];
+      for(c=0; c<5; c++){
+        v = nums[l*5+c];
         if(v === null) continue;
-        if(!set.has(v)) nums.push(v);
+        if(!set[v]) gl.push(v);
       }
-      grupos.push(nums);
+      grupos.push(gl);
     }
-    for(let c=0; c<5; c++){
-      const nums = [];
-      for(let l=0; l<5; l++){
-        const v = cartela[l*5+c];
+    for(c=0; c<5; c++){
+      var gc = [];
+      for(l=0; l<5; l++){
+        v = nums[l*5+c];
         if(v === null) continue;
-        if(!set.has(v)) nums.push(v);
+        if(!set[v]) gc.push(v);
       }
-      grupos.push(nums);
+      grupos.push(gc);
     }
-    let min = 99;
-    grupos.forEach(g=>{ if(g.length < min) min = g.length; });
-    const uniao = [];
-    grupos.forEach(g=>{
-      if(g.length === min){
-        g.forEach(n=>{ if(!uniao.includes(n)) uniao.push(n); });
+    var min = 99, k, j;
+    for(k=0; k<grupos.length; k++){
+      if(grupos[k].length < min) min = grupos[k].length;
+    }
+    var uniao = [];
+    for(k=0; k<grupos.length; k++){
+      if(grupos[k].length === min){
+        for(j=0; j<grupos[k].length; j++){
+          if(uniao.indexOf(grupos[k][j]) === -1) uniao.push(grupos[k][j]);
+        }
       }
-    });
-    const falta = uniao.sort((a,b)=>a-b);
-    return {valido: min === 0, faltam: min, nums: falta};
+    }
+    uniao.sort(function(a,b){ return a-b; });
+    return {valido: min === 0, faltam: min, nums: uniao};
   }
-
-  const nums = [];
-  PADROES[padrao].forEach(i=>{
-    const v = cartela[i];
-    if(v === null) return;
-    if(!set.has(v) && !nums.includes(v)) nums.push(v);
-  });
-  const falta = nums.slice().sort((a,b)=>a-b);
+  var arr = PADROES[padrao], falta = [];
+  for(var q=0; q<arr.length; q++){
+    var val = nums[arr[q]];
+    if(val === null) continue;
+    if(!set[val] && falta.indexOf(val) === -1) falta.push(val);
+  }
+  falta.sort(function(a,b){ return a-b; });
   return {valido: falta.length === 0, faltam: falta.length, nums: falta};
 }
 
-/* ---------- formatação das listas de números ---------- */
 function listaFalta(nums, limite){
-  const arr = (nums || []).slice().sort((a,b)=>a-b);
-  const lim = limite || 4;
+  var arr = (nums||[]).slice().sort(function(a,b){ return a-b; });
+  var lim = limite || 4;
   if(!arr.length) return '';
   if(arr.length === 1) return 'o ' + arr[0];
   if(arr.length === 2) return 'o ' + arr[0] + ' ou o ' + arr[1];
   if(arr.length <= lim){
-    const cab = arr.slice(0, arr.length-1).join(', ');
-    return 'o ' + cab + ' ou o ' + arr[arr.length-1];
+    return 'o ' + arr.slice(0,arr.length-1).join(', ') + ' ou o ' + arr[arr.length-1];
   }
-  const cab = arr.slice(0, lim).join(', ');
-  return 'o ' + cab + ' ou outro';
+  return 'o ' + arr.slice(0,lim).join(', ') + ' ou outro';
 }
 
-/* ---------- ALERTA ---------- */
-let ultimoIdx = {0:-1, 1:-1, 2:-1};
-let alertaAtual = {nivel:-1, ts:0};
+/* ================= ALERTAS ================= */
+var ultimoIdx = {0:-1, 1:-1, 2:-1};
+var alertaAtual = {nivel:-1, ts:0};
 
 function escolhe(arr, nivel){
   if(arr.length === 1) return arr[0];
-  let i = Math.floor(Math.random()*arr.length);
+  var i = Math.floor(Math.random()*arr.length);
   if(i === ultimoIdx[nivel]){
     i = (i + 1 + Math.floor(Math.random()*(arr.length-1))) % arr.length;
   }
@@ -1194,116 +1384,649 @@ function avaliarAlerta(){
   if(S.pausado) return null;
   if(!cartelas.length || !S.sorteados.length){ limparAlerta(); return null; }
 
-  const set = new Set(S.sorteados.map(x=>x.n));
-  let min = 99;
-  let codigos = [];
-  let numsTodos = [];
-  let nomeMin = '';
+  var set = {};
+  for(var i=0;i<S.sorteados.length;i++) set[S.sorteados[i].n] = 1;
 
-  cartelas.forEach(c=>{
-    const r = analisar(c.nums, set, S.padrao);
-    const q = r.faltam;
+  var min = 99, codigos = [], numsTodos = [], nomeMin = '';
+
+  for(var k=0; k<cartelas.length; k++){
+    var c = cartelas[k];
+    var r = analisar(c.nums, set, S.padrao);
+    var q = r.faltam;
     if(q < min){
       min = q;
       codigos = [c.codigo];
       numsTodos = r.nums.slice();
-      nomeMin = (c.nome || '').trim();
+      nomeMin = (c.nome||'').trim();
     }else if(q === min && min < 99){
       codigos.push(c.codigo);
-      r.nums.forEach(n=>{ if(!numsTodos.includes(n)) numsTodos.push(n); });
+      for(var t=0; t<r.nums.length; t++){
+        if(numsTodos.indexOf(r.nums[t]) === -1) numsTodos.push(r.nums[t]);
+      }
     }
-  });
+  }
 
   if(min > 2){ limparAlerta(); return null; }
 
-  const agora = Date.now();
+  var agora = Date.now();
   if(alertaAtual.nivel === 1 && min > 1 && (agora - alertaAtual.ts) < 2600) return null;
 
-  const varias = codigos.length > 1;
-  const codPrincipal = codigos[0];
+  var varias = codigos.length > 1;
+  var codPrincipal = codigos[0];
 
-  /* ---------- BINGO: mostra SEMPRE o código ou o nome ---------- */
+  /* ---------- BINGO ---------- */
   if(min === 0){
-    const fr = escolhe(AL0, 0);
-    placar.classList.remove('quente'); placar.classList.add('urgente');
+    var fr = escolhe(AL0, 0);
+    placar.classList.remove('quente');
+    placar.classList.add('urgente');
     alertaEl.className = 'alerta show n0';
-    let extra;
+    var extra;
     if(nomeMin) extra = ' — ' + nomeMin + ' · ' + codPrincipal;
     else if(varias) extra = ' — ' + codigos.length + ' cartelas!';
     else extra = ' — Cartela ' + codPrincipal;
     alertaEl.textContent = fr.t + extra;
     chamada(0);
     alertaAtual = {nivel:0, ts:agora};
-    return {nivel:0, fala: nomeMin
-      ? 'Bingo! ' + nomeMin + ' bateu bingo!'
-      : 'Bingo! Temos um campeão!'};
+    return {
+      nivel:0,
+      fala: nomeMin ? ('Bingo! ' + nomeMin + ' bateu bingo!') : 'Bingo! Temos um campeão!'
+    };
   }
 
-  /* ---------- FALTA 1: mostra TODAS as pedras possíveis ---------- */
+  /* ---------- FALTA 1 ---------- */
   if(min === 1){
-    const fr = escolhe(AL1, 1);
-    placar.classList.remove('quente'); placar.classList.add('urgente');
+    var fr1 = escolhe(AL1, 1);
+    placar.classList.remove('quente');
+    placar.classList.add('urgente');
     alertaEl.className = 'alerta show n1';
-
-    let quem;
+    var quem;
     if(nomeMin) quem = nomeMin;
     else if(varias) quem = codigos.length + ' cartelas';
     else quem = 'Cartela ' + codPrincipal;
-
-    alertaEl.textContent = fr.t + ' (' + quem + ' — falta ' +
+    alertaEl.textContent = fr1.t + ' (' + quem + ' — falta ' +
       listaFalta(numsTodos, 4) + ')';
     chamada(1);
     alertaAtual = {nivel:1, ts:agora};
-    return {nivel:1, fala: nomeMin
-      ? 'Atenção! O ' + nomeMin + ' está a uma pedra do bingo!'
-      : fr.f};
+    return {
+      nivel:1,
+      fala: nomeMin ? ('Atenção! O ' + nomeMin + ' está a uma pedra do bingo!') : fr1.f
+    };
   }
 
   /* ---------- FALTA 2 ---------- */
-  const fr = escolhe(AL2, 2);
-  placar.classList.remove('urgente'); placar.classList.add('quente');
+  var fr2 = escolhe(AL2, 2);
+  placar.classList.remove('urgente');
+  placar.classList.add('quente');
   alertaEl.className = 'alerta show n2';
-
-  let quem2;
+  var quem2;
   if(nomeMin) quem2 = nomeMin + ' está perto';
   else if(varias) quem2 = codigos.length + ' cartelas';
   else quem2 = 'Cartela ' + codPrincipal;
-  alertaEl.textContent = fr.t + ' (' + quem2 + ')';
+  alertaEl.textContent = fr2.t + ' (' + quem2 + ')';
   alertaAtual = {nivel:2, ts:agora};
-  return {nivel:2, fala: nomeMin
-    ? 'Fica de olho! O ' + nomeMin + ' está a duas pedras do bingo!' : fr.f};
+  return {
+    nivel:2,
+    fala: nomeMin ? ('Fica de olho! O ' + nomeMin + ' está a duas pedras do bingo!') : fr2.f
+  };
 }
 
-/* ---------- PAUSAR NO BINGO ---------- */
-const btnBingo = document.getElementById('btnBingo');
+/* ================= SORTEIO ================= */
+function novaFila(){
+  var arr = [];
+  for(var i=1; i<=75; i++) arr.push(i);
+  for(var j=arr.length-1; j>0; j--){
+    var k = Math.floor(Math.random()*(j+1));
+    var tmp = arr[j]; arr[j] = arr[k]; arr[k] = tmp;
+  }
+  return arr;
+}
+function piscar(){
+  return new Promise(function(resolve){
+    var restantes = S.fila.slice();
+    var passos = 20;
+    var k = 0, anterior = null;
+    function tick(){
+      if(anterior !== null) setEstado(anterior,'apagado');
+      if(k >= passos || !restantes.length){ resolve(); return; }
+      var n = restantes[Math.floor(Math.random()*restantes.length)];
+      setEstado(n,'piscando');
+      anterior = n;
+      tique(k/passos);
+      var espera = 75 + Math.pow(k/passos, 2.3) * 300;
+      k++;
+      setTimeout(tick, espera);
+    }
+    tick();
+  });
+}
+function sortear(){
+  if(rodando) return;
+  if(S.pausado){ abrirTelaBingo(); return; }
+  if(S.travaFala && falando){
+    if(!pendente){ pendente = true; atualizarTravaUI(); }
+    return;
+  }
+  if(!S.fila.length){
+    abrirModal('Sorteio encerrado',
+      '<p>Todos os 75 números já foram sorteados.</p>' +
+      '<p class="aviso">Clique em Nova Rodada.</p>', []);
+    return;
+  }
+  rodando = true;
+  atualizarTravaUI();
+  var anterior = S.atual;
+  balanco();
+  piscar().then(function(){
+    if(anterior !== null) setEstado(anterior,'marcado');
+    var n = S.fila.shift();
+    S.sorteados.push({n:n, letra:letraDe(n), hora:new Date().toISOString()});
+    S.atual = n;
+    setEstado(n,'atual');
+    pintar(true);
+    revelacao();
+    var al = avaliarAlerta();
+    narrarNumero(n, al);
+    salvar();
+    rodando = false;
+    atualizarTravaUI();
+  });
+}
 
-function pausarNoBingo(semSom){
+/* ================= PERSISTÊNCIA ================= */
+var memoriaFallback = {};
+function salvar(){
+  var dados = {
+    fila:S.fila, sorteados:S.sorteados, atual:S.atual,
+    som:S.som, voz:S.voz, vozAlerta:S.vozAlerta,
+    modoPassador:S.modoPassador, travaFala:S.travaFala,
+    pausado:S.pausado, padrao:S.padrao,
+    velocidade:S.velocidade, vozNome:S.vozNome
+  };
+  try{ localStorage.setItem(KEY_S, JSON.stringify(dados)); }
+  catch(e){ memoriaFallback[KEY_S] = dados; }
+  try{ localStorage.setItem(KEY_C, JSON.stringify({cartelas:cartelas, proximoCodigo:proximoCodigo})); }
+  catch(e){ memoriaFallback[KEY_C] = {cartelas:cartelas, proximoCodigo:proximoCodigo}; }
+}
+function restaurar(){
+  var dados = null;
+  try{ dados = JSON.parse(localStorage.getItem(KEY_S)); }
+  catch(e){ dados = memoriaFallback[KEY_S] || null; }
+  if(!dados || !(dados.fila instanceof Array)) return false;
+
+  S.fila = dados.fila;
+  S.sorteados = dados.sorteados || [];
+  S.atual = (typeof dados.atual === 'number') ? dados.atual : null;
+  S.som = dados.som !== false;
+  S.voz = !!dados.voz;
+  S.vozAlerta = dados.vozAlerta !== false;
+  S.modoPassador = dados.modoPassador === true;
+  S.travaFala = dados.travaFala !== false;
+  S.pausado = dados.pausado === true;
+  S.padrao = dados.padrao || 'cantos';
+  S.velocidade = dados.velocidade || 0.8;
+  S.vozNome = dados.vozNome || '';
+
+  var ja = {};
+  for(var i=0;i<S.sorteados.length;i++) ja[S.sorteados[i].n] = 1;
+  S.fila = S.fila.filter(function(n){ return !ja[n]; });
+
+  try{
+    var c = JSON.parse(localStorage.getItem(KEY_C));
+    if(c){ cartelas = c.cartelas || []; proximoCodigo = c.proximoCodigo || 0; }
+  }catch(e){
+    if(memoriaFallback[KEY_C]){
+      cartelas = memoriaFallback[KEY_C].cartelas || [];
+      proximoCodigo = memoriaFallback[KEY_C].proximoCodigo || 0;
+    }
+  }
+  return true;
+}
+
+/* ================= CARTELAS (GERADOR ÚNICO) ================= */
+function gerarCartela(assinaturas){
+  for(var tent=0; tent<400; tent++){
+    var nums = [], col, lin;
+    for(col=0; col<5; col++){
+      var pool = [];
+      for(var i=1; i<=15; i++) pool.push(col*15 + i);
+      for(var j=pool.length-1; j>0; j--){
+        var k = Math.floor(Math.random()*(j+1));
+        var tmp = pool[j]; pool[j] = pool[k]; pool[k] = tmp;
+      }
+      for(lin=0; lin<5; lin++){
+        nums[lin*5+col] = (col===2 && lin===2) ? null : pool[lin];
+      }
+    }
+    var sig = nums.filter(function(v){ return v!==null; })
+      .sort(function(a,b){ return a-b; }).join('-');
+    if(!assinaturas[sig]){ assinaturas[sig] = 1; return nums; }
+  }
+  return null;
+}
+function gerarCartelasAcao(){
+  var campo = document.getElementById('qtdCart');
+  var qtd = Math.max(1, Math.min(500, parseInt(campo.value,10) || 0));
+  var assin = {};
+  for(var i=0; i<cartelas.length; i++){
+    assin[cartelas[i].nums.filter(function(v){ return v!==null; })
+      .sort(function(a,b){ return a-b; }).join('-')] = 1;
+  }
+  var feitas = 0, primeiro = proximoCodigo + 1;
+  for(var k=0; k<qtd; k++){
+    var nums = gerarCartela(assin);
+    if(!nums) break;
+    proximoCodigo++;
+    cartelas.push({
+      codigo: ('000' + proximoCodigo).slice(-3),
+      nome: '', telefone: '', nums: nums
+    });
+    feitas++;
+  }
+  salvar();
+  var r = document.getElementById('resCart');
+  if(r){
+    r.className = 'resultado ok';
+    r.innerHTML = feitas + ' cartelas geradas. ' + Math.ceil(feitas/4) + ' folha(s) A4.' +
+      '<small>Códigos ' + ('000'+primeiro).slice(-3) + ' a ' +
+      ('000'+proximoCodigo).slice(-3) + '</small>';
+  }
+  atualizarInfoCart();
+}
+function atualizarInfoCart(){
+  var el = document.getElementById('infoCart');
+  if(!el) return;
+  el.textContent = 'Última cartela gerada: ' +
+    (proximoCodigo>0 ? ('000'+proximoCodigo).slice(-3) : 'nenhuma') +
+    ' · Total no sistema: ' + cartelas.length;
+}
+function abrirCartelas(){
+  var comNome = 0;
+  for(var i=0;i<cartelas.length;i++) if((cartelas[i].nome||'').trim()) comNome++;
+
+  var html =
+    '<p>Cartelas em <b>4 por folha A4</b>, com código único, ' +
+    '<b>logo no centro</b>, <b>linha de nome</b> e corte tracejado.</p>' +
+    '<div style="margin-top:16px">' +
+    '<label for="qtdCart">Quantidade de cartelas</label>' +
+    '<input type="number" id="qtdCart" value="30" min="1" max="500">' +
+    '</div>' +
+    '<p class="aviso" id="infoCart"></p>' +
+    '<p class="aviso">' +
+      (comNome > 0
+        ? '✔ ' + comNome + ' cartelas já têm nome. Elas são impressas com o nome.'
+        : 'Depois de gerar, use o botão <b>Nomes</b> para identificar quem recebeu cada cartela.') +
+    '</p>' +
+    '<div class="resultado" id="resCart"></div>';
+
+  var botoes = [
+    {r:'Fechar', a:fecharModal},
+    {r:'Imprimir', a:function(){
+      if(!cartelas.length){
+        var x = document.getElementById('resCart');
+        if(x){ x.className='resultado err'; x.textContent='Gere as cartelas antes de imprimir.'; }
+        return;
+      }
+      imprimirCartelas();
+    }}
+  ];
+  if(cartelas.length) botoes.push({r:'Limpar cartelas', a:abrirLimparCartelas});
+  botoes.push({r:'Gerar cartelas', a:gerarCartelasAcao});
+
+  abrirModal('Gerar cartelas', html, botoes);
+  atualizarInfoCart();
+}
+function abrirLimparCartelas(){
+  var qtd = cartelas.length;
+  if(!qtd){
+    abrirModal('Limpar cartelas','<p>Não há cartelas para apagar.</p>',[]);
+    return;
+  }
+  var comNome = 0;
+  for(var i=0;i<cartelas.length;i++) if((cartelas[i].nome||'').trim()) comNome++;
+
+  abrirModal('Limpar cartelas',
+    '<p>Isso apaga <b>todas as ' + qtd + ' cartelas</b>' +
+    (comNome ? ' e os <b>' + comNome + ' nomes</b> cadastrados' : '') + '.</p>' +
+    '<p class="aviso">Depois de limpar, a numeração recomeça em <b>001</b>.</p>' +
+    '<p class="aviso">Os números já sorteados <b>NÃO</b> são apagados.</p>' +
+    '<p class="aviso"><b>Só faça isso antes do evento começar.</b> Nunca no meio do sorteio.</p>',
+    [
+      {r:'Cancelar', a:fecharModal},
+      {r:'Sim, limpar tudo', a:function(){
+        cartelas = []; proximoCodigo = 0;
+        salvar(); limparAlerta(); fecharModal();
+        abrirModal('Cartelas apagadas',
+          '<p>Todas as cartelas foram removidas. A próxima geração começa em <b>001</b>.</p>', []);
+      }}
+    ]);
+}
+
+function cartelaHtml(c){
+  var nome = (c.nome||'').trim();
+  var h = '<div class="cp"><div class="topo"><div class="marca">' + logoImg() + '</div>' +
+    '<i>Nº ' + c.codigo + '</i></div>' +
+    '<div class="dono">' + (nome || 'Nome:') + '</div>' +
+    '<table><thead><tr>';
+  var L = 'BINGO';
+  for(var i=0;i<5;i++) h += '<th>' + L[i] + '</th>';
+  h += '</tr></thead><tbody>';
+  for(var lin=0; lin<5; lin++){
+    h += '<tr>';
+    for(var col=0; col<5; col++){
+      var v = c.nums[lin*5+col];
+      h += (v === null) ? ('<td class="lv">' + logoImg() + '</td>') : ('<td>' + v + '</td>');
+    }
+    h += '</tr>';
+  }
+  return h + '</tbody></table><div class="pe">BINGO DO CEMTEC · CÓDIGO ' +
+    c.codigo + '</div></div>';
+}
+function imprimirCartelas(){
+  var area = document.getElementById('printArea');
+  area.innerHTML = '';
+  for(var i=0; i<cartelas.length; i+=4){
+    var folha = document.createElement('div');
+    folha.className = 'folha';
+    var lote = cartelas.slice(i, i+4);
+    for(var j=0; j<lote.length; j++){
+      folha.insertAdjacentHTML('beforeend', cartelaHtml(lote[j]));
+    }
+    area.appendChild(folha);
+  }
+  fecharModal();
+  setTimeout(function(){ window.print(); }, 450);
+}
+
+/* ================= NOMES ================= */
+function abrirNomes(){
+  if(!cartelas.length){
+    abrirModal('Nomes nas cartelas',
+      '<p>Nenhuma cartela gerada ainda.</p>' +
+      '<p class="aviso">Gere as cartelas primeiro, depois volte aqui para colocar o nome de quem recebeu cada uma.</p>', []);
+    return;
+  }
+  var h = '<p>Nome e telefone de quem recebeu cada cartela.</p>' +
+    '<p class="aviso">Pode deixar em branco quem não quiser identificar.</p>' +
+    '<div class="listaNomes">';
+  for(var i=0; i<cartelas.length; i++){
+    var c = cartelas[i];
+    h += '<div class="linhaNome">' +
+      '<span class="cod">' + c.codigo + '</span>' +
+      '<input type="text" data-i="' + i + '" data-campo="nome" maxlength="40" ' +
+        'placeholder="Nome de quem recebeu" value="' +
+        String(c.nome||'').replace(/"/g,'&quot;') + '">' +
+      '<input class="tel" type="tel" data-i="' + i + '" data-campo="tel" maxlength="20" ' +
+        'placeholder="WhatsApp" value="' +
+        String(c.telefone||'').replace(/"/g,'&quot;') + '">' +
+      '</div>';
+  }
+  h += '</div>';
+  var comNome = 0;
+  for(var k=0;k<cartelas.length;k++) if((cartelas[k].nome||'').trim()) comNome++;
+  h += '<p class="aviso" id="infoNomes">' + comNome + ' de ' + cartelas.length +
+    ' cartelas com nome.</p>';
+
+  abrirModal('Nomes nas cartelas', h, [
+    {r:'Fechar', a:fecharModal},
+    {r:'Salvar nomes', a:salvarNomes}
+  ]);
+}
+function salvarNomes(){
+  var ins = document.querySelectorAll('#mCorpo input[data-i]');
+  for(var i=0; i<ins.length; i++){
+    var idx = parseInt(ins[i].dataset.i, 10);
+    if(!cartelas[idx]) continue;
+    if(ins[i].dataset.campo === 'nome') cartelas[idx].nome = ins[i].value.trim();
+    else cartelas[idx].telefone = ins[i].value.trim();
+  }
+  salvar();
+  var comNome = 0, comTel = 0;
+  for(var k=0;k<cartelas.length;k++){
+    if((cartelas[k].nome||'').trim()) comNome++;
+    if((cartelas[k].telefone||'').trim()) comTel++;
+  }
+  var info = document.getElementById('infoNomes');
+  if(info) info.textContent = '✔ ' + comNome + ' com nome · ' + comTel + ' com telefone.';
+  avaliarAlerta();
+  fecharModal();
+}
+
+/* ================= LINKS / WHATSAPP / CSV ================= */
+function linkDe(c){
+  var nums = [];
+  for(var i=0;i<c.nums.length;i++) if(c.nums[i] !== null) nums.push(c.nums[i]);
+  return location.href.split('#')[0] +
+    '#c=' + encodeURIComponent(c.codigo) + '&g=' + nums.join('.');
+}
+function copiar(txt, btn){
+  function ok(){
+    if(!btn) return;
+    var a = btn.textContent;
+    btn.textContent = 'copiado!';
+    setTimeout(function(){ btn.textContent = a; }, 1200);
+  }
+  function reserva(){
+    var ta = document.createElement('textarea');
+    ta.value = txt; ta.style.cssText = 'position:fixed;top:-1000px';
+    document.body.appendChild(ta); ta.select();
+    try{ document.execCommand('copy'); ok(); }
+    catch(e){ window.prompt('Copie:', txt); }
+    document.body.removeChild(ta);
+  }
+  if(navigator.clipboard && navigator.clipboard.writeText){
+    navigator.clipboard.writeText(txt).then(ok, reserva);
+  }else reserva();
+}
+function abrirLinks(){
+  if(!cartelas.length){
+    abrirModal('Links',
+      '<p>Nenhuma cartela gerada ainda.</p>' +
+      '<p class="aviso">Gere as cartelas primeiro — os links usam as mesmas cartelas da conferência.</p>', []);
+    return;
+  }
+  var wh = '';
+  try{ wh = localStorage.getItem(WEBHOOK_KEY) || ''; }catch(e){}
+
+  var h =
+    '<p>Webhook do WhatsApp e lista de links.</p>' +
+    '<div style="margin:14px 0">' +
+    '<label>URL do webhook (n8n)</label>' +
+    '<input type="text" id="whUrl" placeholder="https://sua-vps.com/webhook/bingo-cartelas" value="' +
+      String(wh).replace(/"/g,'&quot;') + '">' +
+    '</div>' +
+    '<div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px">' +
+    '<button class="cvBtn ok" id="btnWhSalvar" type="button" style="padding:9px 14px;font-size:13px">Salvar URL</button>' +
+    '<button class="cvBtn" id="btnWhEnviar" type="button" style="padding:9px 14px;font-size:13px">Enviar no WhatsApp</button>' +
+    '<button class="cvBtn sec" id="btnCsv" type="button" style="padding:9px 14px;font-size:13px">Baixar CSV</button>' +
+    '</div>' +
+    '<div class="resultado" id="resWh"></div>' +
+    '<div class="listaNomes">';
+
+  for(var i=0; i<cartelas.length; i++){
+    var c = cartelas[i];
+    h += '<div class="linhaNome">' +
+      '<span class="cod">' + c.codigo + '</span>' +
+      '<input type="text" readonly value="' + linkDe(c).replace(/"/g,'&quot;') + '">' +
+      '<button class="cvBtn sec bcopy" data-i="' + i + '" type="button" ' +
+        'style="padding:8px 12px;font-size:12px">Copiar</button>' +
+      '</div>';
+  }
+  h += '</div>';
+
+  abrirModal('Cartelas e links para celular', h, [{r:'Fechar', a:fecharModal}]);
+
+  var bcs = document.querySelectorAll('.bcopy');
+  for(var k=0;k<bcs.length;k++){
+    bcs[k].onclick = function(){
+      var c = cartelas[parseInt(this.dataset.i, 10)];
+      copiar(linkDe(c), this);
+    };
+  }
+  document.getElementById('btnWhSalvar').onclick = function(){
+    var u = document.getElementById('whUrl').value.trim();
+    try{ localStorage.setItem(WEBHOOK_KEY, u); }catch(e){}
+    var r = document.getElementById('resWh');
+    r.className = 'resultado ok';
+    r.textContent = u ? 'URL salva.' : 'URL apagada.';
+  };
+  document.getElementById('btnWhEnviar').onclick = enviarWhats;
+  document.getElementById('btnCsv').onclick = baixarCsv;
+}
+function enviarWhats(){
+  var r = document.getElementById('resWh');
+  var el = document.getElementById('whUrl');
+  var url = ((el && el.value) || '').trim();
+  if(!url){ r.className='resultado err'; r.textContent='Configure a URL do webhook primeiro.'; return; }
+
+  var lista = [];
+  for(var i=0;i<cartelas.length;i++){
+    var c = cartelas[i];
+    if((c.telefone||'').trim()){
+      lista.push({codigo:c.codigo, nome:c.nome||'', telefone:c.telefone, link:linkDe(c)});
+    }
+  }
+  if(!lista.length){
+    r.className='resultado err';
+    r.textContent='Nenhuma cartela tem telefone cadastrado.';
+    return;
+  }
+  r.className = 'resultado ok';
+  r.textContent = 'Enviando ' + lista.length + ' cartelas...';
+
+  fetch(url, {
+    method:'POST',
+    headers:{'Content-Type':'application/json'},
+    body: JSON.stringify({evento:'cartelas', cartelas:lista})
+  })
+  .then(function(res){ return res.text(); })
+  .then(function(){ r.className='resultado ok'; r.textContent = lista.length + ' cartelas enviadas.'; })
+  .catch(function(e){ r.className='resultado err'; r.textContent='Falha: ' + e.message; });
+}
+function baixarCsv(){
+  var lin = 'codigo;nome;telefone;link\n';
+  for(var i=0;i<cartelas.length;i++){
+    var c = cartelas[i];
+    lin += c.codigo + ';' + (c.nome||'') + ';' + (c.telefone||'') + ';' + linkDe(c) + '\n';
+  }
+  var blob = new Blob(['\ufeff' + lin], {type:'text/csv;charset=utf-8;'});
+  var a = document.createElement('a');
+  a.href = URL.createObjectURL(blob);
+  a.download = 'cartelas-bingo-' + new Date().toISOString().slice(0,10) + '.csv';
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+}
+
+/* ================= MODO JOGADOR ================= */
+function lerHash(){
+  var h = location.hash.replace(/^#/,'');
+  if(!h) return null;
+  var partes = {};
+  h.split('&').forEach(function(kv){
+    var p = kv.split('=');
+    if(p[0]) partes[p[0]] = p[1];
+  });
+  if(!partes.g) return null;
+  var nums = partes.g.split('.').map(Number);
+  if(nums.length !== 24) return null;
+  var grid = [], idx = 0;
+  for(var r=0;r<5;r++){
+    grid[r] = [];
+    for(var k=0;k<5;k++){
+      grid[r][k] = (r===2 && k===2) ? null : nums[idx++];
+    }
+  }
+  return {codigo: partes.c ? decodeURIComponent(partes.c) : '', grid: grid};
+}
+function abrirJogador(c){
+  var velho = document.getElementById('cvPlay');
+  if(velho) velho.remove();
+
+  document.querySelectorAll('body>header,body>main,body>footer,#cvFab').forEach(function(el){
+    el.style.display = 'none';
+  });
+
+  var wrap = document.createElement('div');
+  wrap.id = 'cvPlay';
+
+  var MK = 'bingo_marks_' + c.codigo;
+  var marcado = {};
+  try{ marcado = JSON.parse(localStorage.getItem(MK) || '{}'); }catch(e){ marcado = {}; }
+
+  var h = '<div class="logoTop">' + logoImg() + '</div>' +
+    '<div class="tt">BINGO DO CEMTEC</div>' +
+    '<div class="sub">Cartela ' + c.codigo + '</div>' +
+    '<table class="cvGrid"><tbody>';
+  for(var r=0; r<5; r++){
+    h += '<tr>';
+    for(var k=0; k<5; k++){
+      var v = c.grid[r][k];
+      if(v === null){
+        h += '<td><button class="centro" disabled>' + logoImg() + '</button></td>';
+      }else{
+        h += '<td><button data-n="' + v + '" class="' + (marcado[v] ? 'mk' : '') + '">' + v + '</button></td>';
+      }
+    }
+    h += '</tr>';
+  }
+  h += '</tbody></table>' +
+    '<div class="cvInfo" id="cvInfo"></div>' +
+    '<button class="cvBtn ok" id="cvBingo" style="padding:16px 34px;font-size:17px">BINGO!</button>' +
+    '<button class="cvBtn sec" id="cvLimpar" style="padding:10px 18px;font-size:13px">Limpar marcações</button>' +
+    '<div style="color:#5f7fa6;font-size:11.5px;text-align:center;max-width:320px;line-height:1.5">' +
+    'A marcação é sua. O sorteio não espera — se não marcar, marque depois ou mostre seu código no telão.</div>';
+
+  wrap.innerHTML = h;
+  document.body.appendChild(wrap);
+
+  function info(){
+    var total = 0;
+    for(var kk in marcado) if(marcado[kk]) total++;
+    document.getElementById('cvInfo').textContent = total + ' marcados nesta cartela.';
+  }
+  info();
+
+  wrap.querySelectorAll('button[data-n]').forEach(function(b){
+    b.onclick = function(){
+      var n = parseInt(b.dataset.n, 10);
+      if(marcado[n]){ delete marcado[n]; b.classList.remove('mk'); }
+      else { marcado[n] = 1; b.classList.add('mk'); }
+      try{ localStorage.setItem(MK, JSON.stringify(marcado)); }catch(e){}
+      info();
+    };
+  });
+  document.getElementById('cvLimpar').onclick = function(){
+    marcado = {};
+    try{ localStorage.removeItem(MK); }catch(e){}
+    wrap.querySelectorAll('button[data-n]').forEach(function(b){ b.classList.remove('mk'); });
+    info();
+  };
+  document.getElementById('cvBingo').onclick = function(){
+    document.getElementById('cvInfo').innerHTML =
+      '<strong style="color:#4ade80">Mostre ao organizador: cartela ' + c.codigo + '</strong>';
+  };
+}
+
+/* ================= CONFERÊNCIA ================= */
+var btnBingo = document.getElementById('btnBingo');
+
+function pausarNoBingo(){
   if(S.pausado){ abrirTelaBingo(); return; }
   S.pausado = true;
   pendente = false;
   tokenFala++;
   try{ speechSynthesis.cancel(); }catch(e){}
   falando = false;
-
   atualizarTravaUI();
   btnBingo.classList.add('ativo');
   placar.classList.remove('quente','urgente');
   placar.classList.add('parado');
   contadorEl.className = 'pill bingo';
   salvar();
-
   alertaEl.className = 'alerta show npk';
   alertaEl.textContent = '🛑 JOGO PAUSADO — alguém bateu BINGO!';
-
-  if(!semSom){
-    somBingo();
-    if(S.voz && temSintese && S.vozAlerta){
-      falarCurto('Atenção! Vamos conferir a cartela do bingo!');
-    }
-  }
+  somBingo();
+  if(S.vozAlerta && temSintese) falarCurto('Atenção! Vamos conferir a cartela do bingo!');
   abrirTelaBingo();
 }
-
 function retomarJogo(){
   S.pausado = false;
   btnBingo.classList.remove('ativo');
@@ -1316,416 +2039,275 @@ function retomarJogo(){
   pintar(S.atual !== null);
   salvar();
 }
-
 function abrirTelaBingo(){
-  const html = `
-    <p style="font-size:14px;color:#fff;font-weight:700">
-      Jogo pausado. Digite o código da cartela de quem gritou BINGO.</p>
-    <div style="margin-top:14px">
-      <label for="codBingo">Código da cartela</label>
-      <input type="text" id="codBingo" placeholder="Ex: 027" maxlength="4"
-             inputmode="numeric" autocomplete="off">
-    </div>
-    <p class="aviso">Padrão em uso: <b>${NOME_PADRAO[S.padrao]}</b>
-      · ${S.sorteados.length} números sorteados
-      · centro conta como marcado</p>
-    <div class="resultado" id="resBingo"></div>
-    <div id="miniBingo"></div>
-  `;
-  abrirModal('BINGO! — Jogo pausado', html, [
-    {rotulo:'Continuar o jogo', acao:retomarJogo},
-    {rotulo:'Conferir cartela', acao:validarBingo}
+  var h =
+    '<p style="color:#fff;font-weight:700">Jogo pausado. Digite o código ou escolha na lista.</p>' +
+    '<div style="margin-top:14px">' +
+    '<label for="codBingo">Código da cartela</label>' +
+    '<input type="text" id="codBingo" placeholder="Ex: 027" maxlength="4" ' +
+      'inputmode="numeric" autocomplete="off">' +
+    '</div>' +
+    '<p class="aviso">Padrão em uso: <b>' + NOME_PADRAO[S.padrao] + '</b> · ' +
+      S.sorteados.length + ' números sorteados · centro conta como marcado</p>' +
+    '<div class="resultado" id="resBingo"></div>' +
+    '<div id="miniBingo"></div>';
+
+  if(cartelas.length && S.sorteados.length){
+    var set = {};
+    for(var i=0;i<S.sorteados.length;i++) set[S.sorteados[i].n] = 1;
+    var lista = [];
+    for(var k=0;k<cartelas.length;k++){
+      var r = analisar(cartelas[k].nums, set, S.padrao);
+      lista.push({c:cartelas[k], f:r.faltam});
+    }
+    lista.sort(function(a,b){ return a.f - b.f; });
+
+    h += '<p class="aviso" style="margin-top:14px"><b>Mais próximas do bingo</b></p>' +
+      '<div class="listaNomes" style="max-height:220px">';
+    for(var q=0; q<Math.min(10, lista.length); q++){
+      var it = lista[q];
+      h += '<div class="linhaNome">' +
+        '<span class="cod">' + it.c.codigo + '</span>' +
+        '<span style="flex:1;font-size:12px;color:#d5e0f5">' +
+          ((it.c.nome||'').trim() || '—') + '</span>' +
+        '<span style="font-weight:800;color:' + (it.f<=1?'#ffd84d':'#9fb3d4') +
+          ';font-size:12px">' + (it.f===0?'BINGO':(it.f===1?'falta 1':'faltam '+it.f)) + '</span>' +
+        '<button class="cvBtn ok bverif" data-cod="' + it.c.codigo + '" type="button" ' +
+          'style="padding:6px 10px;font-size:11px">Verificar</button>' +
+        '</div>';
+    }
+    h += '</div>';
+  }
+
+  abrirModal('BINGO! — Jogo pausado', h, [
+    {r:'Continuar o jogo', a:retomarJogo},
+    {r:'Conferir cartela', a:function(){ validarBingo(null); }}
   ], true);
-  const el = document.getElementById('codBingo');
-  if(el) setTimeout(()=>el.focus(), 120);
+
+  var campo = document.getElementById('codBingo');
+  if(campo) setTimeout(function(){ campo.focus(); }, 120);
+
+  document.querySelectorAll('.bverif').forEach(function(b){
+    b.onclick = function(){ validarBingo(b.dataset.cod); };
+  });
 }
+function validarBingo(codFixo){
+  var res = document.getElementById('resBingo');
+  var mini = document.getElementById('miniBingo');
+  if(!res) return;
 
-function validarBingo(){
-  const campo = document.getElementById('codBingo');
-  const res = document.getElementById('resBingo');
-  const mini = document.getElementById('miniBingo');
-  if(!campo || !res) return;
+  var cod;
+  if(codFixo) cod = String(codFixo);
+  else{
+    var campo = document.getElementById('codBingo');
+    cod = ((campo ? campo.value : '') || '').trim();
+    if(cod.length && cod.length < 3) cod = ('000' + cod).slice(-3);
+  }
 
-  const cod = (campo.value||'').trim().padStart(3,'0');
-  const c = cartelas.find(x => x.codigo === cod);
+  var c = null;
+  for(var i=0;i<cartelas.length;i++){
+    if(cartelas[i].codigo === cod){ c = cartelas[i]; break; }
+  }
   if(!c){
     res.className = 'resultado err';
-    res.innerHTML = 'CARTELA NÃO ENCONTRADA<small>Confira o código '+
-      'impresso no canto da cartela.</small>';
+    res.innerHTML = 'CARTELA NÃO ENCONTRADA<small>Confira o código impresso no canto da cartela.</small>';
     if(mini) mini.innerHTML = '';
     return;
   }
-  const set = new Set(S.sorteados.map(x=>x.n));
-  const r = analisar(c.nums, set, S.padrao);
-  const quem = (c.nome||'').trim();
+
+  var set = {};
+  for(var j=0;j<S.sorteados.length;j++) set[S.sorteados[j].n] = 1;
+  var r = analisar(c.nums, set, S.padrao);
+  var quem = (c.nome||'').trim();
 
   if(r.valido){
     res.className = 'resultado ok';
     res.innerHTML = '✅ BINGO VÁLIDO<small>' +
-      (quem ? '<b>' + quem + '</b> — cartela ' + c.codigo
-            : 'Cartela ' + c.codigo) +
+      (quem ? '<b>' + quem + '</b> — cartela ' + c.codigo : 'Cartela ' + c.codigo) +
       ' completou ' + NOME_PADRAO[S.padrao] + '.</small>';
 
-    const roda = document.getElementById('mRodape');
+    var roda = document.getElementById('mRodape');
     if(roda && !roda.querySelector('.encerrar')){
-      const el = document.createElement('button');
+      var el = document.createElement('button');
       el.className = 'btn encerrar';
       el.textContent = 'Encerrar rodada e premiar';
       el.style.borderColor = '#1e8e3e';
       el.style.color = '#5ddc85';
-      el.onclick = ()=>{ fecharModal(); abrirNovaRodada(); };
+      el.onclick = function(){ fecharModal(); abrirNovaRodada(); };
       roda.appendChild(el);
     }
-    if(S.voz && temSintese && S.vozAlerta){
-      falarCurto('Bingo confirmado! ' +
-        (quem ? quem + ' é o campeão!' : 'Temos um campeão!'));
+    if(S.vozAlerta && temSintese){
+      falarCurto('Bingo confirmado! ' + (quem ? (quem + ' é o campeão!') : 'Temos um campeão!'));
     }
     somBingo();
   }else{
     res.className = 'resultado err';
     res.innerHTML = '❌ BINGO INVÁLIDO<small>Faltam: ' +
-      (r.nums.length ? r.nums.join(', ') : '—') +
-      '. Continue o jogo.</small>';
-    if(S.voz && temSintese && S.vozAlerta){
+      (r.nums.length ? r.nums.join(', ') : '—') + '. Continue o jogo.</small>';
+    if(S.vozAlerta && temSintese){
       falarCurto('Ainda não. Faltam ' + r.nums.length +
         (r.nums.length === 1 ? ' número.' : ' números.'));
     }
   }
-  if(mini) mini.innerHTML = minicartelaHtml(c.nums, set);
+  if(mini) mini.innerHTML = minicartela(c.nums, set);
 }
-
-btnBingo.onclick = ()=>{
-  if(S.pausado) abrirTelaBingo();
-  else pausarNoBingo();
-};
-
-/* ---------- NOMES NAS CARTELAS ---------- */
-function abrirNomes(){
-  if(!cartelas.length){
-    abrirModal('Nomes nas cartelas',
-      '<p>Nenhuma cartela gerada ainda.</p>'+
-      '<p class="aviso">Gere as cartelas primeiro, depois volte aqui para '+
-      'colocar o nome de quem recebeu cada uma.</p>', []);
-    return;
+function minicartela(nums, set){
+  var h = '<div class="minicart">';
+  for(var i=0;i<nums.length;i++){
+    var v = nums[i];
+    if(v === null) h += '<div class="livre">' + logoImg() + '</div>';
+    else if(set[v]) h += '<div class="mk">' + v + '</div>';
+    else h += '<div>' + v + '</div>';
   }
-  let html = '<p>Digite o nome de quem recebeu cada cartela. '+
-    'Com o nome preenchido, os alertas passam a dizer '+
-    '<b>"a Maria está a uma pedra"</b> em vez de "a cartela 021".</p>'+
-    '<p class="aviso">Pode deixar em branco quem não quiser identificar.</p>'+
-    '<div class="listaNomes">';
-  cartelas.forEach((c,i)=>{
-    html += '<div class="linhaNome">'+
-      '<span class="cod">'+c.codigo+'</span>'+
-      '<input type="text" data-i="'+i+'" maxlength="40" '+
-      'placeholder="Nome de quem recebeu" value="'+
-      ((c.nome||'').replace(/"/g,'&quot;'))+'">'+
-      '</div>';
-  });
-  html += '</div>';
-  const comNome = cartelas.filter(c=>(c.nome||'').trim()).length;
-  html += '<p class="aviso" id="infoNomes">'+comNome+' de '+cartelas.length+
-    ' cartelas com nome.</p>';
-
-  abrirModal('Nomes nas cartelas', html, [
-    {rotulo:'Fechar', acao:fecharModal},
-    {rotulo:'Salvar nomes', acao:salvarNomes}
-  ]);
+  return h + '</div>';
 }
 
-function salvarNomes(){
-  const inputs = document.querySelectorAll('#mCorpo input[data-i]');
-  inputs.forEach(inp=>{
-    const i = parseInt(inp.dataset.i, 10);
-    if(cartelas[i]) cartelas[i].nome = inp.value.trim();
-  });
-  salvar();
-  const comNome = cartelas.filter(c=>(c.nome||'').trim()).length;
-  const info = document.getElementById('infoNomes');
-  if(info) info.textContent = '✔ ' + comNome + ' de ' + cartelas.length +
-    ' cartelas com nome salvo.';
-  avaliarAlerta();
-  fecharModal();
-}
-
-/* ---------- LIMPAR CARTELAS ---------- */
-function abrirLimparCartelas(){
-  const qtd = cartelas.length;
-  if(!qtd){
-    abrirModal('Limpar cartelas','<p>Não há cartelas para apagar.</p>',[]);
-    return;
-  }
-  const comNome = cartelas.filter(c=>(c.nome||'').trim()).length;
-  abrirModal('Limpar cartelas',
-    '<p>Isso apaga <b>todas as '+qtd+' cartelas</b>'+
-    (comNome ? ' e os <b>'+comNome+' nomes</b> cadastrados' : '')+'.</p>'+
-    '<p class="aviso">Depois de limpar, a numeração recomeça em <b>001</b>.</p>'+
-    '<p class="aviso">Os números já sorteados <b>NÃO</b> são apagados.</p>'+
-    '<p class="aviso"><b>Só faça isso antes do evento começar.</b> '+
-    'Nunca no meio do sorteio.</p>',
-    [
-      {rotulo:'Cancelar', acao:fecharModal},
-      {rotulo:'Sim, limpar tudo', acao:()=>{
-        cartelas = [];
-        proximoCodigo = 0;
-        salvar();
-        limparAlerta();
-        fecharModal();
-        abrirModal('Cartelas apagadas',
-          '<p>Todas as cartelas foram removidas. A próxima geração '+
-          'começa em <b>001</b>.</p>', []);
-      }}
-    ]);
-}
-
-/* ---------- MAIS PERTO ---------- */
+/* ================= MAIS PERTO ================= */
 function abrirQuentes(){
   if(!cartelas.length){
     abrirModal('Cartelas mais próximas',
-      '<p>Nenhuma cartela gerada ainda.</p><p class="aviso">Gere as '+
-      'cartelas primeiro.</p>', []);
+      '<p>Nenhuma cartela gerada ainda.</p><p class="aviso">Gere as cartelas primeiro.</p>', []);
     return;
   }
   if(!S.sorteados.length){
-    abrirModal('Cartelas mais próximas',
-      '<p>Nenhum número sorteado ainda.</p>', []);
+    abrirModal('Cartelas mais próximas','<p>Nenhum número sorteado ainda.</p>', []);
     return;
   }
-  const set = new Set(S.sorteados.map(x=>x.n));
-  const lista = cartelas.map(c=>{
-    const r = analisar(c.nums, set, S.padrao);
-    return {codigo:c.codigo, nome:(c.nome||'').trim(),
-            faltam:r.faltam, nums:r.nums};
-  }).sort((a,b)=> a.faltam - b.faltam).slice(0, 15);
+  var set = {};
+  for(var i=0;i<S.sorteados.length;i++) set[S.sorteados[i].n] = 1;
 
-  let html = '<p>Padrão: <b>'+NOME_PADRAO[S.padrao]+'</b> · '+
-    S.sorteados.length+' sorteados · '+cartelas.length+' cartelas</p>'+
-    '<table class="quentes"><thead><tr><th>Cartela</th><th>Nome</th>'+
-    '<th>Falta</th></tr></thead><tbody>';
-  lista.forEach(x=>{
-    const cls = x.faltam <= 1 ? 'q1' : x.faltam === 2 ? 'q2' : '';
-    const txt = x.faltam === 0 ? 'BINGO'
-              : x.faltam === 1 ? 'falta 1' : 'faltam ' + x.faltam;
-    const nums = (x.faltam > 0 && x.nums.length) ? x.nums.join(', ') : '';
-    html += '<tr><td>'+x.codigo+'</td>'+
-            '<td class="nm">'+(x.nome || '<span style="color:#4a5f88">—</span>')+'</td>'+
-            '<td class="n">'+nums+'</td>'+
-            '<td class="f '+cls+'">'+txt+'</td></tr>';
-  });
-  html += '</tbody></table>';
+  var lista = [];
+  for(var k=0;k<cartelas.length;k++){
+    var r = analisar(cartelas[k].nums, set, S.padrao);
+    lista.push({
+      codigo: cartelas[k].codigo,
+      nome: (cartelas[k].nome||'').trim(),
+      faltam: r.faltam,
+      nums: r.nums
+    });
+  }
+  lista.sort(function(a,b){ return a.faltam - b.faltam; });
+
+  var h = '<p>Padrão: <b>' + NOME_PADRAO[S.padrao] + '</b> · ' +
+    S.sorteados.length + ' sorteados · ' + cartelas.length + ' cartelas</p>' +
+    '<table class="quentes"><thead><tr><th>Cartela</th><th>Nome</th>' +
+    '<th>Falta</th><th></th></tr></thead><tbody>';
+
+  for(var q=0; q<Math.min(15, lista.length); q++){
+    var x = lista[q];
+    var cls = x.faltam <= 1 ? 'q1' : (x.faltam === 2 ? 'q2' : '');
+    var txt = x.faltam === 0 ? 'BINGO' : (x.faltam === 1 ? 'falta 1' : 'faltam ' + x.faltam);
+    h += '<tr><td>' + x.codigo + '</td>' +
+      '<td class="nm">' + (x.nome || '—') + '</td>' +
+      '<td class="n">' + (x.nums.length ? x.nums.join(', ') : '') + '</td>' +
+      '<td class="f ' + cls + '">' + txt + '</td></tr>';
+  }
+  h += '</tbody></table>';
   if(cartelas.length > 15){
-    html += '<p class="aviso">Mostrando as 15 mais próximas de '+
-      cartelas.length+'.</p>';
+    h += '<p class="aviso">Mostrando as 15 mais próximas de ' + cartelas.length + '.</p>';
   }
-  abrirModal('Cartelas mais próximas', html, []);
+  abrirModal('Cartelas mais próximas', h, []);
 }
 
-/* ---------- SORTEIO ---------- */
-function novaFila(){
-  const arr = Array.from({length:75}, (_,i)=>i+1);
-  for(let i=arr.length-1; i>0; i--){
-    const j = Math.floor(Math.random()*(i+1));
-    [arr[i],arr[j]] = [arr[j],arr[i]];
+/* ================= HISTÓRICO ================= */
+function abrirHistorico(){
+  var h;
+  if(!S.sorteados.length){
+    h = '<p>Nenhum número sorteado ainda.</p>';
+  }else{
+    h = '<table class="hist"><thead><tr><th>#</th><th>Pedra</th>' +
+      '<th>Hora</th></tr></thead><tbody>';
+    for(var i=0;i<S.sorteados.length;i++){
+      var x = S.sorteados[i];
+      var hora = new Date(x.hora).toLocaleTimeString('pt-BR',
+        {hour:'2-digit',minute:'2-digit',second:'2-digit'});
+      h += '<tr><td>' + (i+1) + '</td><td><b>' + x.letra + ' ' + x.n +
+        '</b></td><td>' + hora + '</td></tr>';
+    }
+    h += '</tbody></table>';
   }
-  return arr;
-}
-function piscar(){
-  return new Promise(resolve=>{
-    const restantes = S.fila.slice();
-    const passos = 20;
-    let k = 0, anterior = null;
-    (function tick(){
-      if(anterior !== null) setEstado(anterior,'apagado');
-      if(k >= passos || !restantes.length){ resolve(); return; }
-      const n = restantes[Math.floor(Math.random()*restantes.length)];
-      setEstado(n,'piscando');
-      anterior = n;
-      tique(k/passos);
-      const espera = 75 + Math.pow(k/passos, 2.3) * 300;
-      k++;
-      setTimeout(tick, espera);
-    })();
-  });
+  abrirModal('Histórico de sorteios', h, []);
 }
 
-async function sortear(){
-  if(rodando) return;
-  if(S.pausado){ abrirTelaBingo(); return; }
-
-  if(S.travaFala && falando){
-    if(!pendente){ pendente = true; atualizarTravaUI(); }
-    return;
-  }
-
-  if(!S.fila.length){
-    abrirModal('Sorteio encerrado',
-      '<p>Todos os 75 números já foram sorteados.</p>'+
-      '<p class="aviso">Clique em Nova Rodada.</p>', []);
-    return;
-  }
-
-  rodando = true;
-  atualizarTravaUI();
-
-  const anterior = S.atual;
-  balanco();
-  await piscar();
-  if(anterior !== null) setEstado(anterior,'marcado');
-
-  const n = S.fila.shift();
-  S.sorteados.push({n, letra:letraDe(n), hora:new Date().toISOString()});
-  S.atual = n;
-
-  setEstado(n,'atual');
-  pintar(true);
-  revelacao();
-
-  const al = avaliarAlerta();
-  narrarNumero(n, al);
-
-  salvar();
-  rodando = false;
-  atualizarTravaUI();
-}
-
-/* ---------- PERSISTÊNCIA ---------- */
-let memoriaFallback = {};
-function salvar(){
-  const dados = {fila:S.fila, sorteados:S.sorteados, atual:S.atual,
-                 som:S.som, voz:S.voz, vozAlerta:S.vozAlerta,
-                 modoPassador:S.modoPassador, travaFala:S.travaFala,
-                 pausado:S.pausado, padrao:S.padrao,
-                 velocidade:S.velocidade, vozNome:S.vozNome};
-  try{ localStorage.setItem(KEY_S, JSON.stringify(dados)); }
-  catch(e){ memoriaFallback[KEY_S] = dados; }
-  try{ localStorage.setItem(KEY_C, JSON.stringify({cartelas, proximoCodigo})); }
-  catch(e){}
-}
-function restaurar(){
-  let dados = null;
-  try{ dados = JSON.parse(localStorage.getItem(KEY_S)); }
-  catch(e){ dados = memoriaFallback[KEY_S] || null; }
-  if(!dados || !Array.isArray(dados.fila)) return false;
-  S.fila = dados.fila; S.sorteados = dados.sorteados || [];
-  S.atual = dados.atual ?? null;
-  S.som = dados.som !== false; S.voz = !!dados.voz;
-  S.vozAlerta = dados.vozAlerta !== false;
-  S.modoPassador = dados.modoPassador === true;
-  S.travaFala = dados.travaFala !== false;
-  S.pausado = dados.pausado === true;
-  S.padrao = dados.padrao || 'cantos';
-  S.velocidade = dados.velocidade || 0.8;
-  S.vozNome = dados.vozNome || '';
-  const jaSaiu = new Set(S.sorteados.map(x=>x.n));
-  S.fila = S.fila.filter(n => !jaSaiu.has(n));
-  try{
-    const c = JSON.parse(localStorage.getItem(KEY_C));
-    if(c){ cartelas = c.cartelas || []; proximoCodigo = c.proximoCodigo || 0; }
-  }catch(e){}
-  return true;
-}
-
-/* ---------- BACKUP ---------- */
+/* ================= BACKUP ================= */
 function exportarBackup(){
   if(!S.sorteados.length && !cartelas.length){
-    abrirModal('Backup','<p>Não há nada para salvar ainda — nenhum número '+
-      'sorteado e nenhuma cartela gerada.</p>',[]);
+    abrirModal('Backup','<p>Não há nada para salvar ainda — nenhum número sorteado e nenhuma cartela gerada.</p>',[]);
     return;
   }
-  const pacote = {
+  var pacote = {
     app:'Bingo do CEMTEC',
-    versao: 4,
-    geradoEm: new Date().toISOString(),
-    estado: {fila:S.fila, sorteados:S.sorteados, atual:S.atual,
-             padrao:S.padrao, som:S.som, voz:S.voz,
-             vozAlerta:S.vozAlerta, travaFala:S.travaFala,
-             modoPassador:S.modoPassador, pausado:S.pausado,
-             velocidade:S.velocidade, vozNome:S.vozNome},
-    cartelas: cartelas.map(c=>({
-      codigo:c.codigo, nome:c.nome || '', nums:c.nums
-    })),
-    proximoCodigo
+    versao:5,
+    geradoEm:new Date().toISOString(),
+    estado:{
+      fila:S.fila, sorteados:S.sorteados, atual:S.atual,
+      padrao:S.padrao, som:S.som, voz:S.voz,
+      vozAlerta:S.vozAlerta, travaFala:S.travaFala,
+      modoPassador:S.modoPassador, pausado:S.pausado,
+      velocidade:S.velocidade, vozNome:S.vozNome
+    },
+    cartelas: cartelas.map(function(c){
+      return {codigo:c.codigo, nome:c.nome||'', telefone:c.telefone||'', nums:c.nums};
+    }),
+    proximoCodigo: proximoCodigo
   };
-  const txt = JSON.stringify(pacote, null, 2);
-  const blob = new Blob([txt], {type:'application/json;charset=utf-8;'});
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement('a');
-  const d = new Date();
-  const stamp = d.getFullYear() + '-' +
+  var blob = new Blob([JSON.stringify(pacote,null,2)], {type:'application/json;charset=utf-8;'});
+  var a = document.createElement('a');
+  var d = new Date();
+  var stamp = d.getFullYear() + '-' +
     String(d.getMonth()+1).padStart(2,'0') + '-' +
     String(d.getDate()).padStart(2,'0') + '_' +
     String(d.getHours()).padStart(2,'0') + 'h' +
     String(d.getMinutes()).padStart(2,'0');
-  a.href = url;
+  a.href = URL.createObjectURL(blob);
   a.download = 'backup-bingo-cemtec-' + stamp + '.json';
-  document.body.appendChild(a); a.click();
-  document.body.removeChild(a);
-  URL.revokeObjectURL(url);
-
+  document.body.appendChild(a); a.click(); document.body.removeChild(a);
+  URL.revokeObjectURL(a.href);
   abrirModal('Backup salvo',
-    '<p>Arquivo gerado com <b>'+S.sorteados.length+' números sorteados</b> '+
-    'e <b>'+cartelas.length+' cartelas</b>.</p>'+
-    '<p class="aviso">Guarde o arquivo num pendrive ou no Drive. Se outro '+
-    'computador for usado no evento, basta importar este arquivo lá — '+
-    'as cartelas geradas e os nomes vão junto.</p>', []);
+    '<p>Arquivo gerado com <b>' + S.sorteados.length + ' números sorteados</b> e <b>' +
+    cartelas.length + ' cartelas</b>.</p>', []);
 }
-
 function abrirBackup(){
   abrirModal('Backup do jogo',
-    '<p>O backup guarda <b>tudo</b> num único arquivo: os números já '+
-    'sorteados, os 75 da fila, as cartelas geradas e os nomes.</p>'+
-    '<p class="aviso"><b>Exportar</b> — gera o arquivo para guardar.</p>'+
-    '<p class="aviso"><b>Importar</b> — restaura um arquivo salvo. '+
+    '<p>O backup guarda <b>tudo</b> num único arquivo: os números já sorteados, ' +
+    'os 75 da fila, as cartelas geradas, nomes e telefones.</p>' +
+    '<p class="aviso"><b>Exportar</b> — gera o arquivo para guardar.</p>' +
+    '<p class="aviso"><b>Importar</b> — restaura um arquivo salvo. ' +
     'Atenção: isso substitui o que está aberto agora.</p>',
     [
-      {rotulo:'Fechar', acao:fecharModal},
-      {rotulo:'⬇ Importar', acao:()=>{
+      {r:'Fechar', a:fecharModal},
+      {r:'⬇ Importar', a:function(){
         fecharModal();
         document.getElementById('inpBackup').click();
       }},
-      {rotulo:'⬆ Exportar', acao:()=>{ fecharModal(); exportarBackup(); }}
+      {r:'⬆ Exportar', a:function(){ fecharModal(); exportarBackup(); }}
     ]);
 }
-
-const inpBackup = document.getElementById('inpBackup');
-inpBackup.addEventListener('change', ev=>{
-  const file = ev.target.files && ev.target.files[0];
-  if(!file) return;
-  const reader = new FileReader();
-  reader.onload = ()=>{
+var inpBackup = document.getElementById('inpBackup');
+inpBackup.addEventListener('change', function(ev){
+  var f = ev.target.files && ev.target.files[0];
+  if(!f) return;
+  var rd = new FileReader();
+  rd.onload = function(){
     try{
-      const p = JSON.parse(reader.result);
-      if(!p || !p.estado || !Array.isArray(p.estado.fila)){
-        throw new Error('formato');
-      }
-      const total = (p.estado.sorteados||[]).length;
-      const qtd = (p.cartelas||[]).length;
-
-      abrirModal('Confirmar importação',
-        '<p>Arquivo: <b>'+file.name+'</b></p>'+
-        '<p class="aviso">Contém <b>'+total+' números sorteados</b> e '+
-        '<b>'+qtd+' cartelas</b>'+
-        (p.geradoEm ? ' · salvo em ' +
-          new Date(p.geradoEm).toLocaleString('pt-BR') : '')+'.</p>'+
-        '<p class="aviso">Isso <b>substitui</b> o estado atual. '+
-        'Confirma?</p>',
-        [
-          {rotulo:'Cancelar', acao:fecharModal},
-          {rotulo:'Sim, importar', acao:()=>{ aplicarBackup(p); fecharModal(); }}
-        ]);
+      var p = JSON.parse(rd.result);
+      if(!p || !p.estado || !(p.estado.fila instanceof Array)) throw new Error('formato');
+      aplicarBackup(p);
+      abrirModal('Importado',
+        '<p>Backup restaurado: <b>' + (p.estado.sorteados||[]).length +
+        ' números</b> e <b>' + (p.cartelas||[]).length + ' cartelas</b>.</p>', []);
     }catch(err){
       abrirModal('Arquivo inválido',
-        '<p>Este arquivo não é um backup do Bingo do CEMTEC, ou está '+
-        'corrompido.</p>', []);
+        '<p>Este arquivo não é um backup do Bingo do CEMTEC, ou está corrompido.</p>', []);
     }
-    inpBackup.value = '';
+    ev.target.value = '';
   };
-  reader.readAsText(file, 'utf-8');
+  rd.readAsText(f, 'utf-8');
 });
-
 function aplicarBackup(p){
-  const e = p.estado || {};
-  S.fila = Array.isArray(e.fila) ? e.fila.slice() : novaFila();
-  S.sorteados = Array.isArray(e.sorteados) ? e.sorteados.slice() : [];
+  var e = p.estado || {};
+  S.fila = (e.fila instanceof Array) ? e.fila.slice() : novaFila();
+  S.sorteados = (e.sorteados instanceof Array) ? e.sorteados.slice() : [];
   S.atual = (typeof e.atual === 'number') ? e.atual : null;
   S.padrao = e.padrao || 'cantos';
   S.som = e.som !== false;
@@ -1737,308 +2319,128 @@ function aplicarBackup(p){
   S.velocidade = e.velocidade || 0.8;
   S.vozNome = e.vozNome || '';
 
-  cartelas = (p.cartelas || []).map(c=>({
-    codigo: c.codigo, nome: c.nome || '', nums: c.nums
-  }));
+  cartelas = (p.cartelas||[]).map(function(c){
+    return {codigo:c.codigo, nome:c.nome||'', telefone:c.telefone||'', nums:c.nums};
+  });
   proximoCodigo = p.proximoCodigo || cartelas.length;
 
-  const jaSaiu = new Set(S.sorteados.map(x=>x.n));
-  S.fila = S.fila.filter(n => !jaSaiu.has(n));
+  var ja = {};
+  for(var i=0;i<S.sorteados.length;i++) ja[S.sorteados[i].n] = 1;
+  S.fila = S.fila.filter(function(n){ return !ja[n]; });
 
   salvar();
   montarPlacar();
   pintar(S.atual !== null);
   btnSom.classList.toggle('on', S.som);
   btnVoz.classList.toggle('on', S.voz);
-  pintarBtnAlerta();
-  pintarBtnPassador();
+  btnAlerta.classList.toggle('alertaOn', S.vozAlerta);
   pintarBtnTrava();
+  pintarBtnPassador();
   btnBingo.classList.remove('ativo');
   placar.classList.remove('parado');
-  selPadrao.value = S.padrao;
-  selVeloc.value = String(S.velocidade);
+  document.getElementById('selPadrao').value = S.padrao;
+  document.getElementById('selVeloc').value = String(S.velocidade);
   atualizarTravaUI();
   inicializarVozes();
-  setTimeout(()=>{ ajustarTamanho(); avaliarAlerta(); }, 80);
+  setTimeout(function(){ ajustarTamanho(); avaliarAlerta(); }, 80);
 }
 
-/* ---------- MODAL ---------- */
-const overlay = document.getElementById('overlay');
-const modalBox = document.getElementById('modalBox');
-const mTitulo = document.getElementById('mTitulo');
-const mCorpo  = document.getElementById('mCorpo');
-const mRodape = document.getElementById('mRodape');
-
-function abrirModal(titulo, corpoHtml, botoes, ehBingo){
-  mTitulo.textContent = titulo;
-  mCorpo.innerHTML = corpoHtml;
-  mRodape.innerHTML = '';
-  modalBox.classList.toggle('bingoM', !!ehBingo);
-  (botoes||[]).forEach(b=>{
-    const el = document.createElement('button');
-    el.className = 'btn'; el.textContent = b.rotulo;
-    el.onclick = b.acao; mRodape.appendChild(el);
-  });
-  if(!botoes || !botoes.length){
-    const el = document.createElement('button');
-    el.className='btn'; el.textContent='Fechar'; el.onclick = fecharModal;
-    mRodape.appendChild(el);
-  }
-  overlay.classList.add('show');
-  const primeiro = mCorpo.querySelector('input');
-  if(primeiro && !ehBingo) setTimeout(()=>primeiro.focus(), 60);
-}
-function fecharModal(){ overlay.classList.remove('show'); }
-overlay.addEventListener('click', e=>{ if(e.target === overlay) fecharModal(); });
-
-function abrirHistorico(){
-  let html;
-  if(!S.sorteados.length){
-    html = '<p>Nenhum número sorteado ainda.</p>';
-  }else{
-    html = '<table class="hist"><thead><tr><th>#</th><th>Pedra</th>'+
-           '<th>Hora</th></tr></thead><tbody>';
-    S.sorteados.forEach((x,i)=>{
-      const h = new Date(x.hora).toLocaleTimeString('pt-BR',
-        {hour:'2-digit',minute:'2-digit',second:'2-digit'});
-      html += '<tr><td>'+(i+1)+'</td><td><b>'+x.letra+' '+x.n+
-              '</b></td><td>'+h+'</td></tr>';
-    });
-    html += '</tbody></table>';
-  }
-  abrirModal('Histórico de sorteios', html, []);
-}
-
-/* ---------- CARTELAS ---------- */
-const CASA_CENTRAL = 'CEMTEC';
-
-function gerarCartela(assinaturas){
-  for(let tent=0; tent<400; tent++){
-    const nums = new Array(25).fill(null);
-    for(let col=0; col<5; col++){
-      const base = col*15;
-      const pool = Array.from({length:15}, (_,i)=>base+i+1);
-      for(let i=pool.length-1;i>0;i--){
-        const j = Math.floor(Math.random()*(i+1));
-        [pool[i],pool[j]] = [pool[j],pool[i]];
-      }
-      for(let lin=0; lin<5; lin++){
-        if(col===2 && lin===2) continue;
-        nums[lin*5+col] = pool[lin];
-      }
-    }
-    const sig = nums.filter(v=>v!==null).sort((a,b)=>a-b).join('-');
-    if(!assinaturas.has(sig)){ assinaturas.add(sig); return nums; }
-  }
-  return null;
-}
-function abrirCartelas(){
-  const comNome = cartelas.filter(c=>(c.nome||'').trim()).length;
-  const html = `
-    <p>Cartelas em <b>4 por folha A4</b>, com código único,
-    <b>logo no centro</b>, <b>linha de nome</b> e corte tracejado.</p>
-    <div style="margin-top:16px">
-      <label for="qtdCart">Quantidade de cartelas</label>
-      <input type="number" id="qtdCart" value="40" min="1" max="500">
-    </div>
-    <p class="aviso" id="infoCart"></p>
-    <p class="aviso">${comNome > 0
-      ? '✔ ' + comNome + ' cartelas já têm nome. Elas são impressas com o nome.'
-      : 'Depois de gerar, use o botão <b>Nomes</b> para identificar quem '+
-        'recebeu cada cartela.'}</p>
-    <div class="resultado" id="resCart"></div>
-  `;
-  const botoes = [
-    {rotulo:'Fechar', acao:fecharModal},
-    {rotulo:'Imprimir', acao:()=>{
-      if(!cartelas.length){
-        const r = document.getElementById('resCart');
-        if(r){ r.className='resultado err';
-               r.textContent='Gere as cartelas antes de imprimir.'; }
-        return;
-      }
-      imprimirCartelas();
-    }},
-    {rotulo:'Gerar cartelas', acao:gerarCartelasAcao}
-  ];
-  if(cartelas.length){
-    botoes.splice(1, 0, {rotulo:'Limpar cartelas', acao:abrirLimparCartelas});
-  }
-  abrirModal('Gerar cartelas', html, botoes);
-  atualizarInfoCart();
-}
-function atualizarInfoCart(){
-  const info = document.getElementById('infoCart');
-  if(!info) return;
-  info.textContent = 'Última cartela gerada: ' +
-    (proximoCodigo>0 ? String(proximoCodigo).padStart(3,'0') : 'nenhuma') +
-    ' · Total no sistema: ' + cartelas.length;
-}
-function gerarCartelasAcao(){
-  const campo = document.getElementById('qtdCart');
-  const qtd = Math.max(1, Math.min(500, parseInt(campo.value,10) || 0));
-  const assinaturas = new Set(cartelas.map(c =>
-    c.nums.filter(v=>v!==null).slice().sort((a,b)=>a-b).join('-')));
-  let feitas = 0;
-  const primeiro = proximoCodigo + 1;
-  for(let i=0; i<qtd; i++){
-    const nums = gerarCartela(assinaturas);
-    if(!nums) break;
-    proximoCodigo++;
-    cartelas.push({codigo:String(proximoCodigo).padStart(3,'0'),
-                   nome:'', nums});
-    feitas++;
-  }
-  salvar(); atualizarInfoCart(); avaliarAlerta();
-  const r = document.getElementById('resCart');
-  if(r){
-    r.className = 'resultado ok';
-    r.innerHTML = feitas + ' cartelas geradas. ' +
-      Math.ceil(feitas/4) + ' folha(s) A4.' +
-      '<small>Códigos ' + String(primeiro).padStart(3,'0') +
-      ' a ' + String(proximoCodigo).padStart(3,'0') + '</small>';
-  }
-}
-function marcaCartela(){ return '<div class="marca">'+logoImg()+'</div>'; }
-function cartelaHtml(c){
-  const nome = (c.nome||'').trim();
-  let html = '<div class="cp"><div class="topo">'+marcaCartela()+
-             '<i>Nº '+c.codigo+'</i></div>'+
-             '<div class="dono">'+(nome ? nome : 'Nome:')+'</div>'+
-             '<table><thead><tr>';
-  'BINGO'.split('').forEach(l => html += '<th>'+l+'</th>');
-  html += '</tr></thead><tbody>';
-  for(let lin=0; lin<5; lin++){
-    html += '<tr>';
-    for(let col=0; col<5; col++){
-      const v = c.nums[lin*5+col];
-      html += (v===null)
-        ? '<td class="lv">'+logoImg()+'</td>'
-        : '<td>'+v+'</td>';
-    }
-    html += '</tr>';
-  }
-  return html + '</tbody></table><div class="pe">'+CASA_CENTRAL+
-         ' · BINGO DO CEMTEC · CÓDIGO '+c.codigo+'</div></div>';
-}
-function imprimirCartelas(){
-  const area = document.getElementById('printArea');
-  area.innerHTML = '';
-  for(let i=0; i<cartelas.length; i+=4){
-    const folha = document.createElement('div');
-    folha.className = 'folha';
-    cartelas.slice(i, i+4).forEach(c=>{
-      folha.insertAdjacentHTML('beforeend', cartelaHtml(c));
-    });
-    area.appendChild(folha);
-  }
-  fecharModal();
-  setTimeout(()=>window.print(), 180);
-}
-
-/* ---------- CONFERÊNCIA ---------- */
-function minicartelaHtml(cartela, set){
-  let h = '<div class="minicart">';
-  cartela.forEach(v=>{
-    if(v===null) h += '<div class="livre">'+logoImg()+'</div>';
-    else if(set.has(v)) h += '<div class="mk">'+v+'</div>';
-    else h += '<div>'+v+'</div>';
-  });
-  return h + '</div>';
-}
-
-/* ---------- NOVA RODADA ---------- */
+/* ================= NOVA RODADA ================= */
 function abrirNovaRodada(){
   abrirModal('Nova rodada',
-    '<p>Isso apaga <b>todos os números sorteados</b> desta sessão.</p>'+
-    '<p class="aviso">As cartelas e os nomes <b>NÃO</b> são apagados — '+
+    '<p>Isso apaga <b>todos os números sorteados</b> desta sessão.</p>' +
+    '<p class="aviso">As cartelas e os nomes <b>NÃO</b> são apagados — ' +
     'os códigos continuam válidos para a próxima partida.</p>',
     [
-      {rotulo:'Cancelar', acao:()=>{
+      {r:'Cancelar', a:function(){
         if(S.pausado) abrirTelaBingo();
         else fecharModal();
       }},
-      {rotulo:'Confirmar', acao:()=>{
-        S.fila = novaFila(); S.sorteados = []; S.atual = null;
+      {r:'Confirmar', a:function(){
+        S.fila = novaFila();
+        S.sorteados = [];
+        S.atual = null;
         S.pausado = false;
         pendente = false;
         btnBingo.classList.remove('ativo');
         placar.classList.remove('parado');
         limparAlerta();
-        pintarPlacar(); pintar(false);
+        pintarPlacar();
+        pintar(false);
         atualizarTravaUI();
-        salvar(); fecharModal();
+        salvar();
+        fecharModal();
       }}
     ]);
 }
 
-/* ---------- TELA CHEIA ---------- */
-function estáFullscreen(){
+/* ================= TELA CHEIA ================= */
+function estaFullscreen(){
   return !!(document.fullscreenElement ||
             document.webkitFullscreenElement ||
             document.msFullscreenElement);
 }
-async function alternarFullscreen(){
+function alternarFullscreen(){
   try{
-    if(!estáFullscreen()){
-      const el = document.documentElement;
-      const req = el.requestFullscreen || el.webkitRequestFullscreen ||
-                  el.msRequestFullscreen;
+    if(!estaFullscreen()){
+      var el = document.documentElement;
+      var req = el.requestFullscreen || el.webkitRequestFullscreen || el.msRequestFullscreen;
       if(!req){
         abrirModal('Tela cheia indisponível',
-          '<p>Este navegador não permite tela cheia por botão.</p>'+
+          '<p>Este navegador não permite tela cheia por botão.</p>' +
           '<p class="aviso">Use F11 no teclado.</p>', []);
         return;
       }
-      await req.call(el);
+      req.call(el);
     }else{
-      const exit = document.exitFullscreen || document.webkitExitFullscreen ||
-                   document.msExitFullscreen;
-      if(exit) await exit.call(document);
+      var exit = document.exitFullscreen || document.webkitExitFullscreen || document.msExitFullscreen;
+      if(exit) exit.call(document);
     }
   }catch(e){
-    abrirModal('Tela cheia indisponível',
-      '<p>O navegador não autorizou.</p>', []);
+    abrirModal('Tela cheia indisponível','<p>O navegador não autorizou.</p>',[]);
   }
 }
 function atualizarIconeFull(){
-  const ico = document.getElementById('icoFull');
-  const btn = document.getElementById('btnFull');
+  var ico = document.getElementById('icoFull');
+  var btn = document.getElementById('btnFull');
   if(!ico || !btn) return;
-  if(estáFullscreen()){
+  if(estaFullscreen()){
     ico.innerHTML =
-      '<path d="M8 3v3a2 2 0 0 1-2 2H3"></path>'+
-      '<path d="M16 3v3a2 2 0 0 0 2 2h3"></path>'+
-      '<path d="M8 21v-3a2 2 0 0 0-2-2H3"></path>'+
+      '<path d="M8 3v3a2 2 0 0 1-2 2H3"></path>' +
+      '<path d="M16 3v3a2 2 0 0 0 2 2h3"></path>' +
+      '<path d="M8 21v-3a2 2 0 0 0-2-2H3"></path>' +
       '<path d="M16 21v-3a2 2 0 0 1 2-2h3"></path>';
-    btn.title = 'Sair da tela cheia'; btn.classList.add('on');
+    btn.title = 'Sair da tela cheia';
+    btn.classList.add('on');
   }else{
     ico.innerHTML =
-      '<path d="M8 3H5a2 2 0 0 0-2 2v3"></path>'+
-      '<path d="M16 3h3a2 2 0 0 1 2 2v3"></path>'+
-      '<path d="M8 21H5a2 2 0 0 1-2-2v-3"></path>'+
+      '<path d="M8 3H5a2 2 0 0 0-2 2v3"></path>' +
+      '<path d="M16 3h3a2 2 0 0 1 2 2v3"></path>' +
+      '<path d="M8 21H5a2 2 0 0 1-2-2v-3"></path>' +
       '<path d="M16 21h3a2 2 0 0 0 2-2v-3"></path>';
-    btn.title = 'Tela cheia'; btn.classList.remove('on');
+    btn.title = 'Tela cheia';
+    btn.classList.remove('on');
   }
   setTimeout(ajustarTamanho, 120);
 }
 ['fullscreenchange','webkitfullscreenchange','msfullscreenchange']
-  .forEach(ev => document.addEventListener(ev, atualizarIconeFull));
+  .forEach(function(ev){ document.addEventListener(ev, atualizarIconeFull); });
 
-/* ---------- MODO PASSADOR ---------- */
-const btnPassador = document.getElementById('btnPassador');
+/* ================= MODO PASSADOR ================= */
+var btnPassador = document.getElementById('btnPassador');
 function pintarBtnPassador(){
   btnPassador.classList.toggle('passadorOn', S.modoPassador);
   btnPassador.title = 'Modo passador: ' +
     (S.modoPassador ? 'ATIVO — teclado bloqueado' : 'desativado') +
-    ' (clique ou Ctrl+Shift+L)';
+    ' (P / sai com Ctrl+Shift+L)';
 }
 function ativarPassador(){
   S.modoPassador = true;
-  pintarBtnPassador(); salvar();
+  pintarBtnPassador();
+  salvar();
   alertaEl.className = 'alerta show np';
   alertaEl.textContent = '🔒 MODO PASSADOR — teclado bloqueado';
-  setTimeout(()=>{
+  setTimeout(function(){
     if(S.modoPassador && alertaEl.textContent.indexOf('MODO PASSADOR') >= 0){
       avaliarAlerta();
     }
@@ -2046,52 +2448,107 @@ function ativarPassador(){
 }
 function desativarPassador(){
   S.modoPassador = false;
-  pintarBtnPassador(); salvar();
+  pintarBtnPassador();
+  salvar();
   alertaEl.className = 'alerta show np';
   alertaEl.textContent = '🔓 Modo passador desativado';
-  setTimeout(()=>{ avaliarAlerta(); }, 2200);
+  setTimeout(function(){ avaliarAlerta(); }, 2200);
 }
-btnPassador.onclick = ()=>{
+btnPassador.onclick = function(){
   if(S.modoPassador) desativarPassador();
   else ativarPassador();
 };
 
-/* ---------- TRAVA: BOTÃO ---------- */
-const btnTrava = document.getElementById('btnTrava');
+/* ================= TRAVA: BOTÃO ================= */
+var btnTrava = document.getElementById('btnTrava');
 function pintarBtnTrava(){
   btnTrava.classList.toggle('travaOn', S.travaFala);
   btnTrava.title = 'Trava de narração: ' +
     (S.travaFala ? 'ATIVA — próxima pedra só após a fala' : 'desativada') + ' (T)';
 }
-btnTrava.onclick = ()=>{
+btnTrava.onclick = function(){
   S.travaFala = !S.travaFala;
-  pintarBtnTrava(); salvar();
-  if(!S.travaFala){
-    pendente = false;
-    atualizarTravaUI();
-  }
+  pintarBtnTrava();
+  salvar();
+  if(!S.travaFala){ pendente = false; atualizarTravaUI(); }
 };
 
-/* ---------- EVENTOS ---------- */
+/* ================= BOTÕES DOS MODAIS ================= */
+var overlay = document.getElementById('overlay');
+var modalBox = document.getElementById('modalBox');
+var mTitulo = document.getElementById('mTitulo');
+var mCorpo  = document.getElementById('mCorpo');
+var mRodape = document.getElementById('mRodape');
+
+function abrirModal(titulo, corpoHtml, botoes, ehBingo){
+  mTitulo.textContent = titulo;
+  mCorpo.innerHTML = corpoHtml;
+  mRodape.innerHTML = '';
+  modalBox.classList.toggle('bingoM', !!ehBingo);
+  (botoes||[]).forEach(function(b){
+    var el = document.createElement('button');
+    el.className = 'btn';
+    el.textContent = b.r;
+    el.onclick = b.a;
+    mRodape.appendChild(el);
+  });
+  if(!botoes || !botoes.length){
+    var el2 = document.createElement('button');
+    el2.className = 'btn';
+    el2.textContent = 'Fechar';
+    el2.onclick = fecharModal;
+    mRodape.appendChild(el2);
+  }
+  overlay.classList.add('show');
+  var primeiro = mCorpo.querySelector('input');
+  if(primeiro && !ehBingo) setTimeout(function(){ primeiro.focus(); }, 60);
+}
+function fecharModal(){ overlay.classList.remove('show'); }
+overlay.addEventListener('click', function(e){
+  if(e.target === overlay) fecharModal();
+});
+
+/* ================= BOTÃO FLUTUANTE DE LINKS ================= */
+if(!document.getElementById('cvFab')){
+  var fab = document.createElement('button');
+  fab.id = 'cvFab';
+  fab.type = 'button';
+  fab.textContent = '🔗 LINKS';
+  fab.onclick = function(){
+    if(lerHash()){
+      location.hash = '';
+      location.reload();
+      return;
+    }
+    abrirLinks();
+  };
+  document.body.appendChild(fab);
+}
+
+/* ================= EVENTOS ================= */
 document.getElementById('btnSortear').onclick = sortear;
-document.getElementById('btnHist').onclick = abrirHistorico;
+btnBingo.onclick = function(){
+  if(S.pausado) abrirTelaBingo();
+  else pausarNoBingo();
+};
 document.getElementById('btnCartelas').onclick = abrirCartelas;
 document.getElementById('btnNomes').onclick = abrirNomes;
 document.getElementById('btnQuentes').onclick = abrirQuentes;
+document.getElementById('btnHist').onclick = abrirHistorico;
 document.getElementById('btnBackup').onclick = abrirBackup;
 document.getElementById('btnNova').onclick = abrirNovaRodada;
 document.getElementById('btnFull').onclick = alternarFullscreen;
 
-const btnSom = document.getElementById('btnSom');
-btnSom.onclick = ()=>{
+var btnSom = document.getElementById('btnSom');
+btnSom.onclick = function(){
   S.som = !S.som;
   btnSom.classList.toggle('on', S.som);
   if(S.som) ac();
   salvar();
 };
 
-const btnVoz = document.getElementById('btnVoz');
-btnVoz.onclick = ()=>{
+var btnVoz = document.getElementById('btnVoz');
+btnVoz.onclick = function(){
   if(!temSintese){
     abrirModal('Narração indisponível',
       '<p>Este navegador não oferece síntese de voz.</p>', []);
@@ -2100,13 +2557,16 @@ btnVoz.onclick = ()=>{
   S.voz = !S.voz;
   btnVoz.classList.toggle('on', S.voz);
   if(S.voz){
-    ac(); inicializarVozes();
+    ac();
+    inicializarVozes();
     if(!vozEscolhida){
-      S.voz = false; btnVoz.classList.remove('on'); salvar();
+      S.voz = false;
+      btnVoz.classList.remove('on');
+      salvar();
       abrirModal('Nenhuma voz em português do Brasil',
-        '<p>O navegador não encontrou voz <b>pt-BR</b> instalada.</p>'+
-        '<p class="aviso">No Windows: Configurações → Hora e idioma → '+
-        'Fala → adicionar voz em Português (Brasil).</p>'+
+        '<p>O navegador não encontrou voz <b>pt-BR</b> instalada.</p>' +
+        '<p class="aviso">No Windows: Configurações → Hora e idioma → Fala → ' +
+        'adicionar voz em Português (Brasil).</p>' +
         '<p class="aviso">Dica: no Edge há vozes neurais brasileiras.</p>', []);
       return;
     }
@@ -2114,44 +2574,56 @@ btnVoz.onclick = ()=>{
   }else{
     tokenFala++;
     try{ speechSynthesis.cancel(); }catch(e){}
-    falando = false; pendente = false; atualizarTravaUI();
+    falando = false;
+    pendente = false;
+    atualizarTravaUI();
   }
   salvar();
 };
 
-const btnAlerta = document.getElementById('btnAlerta');
+var btnAlerta = document.getElementById('btnAlerta');
 function pintarBtnAlerta(){
   btnAlerta.classList.toggle('alertaOn', S.vozAlerta);
-  btnAlerta.title = 'Narração dos alertas: ' +
-    (S.vozAlerta ? 'LIGADA' : 'DESLIGADA');
+  btnAlerta.title = 'Narração dos alertas: ' + (S.vozAlerta ? 'LIGADA' : 'DESLIGADA') + ' (A)';
 }
-btnAlerta.onclick = ()=>{
+btnAlerta.onclick = function(){
   S.vozAlerta = !S.vozAlerta;
-  pintarBtnAlerta(); salvar();
+  pintarBtnAlerta();
+  salvar();
   if(S.vozAlerta && temSintese){
-    ac(); inicializarVozes();
+    ac();
+    inicializarVozes();
     falarCurto('Alertas com narração ativados.');
   }
 };
 
-const selPadrao = document.getElementById('selPadrao');
-selPadrao.onchange = ()=>{ S.padrao = selPadrao.value; salvar(); avaliarAlerta(); };
+var selPadrao = document.getElementById('selPadrao');
+selPadrao.onchange = function(){
+  S.padrao = selPadrao.value;
+  salvar();
+  avaliarAlerta();
+};
 
-const selVeloc = document.getElementById('selVeloc');
-selVeloc.onchange = ()=>{ S.velocidade = parseFloat(selVeloc.value) || 0.8; salvar(); };
+var selVeloc = document.getElementById('selVeloc');
+selVeloc.onchange = function(){
+  S.velocidade = parseFloat(selVeloc.value) || 0.8;
+  salvar();
+};
 
-const selVoz = document.getElementById('selVoz');
-selVoz.onchange = ()=>{
-  const vozes = listarVozesPtBR();
-  const v = vozes[selVoz.selectedIndex];
+var selVoz = document.getElementById('selVoz');
+selVoz.onchange = function(){
+  var vozes = listarVozesPtBR();
+  var v = vozes[selVoz.selectedIndex];
   if(!v) return;
-  vozEscolhida = v; S.vozNome = v.name; salvar();
+  vozEscolhida = v;
+  S.vozNome = v.name;
+  salvar();
   if(S.voz) falarCurto('Esta é a voz selecionada.');
 };
 
-const TECLAS_SORTEIO = ['Space','PageDown','ArrowRight','Enter','NumpadEnter'];
+var TECLAS_SORTEIO = ['Space','PageDown','ArrowRight','Enter','NumpadEnter'];
 
-document.addEventListener('keydown', e=>{
+document.addEventListener('keydown', function(e){
   if(S.modoPassador){
     if(e.ctrlKey && e.shiftKey && (e.key === 'L' || e.key === 'l')){
       e.preventDefault(); desativarPassador(); return;
@@ -2161,7 +2633,7 @@ document.addEventListener('keydown', e=>{
       if(!e.repeat) btnBingo.click();
       return;
     }
-    if(TECLAS_SORTEIO.includes(e.code)){
+    if(TECLAS_SORTEIO.indexOf(e.code) !== -1){
       e.preventDefault();
       if(!e.repeat) sortear();
       return;
@@ -2170,18 +2642,16 @@ document.addEventListener('keydown', e=>{
     e.stopPropagation();
     return;
   }
-
-  const aberto = overlay.classList.contains('show');
+  var aberto = overlay.classList.contains('show');
   if(e.key === 'Escape'){ if(aberto) fecharModal(); return; }
   if(aberto) return;
   if(e.repeat) return;
-
-  if(TECLAS_SORTEIO.includes(e.code)){
+  if(TECLAS_SORTEIO.indexOf(e.code) !== -1){
     e.preventDefault();
     sortear();
     return;
   }
-  const k = (e.key || '').toLowerCase();
+  var k = (e.key || '').toLowerCase();
   if(k === 'b') btnBingo.click();
   else if(k === 'f') alternarFullscreen();
   else if(k === 'h') abrirHistorico();
@@ -2194,14 +2664,14 @@ document.addEventListener('keydown', e=>{
   else if(k === 't') btnTrava.click();
 });
 
-window.addEventListener('beforeunload', e=>{
+window.addEventListener('beforeunload', function(e){
   if(S.sorteados.length > 0 && !S.modoPassador){
     e.preventDefault();
     e.returnValue = '';
   }
 });
 
-/* ---------- INIT ---------- */
+/* ================= INICIALIZAÇÃO ================= */
 (function init(){
   restaurar();
   montarPlacar();
@@ -2213,12 +2683,15 @@ window.addEventListener('beforeunload', e=>{
   pintarBtnTrava();
   selPadrao.value = S.padrao;
   selVeloc.value = String(S.velocidade);
+
   if(!S.fila || !S.fila.length){
     if(!S.sorteados.length){ S.fila = novaFila(); salvar(); }
   }
+
   inicializarVozes();
   atualizarIconeFull();
   atualizarTravaUI();
+
   if(S.pausado){
     btnBingo.classList.add('ativo');
     placar.classList.add('parado');
@@ -2229,474 +2702,19 @@ window.addEventListener('beforeunload', e=>{
     btnAlerta.disabled = true; btnAlerta.style.opacity = '.35';
     selVoz.disabled = true;
   }
-  setTimeout(()=>{ ajustarTamanho(); avaliarAlerta(); }, 60);
+
+  var jog = lerHash();
+  if(jog) abrirJogador(jog);
+
+  setTimeout(function(){ ajustarTamanho(); avaliarAlerta(); }, 60);
   setTimeout(ajustarTamanho, 350);
   setTimeout(ajustarTamanho, 900);
+
+  window.addEventListener('hashchange', function(){
+    var j = lerHash();
+    if(j) abrirJogador(j);
+  });
 })();
 </script>
- <!-- ===== MODULO LINKS + CARTELA VIRTUAL ===== -->
-<!-- Cole ANTES da tag </body> -->
-<style>
-#cvFab{position:fixed;right:16px;bottom:14px;z-index:9000;padding:12px 18px;
-background:#16a34a;color:#fff;font:700 14px system-ui,sans-serif;cursor:pointer;
-box-shadow:0 6px 18px rgba(0,0,0,.45)}
-#cvFab:hover{background:#128a3e}
-.cvOv{position:fixed;inset:0;z-index:99999;background:rgba(4,11,22,.97);color:#e9f1ff;
-font:14px/1.5 system-ui,sans-serif;overflow:auto;padding:20px}
-.cvWrap{max-width:920px;margin:0 auto}
-.cvTop{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:16px}
-.cvTitle{font-size:18px;font-weight:800}
-.cvBtn{background:#1e6fd9;color:#fff;border:0;border-radius:8px;padding:10px 16px;
-font:600 14px system-ui,sans-serif;cursor:pointer}
-.cvBtn:hover{filter:brightness(1.12)}
-.cvBtn.sec{background:#2b3c55}
-.cvBtn.ok{background:#16a34a}
-.cvBtn.red{background:#c0392b}
-.cvRow{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:12px 0}
-.cvInp{background:#0d1b2d;border:1px solid #2c4straight;border:1px solid #2c445f;border-radius:8px;
-padding:10px 12px;color:#e9f1ff;font:14px system-ui,sans-serif;width:110px}
-.cvItem{background:#0f1f33;border:1px solid #24405c;border-radius:10px;padding:12px;
-margin-bottom:10px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
-.cvMini{border-collapse:collapse}
-.cvMini td{border:1px solid #35526f;text-align:center;font-size:11px;width:26px;height:24px;color:#cfe0f5}
-.cvMini td.f{background:#1d3busy}
-.cvMini td.f{background:#1d3a56}
-.cvLnk{flex:1;min-width:260px;font:12px ui-monospace,monospace;color:#8fb8e6;
-word-break:break-all;background:#0a1524;padding:8px;border-radius:6px}
-.cvCode{font:800 14px system-ui,sans-serif;color:#7ee2a8;min-width:52px}
-/* modo jogador */
-.cvPlay{position:fixed;inset:0;z-index:99999;background:#07131f;color:#eaf3ff;
-font:16px/1.4 system-ui,sans-serif;overflow:auto;padding:14px;
-display:flex;flex-direction:column;align-items:center;gap:14px}
-.cvGrid{border-collapse:separate;border-spacing:8px}
-.cvGrid button{width:62px;height:62px;border-radius:10px;border:2px solid #2e5075;
-background:#0f2236;color:#dcebff;font:800 20px system-ui,sans-serif;cursor:pointer}
-.cvGrid button.mk{background:#16a34a;border-color:#22d16b;color:#fff}
-.cvGrid button.centro{background:#123a5c;border-color:#2e5075;color:#78a8d8;font-size:11px}
-@media(max-width:520px){.cvGrid button{width:54px;height:54px;font-size:18px}}
-</style>
-
-<script>
-(function () {
-  'use strict';
-
-  var CHAVE = 'cemtec_links_cartelas_v1';
-  var cartelas = [];
-  try { cartelas = JSON.parse(localStorage.getItem(CHAVE) || '[]') || []; } catch (e) { cartelas = []; }
-
-  function persistir() {
-    try { localStorage.setItem(CHAVE, JSON.stringify(cartelas)); } catch (e) {}
-  }
-
-  function baseUrl() { return location.href.split('#')[0]; }
-
-  function gerarCartela() {
-    var faixas = [[1, 15], [16, 30], [31, 45], [46, 60], [61, 75]];
-    var g = [[], [], [], [], []];
-    for (var c = 0; c < 5; c++) {
-      var pool = [];
-      for (var n = faixas[c][0]; n <= faixas[c][1]; n++) pool.push(n);
-      for (var r = 0; r < 5; r++) {
-        var i = Math.floor(Math.random() * pool.length);
-        g[r][c] = pool.splice(i, 1)[0];
-      }
-    }
-    g[2][2] = null;
-    return g;
-  }
-
-  function planificar(g) {
-    var out = [];
-    for (var r = 0; r < 5; r++)
-      for (var c = 0; c < 5; c++)
-        if (!(r === 2 && c === 2)) out.push(g[r][c]);
-    return out;
-  }
-
-  function linkDe(c) {
-    return baseUrl() + '#c=' + encodeURIComponent(c.codigo) + '&g=' + planificar(c.grid).join('.');
-  }
-
-  function codigoDe(n) {
-    var s = String(n);
-    while (s.length < 3) s = '0' + s;
-    return s;
-  }
-
-  function copiar(txt, btn) {
-    function feito() {
-      if (!btn) return;
-      var antigo = btn.textContent;
-      btn.textContent = 'copiado!';
-      setTimeout(function () { btn.textContent = antigo; }, 1200);
-    }
-    function reserva() {
-      var ta = document.createElement('textarea');
-      ta.value = txt;
-      ta.style.cssText = 'position:fixed;top:-1000px';
-      document.body.appendChild(ta);
-      ta.select();
-      try { document.execCommand('copy'); feito(); }
-      catch (e) { window.prompt('Copie o link:', txt); }
-      document.body.removeChild(ta);
-    }
-    if (navigator.clipboard && navigator.clipboard.writeText) {
-      navigator.clipboard.writeText(txt).then(feito, reserva);
-    } else { reserva(); }
-  }
-
-  /* ---------- painel de links ---------- */
-  function abrirPainel() {
-    var ov = document.createElement('div');
-    ov.className = 'cvOv';
-    ov.innerHTML =
-      '<div class="cvWrap">' +
-        '<div class="cvTop">' +
-          '<div class="cvTitle">Cartelas e links para celular</div>' +
-          '<button class="cvBtn sec" id="cvFechar">Fechar</button>' +
-        '</div>' +
-        '<div class="cvRow">' +
-          '<label>Quantidade:</label>' +
-          '<input class="cvInp" id="cvQtd" type="number" min="1" max="500" value="30">' +
-          '<button class="cvBtn ok" id="cvGerar">Gerar cartelas</button>' +
-          '<button class="cvBtn sec" id="cvImprimir">Imprimir cartelas</button>' +
-          '<button class="cvBtn" id="cvCopiarTodos">Copiar todos os links</button>' +
-          '<button class="cvBtn red" id="cvLimpar">Limpar lista</button>' +
-        '</div>' +
-        '<div id="cvLista"></div>' +
-      '</div>';
-    document.body.appendChild(ov);
-
-    var lista = ov.querySelector('#cvLista');
-
-    function desenhar() {
-      lista.innerHTML = '';
-      if (!cartelas.length) {
-        lista.innerHTML = '<p style="color:#7f9ac0">Nenhuma cartela gerada ainda.</p>';
-        return;
-      }
-      cartelas.forEach(function (c, idx) {
-        var item = document.createElement('div');
-        item.className = 'cvItem';
-
-        var cod = document.createElement('div');
-        cod.className = 'cvCode';
-        cod.textContent = c.codigo;
-
-        var mini = document.createElement('table');
-        mini.className = 'cvMini';
-        for (var r = 0; r < 5; r++) {
-          var tr = document.createElement('tr');
-          for (var k = 0; k < 5; k++) {
-            var td = document.createElement('td');
-            if (r === 2 && k === 2) { td.textContent = '★'; td.className = 'f'; }
-            else td.textContent = c.grid[r][k];
-            tr.appendChild(td);
-          }
-          mini.appendChild(tr);
-        }
-
-        var lnk = document.createElement('div');
-        lnk.className = 'cvLnk';
-        lnk.textContent = linkDe(c);
-
-        var b1 = document.createElement('button');
-        b1.className = 'cvBtn';
-        b1.textContent = 'Copiar link';
-        b1.onclick = function () { copiar(linkDe(c), b1); };
-
-        var b2 = document.createElement('button');
-        b2.className = 'cvBtn sec';
-        b2.textContent = 'Abrir teste';
-        b2.onclick = function () { window.open(linkDe(c), '_blank'); };
-
-        item.appendChild(cod);
-        item.appendChild(mini);
-        item.appendChild(lnk);
-        item.appendChild(b1);
-        item.appendChild(b2);
-        lista.appendChild(item);
-      });
-    }
-
-    ov.querySelector('#cvFechar').onclick = function () { ov.remove(); };
-
-    ov.querySelector('#cvGerar').onclick = function () {
-      var q = parseInt(ov.querySelector('#cvQtd').value, 10);
-      if (!q || q < 1) return;
-      if (q > 500) q = 500;
-      cartelas = [];
-      for (var i = 1; i <= q; i++) {
-        cartelas.push({ codigo: codigoDe(i), grid: gerarCartela() });
-      }
-      persistir();
-      desenhar();
-    };
-
-    ov.querySelector('#cvLimpar').onclick = function () {
-      if (!confirm('Apagar todas as cartelas e links gerados?')) return;
-      cartelas = [];
-      persistir();
-      desenhar();
-    };
-
-    ov.querySelector('#cvCopiarTodos').onclick = function (ev) {
-      if (!cartelas.length) return;
-      var txt = cartelas.map(function (c) { return c.codigo + ' - ' + linkDe(c); }).join('\n');
-      copiar(txt, ev.target);
-    };
-
-    ov.querySelector('#cvImprimir').onclick = function () {
-      if (!cartelas.length) return alert('Gere as cartelas primeiro.');
-      var w = window.open('', '_blank');
-      if (!w) return alert('Libere pop-ups para imprimir.');
-      var h = '<html><head><meta charset="utf-8"><title>Cartelas</title><style>' +
-        '@page{size:A4;margin:10mm}' +
-        'body{font-family:Arial,sans-serif;margin:0}' +
-        '.pg{display:grid;grid-template-columns:1fr 1fr;gap:8mm;page-break-after:always}' +
-        '.pg:last-child{page-break-after:auto}' +
-        '.cart{border:2px solid #111;border-radius:6px;padding:6px}' +
-        '.cart h3{margin:0 0 6px;font-size:12pt;text-align:center;letter-spacing:1px}' +
-        '.cart table{width:100%;border-collapse:collapse}' +
-        '.cart td{border:1px solid #333;text-align:center;font-size:15pt;font-weight:700;padding:6px 0}' +
-        '.cart .f{background:#e8e8e8;font-size:10pt}' +
-        '</style></head><body>';
-      for (var i = 0; i < cartelas.length; i += 4) {
-        h += '<div class="pg">';
-        for (var j = i; j < i + 4 && j < cartelas.length; j++) {
-          var c = cartelas[j];
-          h += '<div class="cart"><h3>BINGO DO CEMTEC — ' + c.codigo + '</h3><table>';
-          for (var r = 0; r < 5; r++) {
-            h += '<tr>';
-            for (var k = 0; k < 5; k++) {
-              if (r === 2 && k === 2) h += '<td class="f">LIVRE</td>';
-              else h += '<td>' + c.grid[r][k] + '</td>';
-            }
-            h += '</tr>';
-          }
-          h += '</table></div>';
-        }
-        h += '</div>';
-      }
-      h += '</body></html>';
-      w.document.write(h);
-      w.document.close();
-      w.focus();
-      setTimeout(function () { w.print(); }, 400);
-    };
-
-    desenhar();
-  }
-
-  /* ---------- modo jogador ---------- */
-  function lerHash() {
-    var h = location.hash.replace(/^#/, '');
-    if (!h) return null;
-    var partes = {};
-    h.split('&').forEach(function (kv) {
-      var p = kv.split('=');
-      if (p[0]) partes[p[0]] = p[1];
-    });
-    if (!partes.g) return null;
-    var nums = partes.g.split('.').map(Number);
-    if (nums.length !== 24) return null;
-    var grid = [[], [], [], [], []];
-    var i = 0;
-    for (var r = 0; r < 5; r++) {
-      for (var k = 0; k < 5; k++) {
-        grid[r][k] = (r === 2 && k === 2) ? null : nums[i++];
-      }
-    }
-    return { codigo: partes.c ? decodeURIComponent(partes.c) : '', grid: grid };
-  }
-
-  function abrirJogador(c) {
-    var velho = document.getElementById('cvPlay');
-    if (velho) velho.remove();
-
-    var wrap = document.createElement('div');
-    wrap.id = 'cvPlay';
-    wrap.className = 'cvPlay';
-
-    var titulo = document.createElement('div');
-    titulo.style.cssText = 'font-weight:800;font-size:18px;letter-spacing:1px;text-align:center';
-    titulo.textContent = 'BINGO DO CEMTEC';
-    wrap.appendChild(titulo);
-
-    var sub = document.createElement('div');
-    sub.style.cssText = 'color:#8fb4dc;font-size:14px';
-    sub.textContent = 'Cartela ' + (c.codigo || '');
-    wrap.appendChild(sub);
-
-    var marcado = [[], [], [], [], []];
-    var botoes = [];
-    var tabela = document.createElement('table');
-    tabela.className = 'cvGrid';
-    for (var r = 0; r < 5; r++) {
-      var tr = document.createElement('tr');
-      for (var k = 0; k < 5; k++) {
-        var td = document.createElement('td');
-        var b = document.createElement('button');
-        if (r === 2 && k === 2) {
-          b.textContent = 'LIVRE';
-          b.className = 'centro';
-          b.disabled = true;
-          marcado[r][k] = true;
-        } else {
-          b.textContent = c.grid[r][k];
-          marcado[r][k] = false;
-          (function (rr, kk, botao) {
-            botao.onclick = function () {
-              marcado[rr][kk] = !marcado[rr][kk];
-              botao.classList.toggle('mk', marcado[rr][kk]);
-            };
-          })(r, k, b);
-        }
-        botoes.push(b);
-        td.appendChild(b);
-        tr.appendChild(td);
-      }
-      tabela.appendChild(tr);
-    }
-    wrap.appendChild(tabela);
-
-    var painel = document.createElement('div');
-    painel.style.cssText = 'color:#9fc2e6;font-size:14px;text-align:center;min-height:22px';
-    wrap.appendChild(painel);
-
-    function temBingo() {
-      var i, j, ok;
-      for (i = 0; i < 5; i++) { ok = true; for (j = 0; j < 5; j++) if (!marcado[i][j]) ok = false; if (ok) return 'linha ' + (i + 1); }
-      for (j = 0; j < 5; j++) { ok = true; for (i = 0; i < 5; i++) if (!marcado[i][j]) ok = false; if (ok) return 'coluna ' + (j + 1); }
-      ok = true; for (i = 0; i < 5; i++) if (!marcado[i][i]) ok = false; if (ok) return 'diagonal principal';
-      ok = true; for (i = 0; i < 5; i++) if (!marcado[i][4 - i]) ok = false; if (ok) return 'diagonal secundária';
-      return null;
-    }
-
-    var bBingo = document.createElement('button');
-    bBingo.className = 'cvBtn ok';
-    bBingo.style.cssText = 'padding:16px 34px;font-size:17px';
-    bBingo.textContent = 'BINGO!';
-    bBingo.onclick = function () {
-      var res = temBingo();
-      if (res) {
-        painel.innerHTML = '<strong style="color:#4ade80">BINGO CONFIRMADO — ' + res + '</strong>';
-      } else {
-        var faltam = 0;
-        for (var i = 0; i < 5; i++) for (var j = 0; j < 5; j++) if (!marcado[i][j]) faltam++;
-        painel.innerHTML = '<span style="color:#fbbf24">Ainda não. Faltam ' + faltam + ' números.</span>';
-      }
-    };
-    wrap.appendChild(bBingo);
-
-    var bSair = document.createElement('button');
-    bSair.className = 'cvBtn sec';
-    bSair.textContent = 'Ir para o painel do sorteio';
-    bSair.onclick = function () {
-      location.hash = '';
-      location.reload();
-    };
-    wrap.appendChild(bSair);
-
-    document.body.appendChild(wrap);
-  }
-
-  /* ---------- inicialização ---------- */
-  function iniciar() {
-    var c = lerHash();
-    if (c) { abrirJogador(c); return; }
-    var velho = document.getElementById('cvPlay');
-    if (velho) velho.remove();
-
-    if (!document.getElementById('cvFab')) {
-      var fab = document.createElement('button');
-      fab.id = 'cvFab';
-      fab.textContent = '🔗 LINKS';
-      fab.onclick = abrirPainel;
-      document.body.appendChild(fab);
-    }
-  }
-
-  window.addEventListener('hashchange', iniciar);
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', iniciar);
-  } else {
-    iniciar();
-  }
-})();
-</script>
-<style>
-  /* ===== BARRA PADRONIZADA ===== */
-  footer{
-    display:flex !important;
-    flex-wrap:wrap !important;
-    justify-content:center !important;
-    align-items:stretch !important;
-    gap:10px !important;
-  }
-  footer > button,
-  footer > select,
-  footer > #cvFab{
-    flex:1 1 0 !important;
-    min-width:86px !important;
-    max-width:118px !important;
-    width:auto !important;
-    height:46px !important;
-    padding:0 4px !important;
-    margin:0 !important;
-    box-sizing:border-box !important;
-    font-size:10px !important;
-    font-weight:700 !important;
-    letter-spacing:.01em !important;
-    border-radius:11px !important;
-    line-height:1.1 !important;
-    text-align:center !important;
-    display:inline-flex !important;
-    align-items:center !important;
-    justify-content:center !important;
-  }
-  #btnSortear{
-    background:linear-gradient(180deg,#4f9bff,#2f74db) !important;
-    border:none !important;color:#fff !important;
-    font-size:11.5px !important;letter-spacing:.06em !important;
-  }
-  #btnBingo{
-    background:linear-gradient(180deg,#ff5b5b,#c62828) !important;
-    border:none !important;color:#fff !important;
-    font-size:11.5px !important;letter-spacing:.05em !important;
-  }
-  footer select{padding:0 14px 0 5px !important;font-size:9.5px !important}
-  #cvFab{
-    background:#16a34a !important;border:1px solid #1fbf62 !important;
-    color:#fff !important;box-shadow:none !important;
-    position:static !important;left:auto !important;right:auto !important;
-    top:auto !important;bottom:auto !important;
-  }
-</style>
-
-<script>
-(function(){
-  function mover(){
-    var fab = document.getElementById('cvFab');
-    var barra = document.querySelector('footer');
-    if(!fab || !barra) return;
-    if(fab.parentNode === barra) return;
-    fab.textContent = '🔗 Links';
-    fab.style.setProperty('position','static','important');
-    fab.style.setProperty('left','auto','important');
-    fab.style.setProperty('bottom','auto','important');
-    barra.insertBefore(fab, document.getElementById('btnNova') || null);
-  }
-  var n = 0;
-  var t = setInterval(function(){
-    mover();
-    if(++n > 40) clearInterval(t);
-  }, 250);
-  if(document.readyState === 'loading'){
-    document.addEventListener('DOMContentLoaded', mover);
-  } else { mover(); }
-})();
-</script>
- 
 </body>
 </html>
