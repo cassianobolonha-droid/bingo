@@ -17,7 +17,6 @@
     --azul: #4f9bff;
     --txt: #eaf0ff;
     --dim: #8fa2c7;
-    --marinho: #0B2F6B;
     --ciano: #1BA7EC;
     --cel: 44px;
     --bola: 180px;
@@ -648,8 +647,7 @@
     transition: .15s;
     border-radius: 11px;
   }
-  footer > button,
-  footer > select {
+  footer > button {
     flex: 0 0 100px;
     width: 100px;
     height: 46px;
@@ -1308,7 +1306,7 @@
       <circle cx="12" cy="16.5" r="2.2"></circle>
     </svg>
   </button>
-  <button class="icobtn" id="btnProj" title="Abrir tela de projeção (segunda janela)">
+  <button class="icobtn" id="btnProj" title="Abrir tela de projeção (J)">
     <svg viewBox="0 0 24 24">
       <rect x="2" y="3" width="20" height="13" rx="2"></rect>
       <path d="M8 21h8M12 16v5"></path>
@@ -1375,17 +1373,16 @@
 
 <script>
 /* =====================================================================
-   BINGO DO CEMTEC — v6
-   - Cartelas unificadas, logo no centro, cabeçalho B-I-N-G-O
-   - Números de cada coluna em ordem crescente
-   - Modalidades por eliminação (todas abertas ao mesmo tempo)
-   - Tela de projeção em segunda janela
+   BINGO DO CEMTEC — v7
+   - Cabeçalho B-I-N-G-O e colunas em ordem crescente
+   - Modalidades por eliminação (cinco abertas ao mesmo tempo)
+   - Projeção em segunda janela (Blob URL)
    ===================================================================== */
 
 /* ================= LOGO ================= */
 var LOGO_DRIVE = 'https://drive.google.com/thumbnail?id=1VXP8DuDTlzu9seXpK8uESk-4d5LDItJA&sz=w1024';
 var LOGO_LOCAL = 'logo-cemtec.png';
-var WEBHOOK_KEY = 'bingo_webhook_v6';
+var WEBHOOK_KEY = 'bingo_webhook_v7';
 
 function logoImg() {
   return '<img src="' + LOGO_DRIVE + '" data-local="' + LOGO_LOCAL + '" ' +
@@ -1501,6 +1498,7 @@ function extenso(n) {
   var d = Math.floor(n / 10), u = n % 10;
   return DEZ[d] + (u ? ' e ' + UNI[u] : '');
 }
+
 var CORES = ['#e8b400','#1a5fd0','#c62828','#6a2fa0','#e8710a','#1e8e3e','#6d1a1a','#1a1a1a'];
 
 function estilo(n) {
@@ -1551,8 +1549,8 @@ var S = {
 
 var cartelas = [], proximoCodigo = 0, rodando = false;
 var falando = false, pendente = false;
-var KEY_S = 'bingo_estado_v6';
-var KEY_C = 'bingo_cartelas_v6';
+var KEY_S = 'bingo_estado_v7';
+var KEY_C = 'bingo_cartelas_v7';
 
 /* ================= ÁUDIO ================= */
 var AC = null;
@@ -2005,11 +2003,11 @@ function renderModbar() {
       '</span>';
   }
   modbar.innerHTML = html;
-  var some = true;
+  var nenhuma = true;
   for (var j = 0; j < MODALIDADES.length; j++) {
-    if (S.abertas[MODALIDADES[j].id]) some = false;
+    if (S.abertas[MODALIDADES[j].id]) nenhuma = false;
   }
-  if (some) {
+  if (nenhuma) {
     modbar.innerHTML += '<span class="mod ganha" style="text-decoration:none">RODADA ENCERRADA</span>';
   }
 }
@@ -2106,7 +2104,12 @@ function avaliarAlerta() {
     var quem = nomeMin ? nomeMin : (codigos.length > 1 ? codigos.length + ' cartelas' : 'Cartela ' + codigos[0]);
     alertaEl.textContent = fr1.t + ' (' + quem + ' — ' + nomeMod(modMin) + ': falta ' + listaFalta(numsTodos, 4) + ')';
     chamada(false);
-    return { nivel:1, fala: nomeMin ? ('Atenção! ' + nomeMin + ' está a uma pedra do bingo!') : 'Falta uma pedra para o bingo!' };
+    return {
+      nivel:1,
+      fala: nomeMin
+        ? ('Atenção! ' + nomeMin + ' está a uma pedra do bingo!')
+        : 'Falta uma pedra para o bingo!'
+    };
   }
   var fr2 = escolhe(AL2, 2);
   placar.classList.remove('urgente');
@@ -2114,7 +2117,12 @@ function avaliarAlerta() {
   alertaEl.className = 'alerta show n2';
   var quem2 = nomeMin ? (nomeMin + ' está perto') : (codigos.length > 1 ? codigos.length + ' cartelas' : 'Cartela ' + codigos[0]);
   alertaEl.textContent = fr2.t + ' (' + quem2 + ' · ' + nomeMod(modMin) + ')';
-  return { nivel:2, fala: nomeMin ? ('Fica de olho! ' + nomeMin + ' está a duas pedras do bingo!') : 'Faltam duas pedras para o bingo!' };
+  return {
+    nivel:2,
+    fala: nomeMin
+      ? ('Fica de olho! ' + nomeMin + ' está a duas pedras do bingo!')
+      : 'Faltam duas pedras para o bingo!'
+  };
 }
 function narrarNumero(n, al) {
   var blocos = [];
@@ -2274,7 +2282,6 @@ function gerarCartela(assinaturas) {
         pool[k] = tmp;
       }
       var escolhidos = pool.slice(0, 5);
-      /* ORDEM CRESCENTE dentro da coluna */
       escolhidos.sort(function (a, b) { return a - b; });
       for (lin = 0; lin < 5; lin++) {
         nums[lin * 5 + col] = (col === 2 && lin === 2) ? null : escolhidos[lin];
@@ -2401,7 +2408,8 @@ function imprimirCartelas() {
 /* ================= NOMES ================= */
 function abrirNomes() {
   if (!cartelas.length) {
-    abrirModal('Nomes', '<p>Nenhuma cartela gerada ainda.</p><p class="aviso">Gere as cartelas primeiro.</p>', []);
+    abrirModal('Nomes',
+      '<p>Nenhuma cartela gerada ainda.</p><p class="aviso">Gere as cartelas primeiro.</p>', []);
     return;
   }
   var h = '<p>Nome e telefone de quem recebeu cada cartela.</p><div class="listaNomes">';
@@ -2463,7 +2471,8 @@ function copiar(txt, btn) {
 function abrirLinks() {
   if (!cartelas.length) {
     abrirModal('Links',
-      '<p>Nenhuma cartela gerada ainda.</p><p class="aviso">Gere as cartelas primeiro — os links usam as mesmas cartelas da conferência.</p>', []);
+      '<p>Nenhuma cartela gerada ainda.</p>' +
+      '<p class="aviso">Gere as cartelas primeiro — os links usam as mesmas cartelas da conferência.</p>', []);
     return;
   }
   var wh = '';
@@ -2761,7 +2770,7 @@ function validarBingo(codFixo) {
   } else {
     var mf = melhorFalta(c, set, S.abertas);
     res.className = 'resultado err';
-    res.innerHTML = 'BINGO INVÁLIDO<small>' +
+    res.innerHTML = '❌ BINGO INVÁLIDO<small>' +
       (mf.mod ? 'Modalidade mais perto: <b>' + nomeMod(mf.mod) + '</b><br>' : '') +
       (mf.nums.length ? 'Faltam: ' + mf.nums.join(', ') : '—') +
       '</small>';
@@ -2793,7 +2802,6 @@ function confirmarGanhador(mods, c) {
   for (var k = 0; k < MODALIDADES.length; k++) {
     if (S.abertas[MODALIDADES[k].id]) restantes.push(MODALIDADES[k].nome);
   }
-
   var nomesMods = [];
   for (var q = 0; q < mods.length; q++) nomesMods.push(nomeMod(mods[q]));
 
@@ -2821,7 +2829,8 @@ function confirmarGanhador(mods, c) {
     }
   }
   setTimeout(function () {
-    if (alertaEl.textContent.indexOf('Ainda vale') >= 0 || alertaEl.textContent.indexOf('RODADA') >= 0) {
+    if (alertaEl.textContent.indexOf('Ainda vale') >= 0 ||
+        alertaEl.textContent.indexOf('RODADA') >= 0) {
       limparAlerta();
       avaliarAlerta();
     }
@@ -2850,8 +2859,11 @@ function abrirModalidades() {
       if (S.ganhos[k].mod === m.id && S.ganhos[k].codigo) cod = S.ganhos[k].codigo;
     }
     h += '<div class="modrow">' +
-      '<span class="nm">' + m.nome + (cod ? ' <span style="color:#8fa2c7;font-size:11px">· cartela ' + cod + '</span>' : '') + '</span>' +
-      '<span class="st ' + (aberta ? 'aberta' : 'ganha') + '">' + (aberta ? 'ABERTA' : 'GANHA') + '</span>' +
+      '<span class="nm">' + m.nome +
+      (cod ? ' <span style="color:#8fa2c7;font-size:11px">· cartela ' + cod + '</span>' : '') +
+      '</span>' +
+      '<span class="st ' + (aberta ? 'aberta' : 'ganha') + '">' +
+      (aberta ? 'ABERTA' : 'GANHA') + '</span>' +
       (aberta
         ? '<button class="cvBtn sec bmod-fecha" data-mod="' + m.id + '" type="button" style="padding:7px 11px;font-size:11.5px">Marcar ganha</button>'
         : '<button class="cvBtn ok bmod-abre" data-mod="' + m.id + '" type="button" style="padding:7px 11px;font-size:11.5px">Reabrir</button>') +
@@ -2862,15 +2874,23 @@ function abrirModalidades() {
   document.querySelectorAll('.bmod-fecha').forEach(function (b) {
     b.onclick = function () {
       S.abertas[b.dataset.mod] = false;
-      S.ganhos.push({ mod:b.dataset.mod, codigo:'', nome:'', numero:S.atual, hora:new Date().toISOString() });
-      salvar(); renderModbar(); publicarProjecao(); abrirModalidades();
+      S.ganhos.push({
+        mod: b.dataset.mod, codigo:'', nome:'', numero:S.atual, hora:new Date().toISOString()
+      });
+      salvar();
+      renderModbar();
+      publicarProjecao();
+      abrirModalidades();
     };
   });
   document.querySelectorAll('.bmod-abre').forEach(function (b) {
     b.onclick = function () {
       S.abertas[b.dataset.mod] = true;
       S.ganhos = S.ganhos.filter(function (g) { return g.mod !== b.dataset.mod; });
-      salvar(); renderModbar(); publicarProjecao(); abrirModalidades();
+      salvar();
+      renderModbar();
+      publicarProjecao();
+      abrirModalidades();
     };
   });
 }
@@ -2925,7 +2945,9 @@ function abrirHistorico() {
     h = '<table class="hist"><thead><tr><th>#</th><th>Pedra</th><th>Hora</th></tr></thead><tbody>';
     for (var i = 0; i < S.sorteados.length; i++) {
       var x = S.sorteados[i];
-      var hora = new Date(x.hora).toLocaleTimeString('pt-BR', { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+      var hora = new Date(x.hora).toLocaleTimeString('pt-BR', {
+        hour:'2-digit', minute:'2-digit', second:'2-digit'
+      });
       h += '<tr><td>' + (i + 1) + '</td><td><b>' + x.letra + ' ' + x.n + '</b></td><td>' + hora + '</td></tr>';
     }
     h += '</tbody></table>';
@@ -2935,7 +2957,8 @@ function abrirHistorico() {
       '<table class="hist"><thead><tr><th>Modalidade</th><th>Cartela</th><th>Nome</th></tr></thead><tbody>';
     for (var k = 0; k < S.ganhos.length; k++) {
       var g = S.ganhos[k];
-      h += '<tr><td>' + nomeMod(g.mod) + '</td><td>' + (g.codigo || '—') + '</td><td>' + (g.nome || '—') + '</td></tr>';
+      h += '<tr><td>' + nomeMod(g.mod) + '</td><td>' + (g.codigo || '—') +
+        '</td><td>' + (g.nome || '—') + '</td></tr>';
     }
     h += '</tbody></table>';
   }
@@ -2950,7 +2973,7 @@ function exportarBackup() {
   }
   var pacote = {
     app: 'Bingo do CEMTEC',
-    versao: 6,
+    versao: 7,
     geradoEm: new Date().toISOString(),
     estado: {
       fila: S.fila,
@@ -2985,7 +3008,8 @@ function exportarBackup() {
   a.click();
   document.body.removeChild(a);
   abrirModal('Backup salvo',
-    '<p>Arquivo com <b>' + S.sorteados.length + ' números</b> e <b>' + cartelas.length + ' cartelas</b>.</p>', []);
+    '<p>Arquivo com <b>' + S.sorteados.length + ' números</b> e <b>' +
+    cartelas.length + ' cartelas</b>.</p>', []);
 }
 function abrirBackup() {
   abrirModal('Backup do jogo',
@@ -3064,7 +3088,10 @@ function abrirNovaRodada() {
     '<p>Isso apaga <b>todos os números sorteados</b> e reabre as <b>cinco modalidades</b>.</p>' +
     '<p class="aviso">As cartelas e os nomes NÃO são apagados.</p>',
     [
-      { r:'Cancelar', a:function () { if (S.pausado) abrirTelaBingo(); else fecharModal(); } },
+      { r:'Cancelar', a:function () {
+          if (S.pausado) abrirTelaBingo();
+          else fecharModal();
+        } },
       { r:'Confirmar', a:function () {
           S.fila = novaFila();
           S.sorteados = [];
@@ -3169,8 +3196,7 @@ btnPassador.onclick = function () {
 var btnTrava = document.getElementById('btnTrava');
 function pintarBtnTrava() {
   btnTrava.classList.toggle('travaOn', S.travaFala);
-  btnTrava.title = 'Trava de narração: ' +
-    (S.travaFala ? 'ATIVA' : 'desativada') + ' (T)';
+  btnTrava.title = 'Trava de narração: ' + (S.travaFala ? 'ATIVA' : 'desativada') + ' (T)';
 }
 btnTrava.onclick = function () {
   S.travaFala = !S.travaFala;
@@ -3217,27 +3243,38 @@ overlay.addEventListener('click', function (e) {
 /* ================= PROJEÇÃO ================= */
 var canalProj = null;
 var janelaProj = null;
+var urlProj = null;
+var filaProj = null;
 
 try {
   if (typeof BroadcastChannel !== 'undefined') {
     canalProj = new BroadcastChannel('bingo_cemtec');
   }
-} catch (e) { canalProj = null; }
+} catch (e) {
+  canalProj = null;
+}
 
 function estadoProjecao() {
-  var ult = [];
+  var ultimos = [];
   var arr = S.sorteados.slice(-4).reverse();
   for (var i = 0; i < arr.length; i++) {
-    ult.push({ n: arr[i].n, letra: arr[i].letra, cor: estilo(arr[i].n).cor, listrada: estilo(arr[i].n).listrada });
+    var e = estilo(arr[i].n);
+    ultimos.push({ n:arr[i].n, cor:e.cor, listrada:e.listrada });
   }
+
+  var todos = [];
+  for (var k = 0; k < S.sorteados.length; k++) {
+    var e2 = estilo(S.sorteados[k].n);
+    todos.push({ n:S.sorteados[k].n, cor:e2.cor, listrada:e2.listrada });
+  }
+
   var abertas = [];
-  for (var k = 0; k < MODALIDADES.length; k++) {
-    if (S.abertas[MODALIDADES[k].id]) abertas.push(MODALIDADES[k].curto);
-  }
   var ganhas = [];
-  for (var g = 0; g < MODALIDADES.length; g++) {
-    if (!S.abertas[MODALIDADES[g].id]) ganhas.push(MODALIDADES[g].curto);
+  for (var m = 0; m < MODALIDADES.length; m++) {
+    if (S.abertas[MODALIDADES[m].id]) abertas.push(MODALIDADES[m].curto);
+    else ganhas.push(MODALIDADES[m].curto);
   }
+
   var falta = false;
   if (cartelas.length && S.sorteados.length) {
     var set = {};
@@ -3247,185 +3284,282 @@ function estadoProjecao() {
       if (mf.faltam === 1) { falta = true; break; }
     }
   }
+
+  var cor = '', listrada = false, letra = '';
+  if (S.atual) {
+    var ea = estilo(S.atual);
+    cor = ea.cor;
+    listrada = ea.listrada;
+    letra = letraDe(S.atual);
+  }
+
+  var ganho = null;
+  if (S.ganhos.length) {
+    var g = S.ganhos[S.ganhos.length - 1];
+    ganho = { codigo:g.codigo, rotulo:nomeMod(g.mod).toUpperCase(), hora:g.hora };
+  }
+
   return {
     atual: S.atual,
-    letra: S.atual ? letraDe(S.atual) : '',
+    letra: letra,
+    cor: cor,
+    listrada: listrada,
     total: S.sorteados.length,
-    ultimos: ult,
+    ultimos: ultimos,
+    todos: todos,
     abertas: abertas,
     ganhas: ganhas,
     faltaUma: falta,
-    cor: S.atual ? estilo(S.atual).cor : '',
-    listrada: S.atual ? estilo(S.atual).listrada : false,
-    ganho: S.ganhos.length ? S.ganhos[S.ganhos.length - 1] : null
+    ganho: ganho
   };
 }
+
 function publicarProjecao() {
   var st = estadoProjecao();
   if (canalProj) {
-    try { canalProj.postMessage(st); } catch (e) {}
+    try { canalProj.postMessage({ tipo:'estado', dados:st }); } catch (e) {}
   }
   try {
     if (janelaProj && !janelaProj.closed) {
-      janelaProj.postMessage({ tipo:'estado', dados: st }, '*');
+      janelaProj.postMessage({ tipo:'estado', dados:st }, '*');
     }
   } catch (e) {}
 }
+
+function htmlProjecao() {
+  var css = ''
+    + '*{box-sizing:border-box;margin:0;padding:0}'
+    + 'html,body{height:100%;overflow:hidden;background:#060c1a;color:#eaf0ff;'
+    + 'font-family:system-ui,"Segoe UI",Roboto,sans-serif}'
+    + 'body{display:flex;flex-direction:column;align-items:center;'
+    + 'justify-content:center;position:relative}'
+    + '.topo{position:absolute;top:16px;left:0;right:0;text-align:center;'
+    + 'font-size:clamp(14px,1.6vw,22px);letter-spacing:.28em;color:#4f9bff;font-weight:800}'
+    + '.cont{position:absolute;top:14px;right:24px;font-size:clamp(13px,1.4vw,20px);'
+    + 'color:#8fa2c7;font-weight:700;letter-spacing:.1em}'
+    + '.modfaixa{position:absolute;top:56px;left:0;right:0;display:none;'
+    + 'flex-wrap:wrap;gap:10px;justify-content:center;padding:0 20px}'
+    + '.modfaixa.on{display:flex}'
+    + '.modp{padding:8px 18px;border-radius:999px;border:2px solid #1e8e3e;'
+    + 'background:rgba(30,142,62,.18);color:#5ddc85;font-weight:900;'
+    + 'font-size:clamp(12px,1.4vw,19px);letter-spacing:.06em}'
+    + '.modp.cai{animation:cai 6s forwards}'
+    + '@keyframes cai{0%,70%{opacity:1;text-decoration:none}'
+    + '100%{opacity:.25;text-decoration:line-through;border-color:#4a5f88;'
+    + 'background:transparent;color:#5a6f96}}'
+    + '.bola{width:min(54vh,50vw);height:min(54vh,50vw);border-radius:50%;'
+    + 'display:grid;place-items:center;position:relative;overflow:hidden;'
+    + 'background:#16223f;color:#3b4b70;'
+    + 'box-shadow:inset 0 -18px 40px rgba(0,0,0,.6),'
+    + 'inset 0 18px 30px rgba(255,255,255,.16),0 20px 56px rgba(0,0,0,.6);'
+    + 'transition:.35s}'
+    + '.bola.on{background:var(--cor);color:#fff}'
+    + '.bola .br{position:absolute;inset:0;border-radius:50%;pointer-events:none;'
+    + 'background:radial-gradient(circle at 30% 22%,rgba(255,255,255,.88),'
+    + 'rgba(255,255,255,0) 44%)}'
+    + '.bola.on.lis::before{content:"";position:absolute;left:-12%;right:-12%;'
+    + 'top:30%;height:40%;background:#fff;z-index:1}'
+    + '.bola.on.lis .num{color:#1a1a1a;text-shadow:0 3px 0 rgba(255,255,255,.55)}'
+    + '.bola .num{position:relative;z-index:2;font-weight:900;line-height:1;'
+    + 'font-size:min(29vh,27vw);text-shadow:0 0 8px rgba(0,0,0,.9)}'
+    + '.bola .let{position:absolute;top:8%;z-index:3;font-weight:900;'
+    + 'font-size:min(8vh,8vw);letter-spacing:.1em;text-shadow:0 0 8px rgba(0,0,0,.9)}'
+    + '.vazio{font-size:min(3.2vh,2.8vw);font-weight:600;color:#5a6f96;'
+    + 'text-align:center;padding:0 40px;line-height:1.5;position:relative;z-index:3}'
+    + '.ult{position:absolute;bottom:24px;left:0;right:0;display:flex;gap:14px;'
+    + 'justify-content:center}'
+    + '.um{width:min(8.5vh,8.5vw);height:min(8.5vh,8.5vw);border-radius:50%;'
+    + 'display:grid;place-items:center;font-weight:900;'
+    + 'font-size:min(3.4vh,3vw);color:#fff;position:relative;overflow:hidden;'
+    + 'background:var(--cor);box-shadow:inset 0 -3px 8px rgba(0,0,0,.5)}'
+    + '.um.lis::before{content:"";position:absolute;left:-12%;right:-12%;'
+    + 'top:31%;height:38%;background:#fff;z-index:1}'
+    + '.um span{position:relative;z-index:2;text-shadow:0 0 3px #000}'
+    + '.um.lis span{color:#1a1a1a;text-shadow:0 1px 0 rgba(255,255,255,.5)}'
+    + '.grade{position:absolute;inset:0;display:none;background:rgba(6,12,26,.95);'
+    + 'padding:38px;z-index:30}'
+    + '.grade.on{display:grid;grid-template-columns:repeat(15,1fr);gap:6px;'
+    + 'align-content:center}'
+    + '.gcel{aspect-ratio:1;border-radius:50%;display:grid;place-items:center;'
+    + 'font-weight:800;font-size:clamp(8px,1vw,16px);background:#1b2543;'
+    + 'color:#3b4b70;position:relative;overflow:hidden}'
+    + '.gcel.on{background:var(--cor);color:#fff;'
+    + 'box-shadow:inset 0 -2px 5px rgba(0,0,0,.5)}'
+    + '.falta{position:absolute;bottom:calc(24px + min(8.5vh,8.5vw) + 20px);'
+    + 'left:50%;transform:translateX(-50%);display:none;padding:14px 38px;'
+    + 'border-radius:999px;background:linear-gradient(90deg,#ffe27a,#ffc400);'
+    + 'color:#241a00;font-weight:900;font-size:clamp(14px,1.8vw,26px);'
+    + 'letter-spacing:.08em;box-shadow:0 0 40px rgba(255,216,77,.9);'
+    + 'animation:pisca 1s ease-in-out infinite;z-index:20}'
+    + '.falta.on{display:block}'
+    + '@keyframes pisca{50%{transform:translateX(-50%) scale(1.06)}}'
+    + '.ganho{position:absolute;inset:0;display:none;place-items:center;'
+    + 'background:rgba(6,12,26,.97);z-index:50;text-align:center}'
+    + '.ganho.on{display:grid}'
+    + '.g1{font-size:clamp(28px,5vw,72px);font-weight:900;color:#37d67a;'
+    + 'letter-spacing:.06em}'
+    + '.g2{font-size:clamp(20px,3.4vw,52px);font-weight:900;color:#fff;'
+    + 'letter-spacing:.14em;margin-top:14px}'
+    + '.g3{font-size:clamp(14px,2vw,30px);font-weight:800;color:#ffd84d;'
+    + 'letter-spacing:.1em;margin-top:10px}'
+    + '.dica{position:absolute;bottom:8px;left:0;right:0;text-align:center;'
+    + 'font-size:11px;color:#33456b;letter-spacing:.1em}';
+
+  var fecha = '</scr' + 'ipt>';
+
+  var js = ''
+    + 'var bola=document.getElementById("bola");'
+    + 'var letEl=document.getElementById("let");'
+    + 'var numEl=document.getElementById("num");'
+    + 'var vazioEl=document.getElementById("vazio");'
+    + 'var ultEl=document.getElementById("ult");'
+    + 'var contEl=document.getElementById("cont");'
+    + 'var gradeEl=document.getElementById("grade");'
+    + 'var faltaEl=document.getElementById("falta");'
+    + 'var modfaixa=document.getElementById("modfaixa");'
+    + 'var ganhoEl=document.getElementById("ganho");'
+    + 'var gcod=document.getElementById("gcod");'
+    + 'var gmod=document.getElementById("gmod");'
+    + 'var verGrade=false,verMods=false,verFalta=false;'
+    + 'var ultimoGanho=null,timerGanho=null,modsAnteriores=[];'
+    + 'var ultimoEstado=null;'
+    + 'function desenharMods(d){'
+    + '  if(!verMods||!d.abertas){modfaixa.className="modfaixa";return;}'
+    + '  modfaixa.className="modfaixa on";'
+    + '  var h="";'
+    + '  for(var i=0;i<d.abertas.length;i++){'
+    + '    h+="<span class=\\"modp\\">"+d.abertas[i]+"</span>";'
+    + '  }'
+    + '  for(var k=0;k<modsAnteriores.length;k++){'
+    + '    if(d.abertas.indexOf(modsAnteriores[k])<0){'
+    + '      h+="<span class=\\"modp cai\\">"+modsAnteriores[k]+"</span>";'
+    + '    }'
+    + '  }'
+    + '  modfaixa.innerHTML=h;'
+    + '  modsAnteriores=d.abertas.slice();'
+    + '}'
+    + 'function desenharGrade(d){'
+    + '  if(!verGrade){gradeEl.className="grade";return;}'
+    + '  gradeEl.className="grade on";'
+    + '  var marcado={};'
+    + '  for(var i=0;i<d.todos.length;i++){marcado[d.todos[i].n]=d.todos[i];}'
+    + '  var h="";'
+    + '  for(var n=1;n<=75;n++){'
+    + '    var it=marcado[n];'
+    + '    if(it){'
+    + '      h+="<div class=\\"gcel on\\" style=\\"--cor:"+it.cor+"\\">"+n+"</div>";'
+    + '    }else{'
+    + '      h+="<div class=\\"gcel\\">"+n+"</div>";'
+    + '    }'
+    + '  }'
+    + '  gradeEl.innerHTML=h;'
+    + '}'
+    + 'function aplicar(d){'
+    + '  ultimoEstado=d;'
+    + '  contEl.textContent=d.total+" / 75";'
+    + '  if(d.atual){'
+    + '    bola.className="bola on"+(d.listrada?" lis":"");'
+    + '    bola.style.setProperty("--cor",d.cor);'
+    + '    letEl.textContent=d.letra;'
+    + '    numEl.textContent=d.atual;'
+    + '    vazioEl.style.display="none";'
+    + '  }else{'
+    + '    bola.className="bola";'
+    + '    letEl.textContent="";'
+    + '    numEl.textContent="";'
+    + '    vazioEl.style.display="block";'
+    + '  }'
+    + '  var h="";'
+    + '  for(var i=0;i<d.ultimos.length;i++){'
+    + '    var u=d.ultimos[i];'
+    + '    h+="<div class=\\"um"+(u.listrada?" lis":"")+"\\" style=\\"--cor:"+u.cor+"\\">"'
+    + '      +"<span>"+u.n+"</span></div>";'
+    + '  }'
+    + '  ultEl.innerHTML=h;'
+    + '  desenharGrade(d);'
+    + '  desenharMods(d);'
+    + '  if(verFalta&&d.faltaUma){faltaEl.className="falta on";}'
+    + '  else{faltaEl.className="falta";}'
+    + '  if(d.ganho&&d.ganho.hora!==ultimoGanho){'
+    + '    ultimoGanho=d.ganho.hora;'
+    + '    gcod.textContent="CARTELA "+d.ganho.codigo;'
+    + '    gmod.textContent=d.ganho.rotulo;'
+    + '    ganhoEl.className="ganho on";'
+    + '    if(timerGanho){clearTimeout(timerGanho);}'
+    + '    timerGanho=setTimeout(function(){ganhoEl.className="ganho";},8000);'
+    + '  }'
+    + '}'
+    + 'document.addEventListener("keydown",function(e){'
+    + '  var k=(e.key||"").toLowerCase();'
+    + '  if(k==="g"){verGrade=!verGrade;if(ultimoEstado){desenharGrade(ultimoEstado);}}'
+    + '  else if(k==="f"){verMods=!verMods;if(ultimoEstado){desenharMods(ultimoEstado);}}'
+    + '  else if(k==="a"){verFalta=!verFalta;if(ultimoEstado){aplicar(ultimoEstado);}}'
+    + '});'
+    + 'try{'
+    + '  var ch=new BroadcastChannel("bingo_cemtec");'
+    + '  ch.onmessage=function(ev){'
+    + '    if(ev.data&&ev.data.tipo==="estado"){aplicar(ev.data.dados);}'
+    + '  };'
+    + '}catch(e){}'
+    + 'window.addEventListener("message",function(ev){'
+    + '  if(ev.data&&ev.data.tipo==="estado"){aplicar(ev.data.dados);}'
+    + '});';
+
+  return '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">'
+    + '<title>BINGO CEMTEC — Projeção</title>'
+    + '<style>' + css + '</style></head><body>'
+    + '<div class="cont" id="cont">0 / 75</div>'
+    + '<div class="topo">BINGO DO CEMTEC</div>'
+    + '<div class="modfaixa" id="modfaixa"></div>'
+    + '<div class="bola" id="bola"><div class="br"></div>'
+    + '<div class="let" id="let"></div>'
+    + '<div class="num" id="num"></div>'
+    + '<div class="vazio" id="vazio">AGUARDANDO<br>O SORTEIO</div></div>'
+    + '<div class="falta" id="falta">FALTA UMA!</div>'
+    + '<div class="ult" id="ult"></div>'
+    + '<div class="grade" id="grade"></div>'
+    + '<div class="ganho" id="ganho">'
+    + '<div><div class="g1">BINGO!</div>'
+    + '<div class="g2" id="gcod"></div>'
+    + '<div class="g3" id="gmod"></div></div></div>'
+    + '<div class="dica">G grade · F modalidades · A falta uma</div>'
+    + '<script>' + js + fecha
+    + '</body></html>';
+}
+
 function abrirProjecao() {
   if (janelaProj && !janelaProj.closed) {
     janelaProj.focus();
+    publicarProjecao();
     return;
   }
-  var w = window.open('', 'bingo_projecao', 'width=1280,height=800');
+
+  try {
+    if (urlProj) URL.revokeObjectURL(urlProj);
+  } catch (e) {}
+
+  var blob = new Blob([htmlProjecao()], { type:'text/html;charset=utf-8' });
+  urlProj = URL.createObjectURL(blob);
+
+  var w = window.open(urlProj, 'bingo_projecao', 'width=1280,height=800');
   if (!w) {
     abrirModal('Janela bloqueada',
       '<p>O navegador bloqueou a janela de projeção.</p>' +
-      '<p class="aviso">Clique no ícone de bloqueio na barra de endereço e permita pop-ups para este site.</p>', []);
+      '<p class="aviso">Clique no ícone de bloqueio na barra de endereço ' +
+      'e permita pop-ups para este site.</p>', []);
     return;
   }
+
   janelaProj = w;
-  var html = '<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8">' +
-    '<title>BINGO CEMTEC — Projeção</title><style>' +
-    '*{box-sizing:border-box;margin:0;padding:0}' +
-    'html,body{height:100%;overflow:hidden;background:#060c1a;color:#eaf0ff;' +
-    'font-family:system-ui,\'Segoe UI\',Roboto,sans-serif}' +
-    'body{display:flex;flex-direction:column;align-items:center;justify-content:center;position:relative}' +
-    '.topo{position:absolute;top:18px;left:0;right:0;text-align:center;font-size:clamp(14px,1.6vw,22px);' +
-    'letter-spacing:.28em;color:#4f9bff;font-weight:800}' +
-    '.modfaixa{position:absolute;top:60px;left:0;right:0;display:none;flex-wrap:wrap;gap:10px;' +
-    'justify-content:center;padding:0 20px}' +
-    '.modfaixa.on{display:flex}' +
-    '.modp{padding:8px 18px;border-radius:999px;border:2px solid #1e8e3e;background:rgba(30,142,62,.18);' +
-    'color:#5ddc85;font-weight:900;font-size:clamp(12px,1.5vw,20px);letter-spacing:.06em}' +
-    '.modp.cai{animation:cai 6s forwards}' +
-    '@keyframes cai{0%,70%{opacity:1;text-decoration:none}' +
-    '100%{opacity:.25;text-decoration:line-through;border-color:#4a5f88;background:transparent;color:#5a6f96}}' +
-    '.bola{width:min(56vh,52vw);height:min(56vh,52vw);border-radius:50%;display:grid;place-items:center;' +
-    'position:relative;overflow:hidden;background:#16223f;color:#3b4b70;' +
-    'box-shadow:inset 0 -18px 40px rgba(0,0,0,.6),inset 0 18px 30px rgba(255,255,255,.16),0 20px 56px rgba(0,0,0,.6);' +
-    'transition:.35s}' +
-    '.bola.on{background:var(--cor);color:#fff}' +
-    '.bola .br{position:absolute;inset:0;border-radius:50%;pointer-events:none;' +
-    'background:radial-gradient(circle at 30% 22%,rgba(255,255,255,.88),rgba(255,255,255,0) 44%)}' +
-    '.bola.on.lis::before{content:\'\';position:absolute;left:-12%;right:-12%;top:30%;' +
-    'height:40%;background:#fff;z-index:1}' +
-    '.bola.on.lis .num{color:#1a1a1a;text-shadow:0 3px 0 rgba(255,255,255,.55)}' +
-    '.bola .num{position:relative;z-index:2;font-weight:900;line-height:1;' +
-    'font-size:min(30vh,28vw);text-shadow:0 0 8px rgba(0,0,0,.9)}' +
-    '.bola .let{position:absolute;top:8%;z-index:3;font-weight:900;' +
-    'font-size:min(8vh,8vw);letter-spacing:.1em;text-shadow:0 0 8px rgba(0,0,0,.9)}' +
-    '.vazio{font-size:min(3.4vh,3vw);font-weight:600;color:#5a6f96;text-align:center;padding:0 40px;line-height:1.5}' +
-    '.ult{position:absolute;bottom:26px;left:0;right:0;display:flex;gap:14px;justify-content:center}' +
-    '.um{width:min(9vh,9vw);height:min(9vh,9vw);border-radius:50%;display:grid;place-items:center;' +
-    'font-weight:900;font-size:min(3.6vh,3.2vw);color:#fff;position:relative;overflow:hidden;' +
-    'background:var(--cor);box-shadow:inset 0 -3px 8px rgba(0,0,0,.5)}' +
-    '.um.lis::before{content:\'\';position:absolute;left:-12%;right:-12%;top:31%;height:38%;background:#fff;z-index:1}' +
-    '.um span{position:relative;z-index:2;text-shadow:0 0 3px #000}' +
-    '.um.lis span{color:#1a1a1a;text-shadow:0 1px 0 rgba(255,255,255,.5)}' +
-    '.cont{position:absolute;top:16px;right:24px;font-size:clamp(13px,1.4vw,20px);' +
-    'color:#8fa2c7;font-weight:700;letter-spacing:.1em}' +
-    '.grade{position:absolute;inset:0;display:none;background:rgba(6,12,26,.94);' +
-    'padding:40px;place-content:center;gap:6px}' +
-    '.grade.on{display:grid;grid-template-columns:repeat(15,1fr);gap:6px}' +
-    '.gcel{aspect-ratio:1;border-radius:50%;display:grid;place-items:center;font-weight:800;' +
-    'font-size:clamp(9px,1.1vw,17px);background:#1b2543;color:#3b4b70;position:relative;overflow:hidden}' +
-    '.gcel.on{background:var(--cor);color:#fff;box-shadow:inset 0 -2px 5px rgba(0,0,0,.5)}' +
-    '.falta{position:absolute;bottom:calc(26px + min(9vh,9vw) + 22px);left:50%;transform:translateX(-50%);' +
-    'display:none;padding:14px 38px;border-radius:999px;background:linear-gradient(90deg,#ffe27a,#ffc400);' +
-    'color:#241a00;font-weight:900;font-size:clamp(14px,1.8vw,26px);letter-spacing:.08em;' +
-    'box-shadow:0 0 40px rgba(255,216,77,.9);animation:pisca 1s ease-in-out infinite}' +
-    '.falta.on{display:block}' +
-    '@keyframes pisca{50%{transform:translateX(-50%) scale(1.06)}}' +
-    '.ganho{position:absolute;inset:0;display:none;place-items:center;flex-direction:column;gap:18px;' +
-    'background:rgba(6,12,26,.96);z-index:50}' +
-    '.ganho.on{display:grid}' +
-    '.ganho .g1{font-size:clamp(28px,5vw,72px);font-weight:900;color:#37d67a;letter-spacing:.06em;text-align:center}' +
-    '.ganho .g2{font-size:clamp(20px,3.4vw,52px);font-weight:900;color:#fff;letter-spacing:.14em;text-align:center}' +
-    '.ganho .g3{font-size:clamp(14px,2vw,30px);font-weight:800;color:#ffd84d;letter-spacing:.1em;text-align:center}' +
-    '</style></head><body>' +
-    '<div class="cont" id="cont">0 / 75</div>' +
-    '<div class="topo">BINGO DO CEMTEC</div>' +
-    '<div class="modfaixa" id="modfaixa"></div>' +
-    '<div class="bola" id="bola"><div class="br"></div>' +
-    '<div class="let" id="let"></div><div class="num" id="num"></div>' +
-    '<div class="vazio" id="vazio">AGUARDANDO<br>O SORTEIO</div></div>' +
-    '<div class="falta" id="falta">FALTA UMA!</div>' +
-    '<div class="ult" id="ult"></div>' +
-    '<div class="grade" id="grade"></div>' +
-    '<div class="ganho" id="ganho"><div class="g1">BINGO!</div>' +
-    '<div class="g2" id="gcod"></div><div class="g3" id="gmod"></div></div>' +
-    '<script>' +
-    'var bola=document.getElementById("bola"),letEl=document.getElementById("let"),' +
-    'numEl=document.getElementById("num"),vazioEl=document.getElementById("vazio"),' +
-    'ultEl=document.getElementById("ult"),contEl=document.getElementById("cont"),' +
-    'gradeEl=document.getElementById("grade"),faltaEl=document.getElementById("falta"),' +
-    'modfaixa=document.getElementById("modfaixa"),ganhoEl=document.getElementById("ganho"),' +
-    'gcod=document.getElementById("gcod"),gmod=document.getElementById("gmod");' +
-    'var mostrarGrade=false,mostrarMods=false,mostrarFalta=false;' +
-    'var ultimoGanho=null,timerGanho=null,modsAnteriores=[];' +
-    'function renderMods(lista){' +
-    'if(!mostrarMods){modfaixa.className="modfaixa";return;}' +
-    'modfaixa.className="modfaixa on";' +
-    'var h="";' +
-    'for(var i=0;i<lista.length;i++){' +
-    'var caiu=modsAnteriores.length&&modsAnteriores.indexOf(lista[i])>=0&&lista.indexOf(lista[i])<0;' +
-    'h+="<span class=\\"modp"+(caiu?" cai":"")+"\\">"+lista[i]+"</span>";}' +
-    'modfaixa.innerHTML=h;' +
-    'modsAnteriores=lista.slice();' +
-    '}' +
-    'function aplicar(d){' +
-    'contEl.textContent=d.total+" / 75";' +
-    'if(d.atual){' +
-    'bola.className="bola on"+(d.listrada?" lis":"");' +
-    'bola.style.setProperty("--cor",d.cor);' +
-    'letEl.textContent=d.letra;' +
-    'numEl.textContent=d.atual;' +
-    'vazioEl.style.display="none";' +
-    '}else{' +
-    'bola.className="bola";' +
-    'letEl.textContent="";' +
-    'numEl.textContent="";' +
-    'vazioEl.style.display="block";' +
-    '}' +
-    'var h="";' +
-    'for(var i=0;i<d.ultimos.length;i++){' +
-    'h+="<div class=\\"um"+(d.ultimos[i].listrada?" lis":"")+"\\" style=\\"--cor:"+d.ultimos[i].cor+"\\">" +' +
-    '<span>'+d.ultimos[i].n+'</span></div>";}' +
-    'ultEl.innerHTML=h;' +
-    'if(mostrarGrade){' +
-    'var g="";' +
-    'for(var n=1;n<=75;n++){' +
-    'var achou=false;' +
-    'for(var k=0;k<d.todosNums.length;k++){if(d.todosNums[k]===n){achou=true;break;}}' +
-    'g+="<div class=\\"gcel"+(achou?" on":"")+"\\" style=\\"--cor:"+d.todosCor[n]+"\\">"+n+"</div>";}' +
-    'gradeEl.innerHTML=g;' +
-    '}' +
-    'if(mostrarFalta&&d.faltaUma){faltaEl.className="falta on";}else{faltaEl.className="falta";}' +
-    'renderMods(d.abertas.concat(d.ganhas));' +
-    'if(d.ganho&&d.ganho.hora!==ultimoGanho){' +
-    'ultimoGanho=d.ganho.hora;' +
-    'gcod.textContent="CARTELA "+d.ganho.codigo;' +
-    'gmod.textContent=d.ganho.rotulo;' +
-    'ganhoEl.className="ganho on";' +
-    'if(timerGanho)clearTimeout(timerGanho);' +
-    'timerGanho=setTimeout(function(){ganhoEl.className="ganho";},8000);' +
-    '}' +
-    '}' +
-    'document.addEventListener("keydown",function(e){' +
-    'var k=(e.key||"").toLowerCase();' +
-    'if(k==="g"){mostrarGrade=!mostrarGrade;gradeEl.className=mostrarGrade?"grade on":"grade";}' +
-    'else if(k==="f"){mostrarMods=!mostrarMods;modfaixa.className=mostrarMods?"modfaixa on":"modfaixa";}' +
-    'else if(k==="a"){mostrarFalta=!mostrarFalta;if(!mostrarFalta)faltaEl.className="falta";}' +
-    '});' +
-    'window.addEventListener("message",function(ev){' +
-    'if(ev.data&&ev.data.tipo==="estado"){aplicar(ev.data.dados);}' +
-    '});' +
-    '<\\/script></body></html>';
-  w.document.open();
-  w.document.write(html);
-  w.document.close();
   document.getElementById('btnProj').classList.add('projOn');
-  setTimeout(publicarProjecao, 500);
+
+  if (filaProj) clearInterval(filaProj);
+  var n = 0;
+  filaProj = setInterval(function () {
+    n++;
+    publicarProjecao();
+    if (n > 40) clearInterval(filaProj);
+  }, 400);
 }
 
 /* ================= EVENTOS ================= */
