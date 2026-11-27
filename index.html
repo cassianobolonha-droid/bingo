@@ -3241,92 +3241,241 @@ if (document.readyState === 'loading') {
   setTimeout(qrInjetarBotao, 60);
 }
 /* ========== FIM DO MÓDULO QR NA PROJEÇÃO ========== */
- /* ============ NOVA BASE (zerar + gerar + publicar) ============ */
-function novaBaseQR() {
-  qrModal('Nova base de cartelas',
-    '<p>Cria a base limpa em um passo.</p>' +
-    '<p style="color:#8fa2c7;font-size:13px;margin-top:8px">Apaga as cartelas do painel e da ' +
-    'planilha, gera a quantidade abaixo e publica. Quem já pegou cartela perde o vínculo.</p>' +
-    '<div style="margin-top:14px"><label style="display:block;font-size:11px;' +
-    'letter-spacing:.11em;color:#8fa2c7;font-weight:700;margin-bottom:6px">' +
-    'QUANTIDADE DE CARTELAS</label>' +
-    '<input type="number" id="qrQtd" value="30" min="1" max="500" ' +
-    'style="width:100%;background:#0c1730;border:1px solid #22314f;border-radius:10px;' +
-    'padding:11px 13px;color:#fff;font-size:15px;font-weight:600;font-family:inherit"></div>',
-    [
-      { r: 'Cancelar', a: qrBox },
-      { r: 'Criar base', p: 1, a: function () {
-          var el = document.getElementById('qrQtd');
-          var qtd = Math.max(1, Math.min(500, parseInt(el.value, 10) || 0));
-
-          qrMsg('Zerando a base...');
-
-          fetch(QR_API + '?acao=zerar')
-            .then(function (r) { return r.json(); })
-            .then(function (z) {
-              if (!z || !z.ok) { qrMsg('Falha ao zerar a base.', 0, 1); return; }
-
-              cartelas = [];
-              proximoCodigo = 0;
-              var assin = {};
-              for (var k = 0; k < qtd; k++) {
-                var nums = gerarCartela(assin);
-                if (!nums) break;
-                proximoCodigo++;
-                cartelas.push({
-                  codigo: ('000' + proximoCodigo).slice(-3),
-                  nome: '', telefone: '', nums: nums
-                });
-              }
-              salvar();
-              renderModbar();
-
-              qrMsg('Publicando ' + cartelas.length + ' cartelas...');
-
-              var lote = cartelas.map(function (c) {
-                return { codigo: c.codigo, nums: c.nums };
-              });
-
-              qrReq({ acao: 'publicar', cartelas: lote })
-                .then(function (d) {
-                  if (d && d.ok) {
-                    qrMsg('Base nova pronta: ' + d.publicadas + ' cartelas publicadas.', 1);
-                  } else {
-                    qrMsg('Gerou ' + cartelas.length + ', mas falhou ao publicar: ' +
-                      ((d && d.erro) || '?'), 0, 1);
-                  }
-                })
-                .catch(function () {
-                  qrMsg('Gerou ' + cartelas.length + ', mas sem conexão para publicar.', 0, 1);
-                });
-            })
-            .catch(function () { qrMsg('Sem conexão com o servidor.', 0, 1); });
-        } }
-    ]);
-}
-
+ /* ==========================================================
+   BINGO CEMTEC — NOVA BASE v2
+   Arraste/cole este arquivo como nova-base.js no repositório
+   e adicione antes de </body> no index.html:
+       <script src="nova-base.js"></script>
+   ========================================================== */
 (function () {
-  function inj() {
-    var barra = document.getElementById('qrBar') || document.querySelector('footer');
-    if (!barra || document.getElementById('btnNovaBase')) return;
 
-    var b = document.createElement('button');
-    b.id = 'btnNovaBase';
-    b.textContent = 'NOVA BASE';
-    b.className = 'btn';
-    b.style.cssText = 'flex:0 0 130px;width:130px;height:40px;' +
-      'border:1px solid #ff9d3d;color:#ffc07a;font-size:10px;font-weight:800;' +
-      'background:transparent';
-    b.onclick = novaBaseQR;
-    barra.appendChild(b);
+  var API = (typeof QR_API === 'string' && QR_API) ? QR_API :
+    'https://script.google.com/macros/s/AKfycbx0h6vOEiH14EP-li-z9hV8qqNNrShpQKOzB-t16QYv5XZ17tOlLNrypClOPRBVFaNI/exec';
+
+  var OV = 'nbOv';
+
+  function fechar() {
+    var o = document.getElementById(OV);
+    if (o && o.parentNode) o.parentNode.removeChild(o);
   }
+
+  function pintarMsg(txt, tipo) {
+    var e = document.getElementById('nbMsg');
+    if (!e) return;
+    e.style.display = 'block';
+    e.textContent = txt;
+    if (tipo === 'ok') {
+      e.style.background = 'rgba(30,142,62,.2)';
+      e.style.border = '1px solid #1e8e3e';
+      e.style.color = '#5ddc85';
+    } else if (tipo === 'err') {
+      e.style.background = 'rgba(198,40,40,.2)';
+      e.style.border = '1px solid #c62828';
+      e.style.color = '#ff8585';
+    } else {
+      e.style.background = '#0f2236';
+      e.style.border = '1px solid #22314f';
+      e.style.color = '#8fd6f8';
+    }
+  }
+
+  function modal(titulo, html, botoes) {
+    fechar();
+
+    var ov = document.createElement('div');
+    ov.id = OV;
+    ov.style.cssText = 'position:fixed;inset:0;z-index:100000;background:rgba(3,8,18,.88);' +
+      'display:flex;align-items:center;justify-content:center;padding:16px;' +
+      'font-family:system-ui,"Segoe UI",Roboto,sans-serif';
+
+    var box = document.createElement('div');
+    box.style.cssText = 'background:linear-gradient(180deg,#101c3a,#0b1428);' +
+      'border:1px solid #22314f;border-radius:16px;padding:22px;width:100%;' +
+      'max-width:440px;color:#eaf0ff';
+
+    box.innerHTML =
+      '<h3 style="margin:0 0 12px;font-size:17px;font-weight:800;color:#4f9bff">' +
+        titulo + '</h3>' +
+      '<div style="font-size:14px;line-height:1.55;color:#c7d6f0">' + html + '</div>' +
+      '<div id="nbMsg" style="display:none;margin-top:12px;padding:10px;' +
+        'border-radius:9px;text-align:center;font-size:13px;font-weight:700"></div>';
+
+    var bar = document.createElement('div');
+    bar.style.cssText = 'display:flex;gap:10px;margin-top:18px';
+
+    (botoes || []).forEach(function (b) {
+      var bt = document.createElement('button');
+      bt.textContent = b.r;
+      bt.style.cssText = 'flex:1;padding:13px;border-radius:10px;border:0;cursor:pointer;' +
+        'font-weight:800;font-size:14px;font-family:inherit;' +
+        (b.p ? 'background:linear-gradient(180deg,#4f9bff,#2f74db);color:#fff'
+             : 'background:#22314f;color:#c7d6f0');
+      bt.onclick = b.a;
+      bar.appendChild(bt);
+    });
+
+    box.appendChild(bar);
+    ov.appendChild(box);
+    document.body.appendChild(ov);
+  }
+
+  function get(url) {
+    return fetch(url).then(function (r) { return r.json(); });
+  }
+
+  function post(corpo) {
+    return fetch(API, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(corpo)
+    }).then(function (r) { return r.json(); });
+  }
+
+  /* limpa painel, sorteios, placar e ganhadores */
+  function limparPainel() {
+    try {
+      cartelas = [];
+      proximoCodigo = 0;
+      S.sorteados = [];
+      S.atual = null;
+      S.ganhos = [];
+      S.abertas = todasAbertas();
+      S.fila = novaFila();
+      S.pausado = false;
+      pendente = false;
+      limparFilaVoz();
+
+      if (btnBingo) btnBingo.classList.remove('ativo');
+      if (placar) placar.classList.remove('parado', 'quente', 'urgente');
+
+      limparAlerta();
+      pintarPlacar();
+      pintar(false);
+      atualizarTravaUI();
+      renderModbar();
+      salvar();
+      publicarProjecao();
+    } catch (e) {}
+  }
+
+  function gerar(qtd) {
+    var assin = {}, feitas = 0;
+    for (var i = 0; i < qtd; i++) {
+      var nums = gerarCartela(assin);
+      if (!nums) break;
+      proximoCodigo++;
+      cartelas.push({
+        codigo: ('000' + proximoCodigo).slice(-3),
+        nome: '', telefone: '', nums: nums
+      });
+      feitas++;
+    }
+    return feitas;
+  }
+
+  function executar(qtd) {
+    pintarMsg('Apagando a base antiga...');
+
+    get(API + '?acao=zerar')
+      .then(function (z) {
+        if (!z || !z.ok) {
+          pintarMsg('Falha ao zerar. Reimplante o Apps Script como NOVA VERSÃO.', 'err');
+          return;
+        }
+
+        limparPainel();
+
+        var feitas = gerar(qtd);
+        if (!feitas) {
+          pintarMsg('Nenhuma cartela gerada.', 'err');
+          return;
+        }
+
+        salvar();
+        renderModbar();
+        pintarMsg('Publicando ' + feitas + ' cartelas...');
+
+        var lote = cartelas.map(function (c) {
+          return { codigo: c.codigo, nums: c.nums };
+        });
+
+        post({ acao: 'publicar', cartelas: lote })
+          .then(function (d) {
+            if (d && d.ok) {
+              pintarMsg('Pronto: ' + d.publicadas + ' cartelas novas · rodada ' +
+                (z.rodada || '?') + '. Tudo zerado: painel, planilha, sorteios e celulares.', 'ok');
+            } else {
+              pintarMsg('Gerou ' + feitas + ', mas falhou ao publicar: ' +
+                ((d && d.erro) || '?'), 'err');
+            }
+          })
+          .catch(function () {
+            pintarMsg('Gerou ' + feitas + ', mas sem conexão para publicar.', 'err');
+          });
+      })
+      .catch(function () {
+        pintarMsg('Sem conexão com o servidor.', 'err');
+      });
+  }
+
+  function abrir() {
+    modal('Nova base de cartelas',
+      '<p style="color:#ff8585;font-weight:800;margin:0 0 6px">Isto apaga tudo:</p>' +
+      '<ul style="margin:0 0 0 18px;line-height:1.75;font-size:13px">' +
+        '<li>cartelas do painel e da planilha</li>' +
+        '<li>nomes, telefones e datas</li>' +
+        '<li>números sorteados e placar</li>' +
+        '<li>ganhadores e modalidades</li>' +
+        '<li>a cartela salva nos celulares</li>' +
+      '</ul>' +
+      '<div style="margin-top:14px">' +
+        '<label style="display:block;font-size:11px;letter-spacing:.11em;color:#8fa2c7;' +
+        'font-weight:700;margin-bottom:6px">QUANTIDADE DE CARTELAS</label>' +
+        '<input type="number" id="nbQtd" value="30" min="1" max="500" ' +
+        'style="width:100%;background:#0c1730;border:1px solid #22314f;border-radius:10px;' +
+        'padding:11px 13px;color:#fff;font-size:15px;font-weight:600;font-family:inherit">' +
+      '</div>',
+      [
+        { r: 'Cancelar', a: fechar },
+        { r: 'Zerar e gerar', p: 1, a: function () {
+            var el = document.getElementById('nbQtd');
+            var q = Math.max(1, Math.min(500, parseInt(el ? el.value : 0, 10) || 0));
+            executar(q);
+          } }
+      ]);
+  }
+
+  /* pega o botão que já existe no rodapé e aponta para a versão nova */
+  function ligar() {
+    var b = document.getElementById('btnNovaBase');
+
+    if (!b) {
+      var barra = document.getElementById('qrBar') || document.querySelector('footer');
+      if (!barra) return;
+
+      b = document.createElement('button');
+      b.id = 'btnNovaBase';
+      b.textContent = 'NOVA BASE';
+      b.className = 'btn';
+      b.style.cssText = 'flex:0 0 130px;width:130px;height:40px;' +
+        'border:1px solid #ff9d3d;color:#ffc07a;font-size:10px;font-weight:800;' +
+        'background:transparent';
+      barra.appendChild(b);
+    }
+
+    b.onclick = abrir;
+  }
+
   if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', function () { setTimeout(inj, 80); });
+    document.addEventListener('DOMContentLoaded', function () {
+      setTimeout(ligar, 300);
+      setTimeout(ligar, 1200);
+      setTimeout(ligar, 3000);
+    });
   } else {
-    setTimeout(inj, 80);
+    setTimeout(ligar, 300);
+    setTimeout(ligar, 1200);
+    setTimeout(ligar, 3000);
   }
+
 })();
-/* ========== FIM DO NOVA BASE ========== */
-</script>
-</body>
-</html>
