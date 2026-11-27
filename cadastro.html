@@ -107,6 +107,47 @@ function limparMsg() {
   m.textContent = '';
 }
 
+/* ---- Normaliza a ordem dos números para a grade 5x5 (linha por linha) ---- */
+function cartelaNormalizada(nums) {
+  if (!nums || nums.length !== 24) return nums;
+
+  var ok = true, k = 0;
+  for (var l = 0; l < 5 && ok; l++) {
+    for (var c = 0; c < 5; c++) {
+      if (l === 2 && c === 2) continue;
+      var n = nums[k++];
+      if (Math.floor((n - 1) / 15) !== c) { ok = false; break; }
+    }
+  }
+  if (ok) return nums;
+
+  var cols = [[], [], [], [], []];
+  for (var i = 0; i < 24; i++) {
+    var v = nums[i];
+    var cl = Math.floor((v - 1) / 15);
+    if (cl < 0 || cl > 4) return nums;
+    cols[cl].push(v);
+  }
+
+  var esperado = [5, 5, 4, 5, 5];
+  for (var j = 0; j < 5; j++) {
+    if (cols[j].length !== esperado[j]) return nums;
+  }
+  for (var j2 = 0; j2 < 5; j2++) {
+    cols[j2].sort(function (a, b) { return a - b; });
+  }
+
+  var pos = [0, 0, 0, 0, 0];
+  var out = [];
+  for (var l2 = 0; l2 < 5; l2++) {
+    for (var c2 = 0; c2 < 5; c2++) {
+      if (l2 === 2 && c2 === 2) continue;
+      out.push(cols[c2][pos[c2]++]);
+    }
+  }
+  return out;
+}
+
 document.getElementById('btnGerar').onclick = function () {
   var campo = document.getElementById('nome');
   var nome = campo.value.trim();
@@ -142,12 +183,13 @@ document.getElementById('btnGerar').onclick = function () {
       btn.textContent = 'RECEBER MINHA CARTELA';
       return;
     }
+    var numsOk = cartelaNormalizada(d.nums);
     try {
       localStorage.setItem('bingo_dados_' + d.codigo,
-        JSON.stringify({ codigo: d.codigo, nome: d.nome, nums: d.nums }));
+        JSON.stringify({ codigo: d.codigo, nome: d.nome, nums: numsOk }));
       localStorage.setItem('bingo_ultima', d.codigo);
     } catch (e) {}
-    abrirCartela(d.codigo, d.nome, d.nums);
+    abrirCartela(d.codigo, d.nome, numsOk);
   })
   .catch(function () {
     mostrar('err', 'Sem conexão. Verifique a internet e tente de novo.');
@@ -157,6 +199,7 @@ document.getElementById('btnGerar').onclick = function () {
 };
 
 function abrirCartela(codigo, nome, nums) {
+  nums = cartelaNormalizada(nums);
   cartelaAtual = { codigo: codigo, nums: nums };
 
   document.getElementById('form').style.display = 'none';
@@ -227,7 +270,7 @@ document.getElementById('btnRetomar').onclick = function () {
   var g = null;
   try { g = JSON.parse(localStorage.getItem('bingo_dados_' + ultimo)); } catch (e) {}
   if (g && g.nums && g.nums.length === 24) {
-    abrirCartela(g.codigo, g.nome, g.nums);
+    abrirCartela(g.codigo, g.nome, cartelaNormalizada(g.nums));
   }
 };
 
