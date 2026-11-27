@@ -3134,6 +3134,113 @@ function sincronizarQR() {
     if (j) abrirJogador(j);
   });
 })();
+ /* ============ MÓDULO QR NA PROJEÇÃO ============ */
+var QR_SITE = 'https://cassianobolonha-droid.github.io/bingo/cadastro.html';
+var QR_IMG = 'https://api.qrserver.com/v1/create-qr-code/?size=700x700&margin=10&data=' +
+  encodeURIComponent(QR_SITE);
+
+var qrLigado = false;
+var qrBase = 0;
+var qrTimer = null;
+
+function qrPintar() {
+  if (!janelaProj || janelaProj.closed) {
+    if (!qrLigado) return;
+    abrirProjecao();
+    setTimeout(qrPintar, 700);
+    return;
+  }
+
+  var doc = null;
+  try { doc = janelaProj.document; } catch (e) { return; }
+  if (!doc || !doc.body) { setTimeout(qrPintar, 400); return; }
+
+  var velho = doc.getElementById('qrFull');
+
+  if (!qrLigado) {
+    if (velho) velho.remove();
+    return;
+  }
+
+  if (velho) return;
+
+  var d = doc.createElement('div');
+  d.id = 'qrFull';
+  d.style.cssText = 'position:fixed;inset:0;z-index:9999;background:#060c1a;' +
+    'display:flex;flex-direction:column;align-items:center;justify-content:center;' +
+    'gap:2.4vh;padding:3vh;text-align:center;' +
+    'font-family:system-ui,"Segoe UI",Roboto,sans-serif';
+  d.innerHTML =
+    '<div style="font-size:clamp(22px,3.4vw,54px);font-weight:900;' +
+      'letter-spacing:.06em;color:#fff">BINGO DO ' +
+      '<span style="color:#1BA7EC">CEMTEC</span></div>' +
+    '<div style="font-size:clamp(14px,1.7vw,26px);color:#ffd84d;font-weight:800">' +
+      'Aponte a câmera e receba sua cartela</div>' +
+    '<div style="background:#fff;border-radius:18px;padding:2vh;' +
+      'box-shadow:0 18px 50px rgba(0,0,0,.6)">' +
+      '<img src="' + QR_IMG + '" alt="QR" ' +
+      'style="display:block;width:min(46vh,46vw);height:auto"></div>' +
+    '<div style="font-size:clamp(12px,1.4vw,20px);color:#c7d6f0;line-height:1.8">' +
+      '1. Escaneie o código &nbsp;·&nbsp; 2. Digite seu nome &nbsp;·&nbsp; ' +
+      '3. Toque em RECEBER MINHA CARTELA</div>';
+
+  doc.body.appendChild(d);
+}
+
+function pararVigia() {
+  if (qrTimer) { clearInterval(qrTimer); qrTimer = null; }
+}
+
+function qrVigiar() {
+  pararVigia();
+  qrTimer = setInterval(function () {
+    if (!qrLigado) { pararVigia(); return; }
+    if (S.sorteados.length > qrBase) qrAlternar();
+  }, 400);
+}
+
+function qrAlternar() {
+  qrLigado = !qrLigado;
+
+  var b = document.getElementById('btnQRProj');
+  if (b) {
+    b.style.borderColor = qrLigado ? '#37d67a' : '#8fa2c7';
+    b.style.color = qrLigado ? '#5ddc85' : '#8fa2c7';
+    b.textContent = qrLigado ? 'QR NA PROJEÇÃO · ON' : 'QR NA PROJEÇÃO';
+  }
+
+  if (qrLigado) {
+    qrBase = S.sorteados.length;
+    qrPintar();
+    qrVigiar();
+  } else {
+    pararVigia();
+    qrPintar();
+  }
+}
+
+function qrInjetarBotao() {
+  if (document.getElementById('btnQRProj')) return;
+
+  var alvo = document.getElementById('qrBar') || document.querySelector('footer');
+  if (!alvo) return;
+
+  var b = document.createElement('button');
+  b.id = 'btnQRProj';
+  b.textContent = 'QR NA PROJEÇÃO';
+  b.className = 'btn';
+  b.style.cssText = 'flex:0 0 150px;width:150px;height:40px;border:1px solid #8fa2c7;' +
+    'color:#8fa2c7;font-size:10px;font-weight:800;background:transparent';
+  b.onclick = qrAlternar;
+  alvo.appendChild(b);
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', function () { setTimeout(qrInjetarBotao, 60); });
+} else {
+  setTimeout(qrInjetarBotao, 60);
+}
+/* ========== FIM DO MÓDULO QR NA PROJEÇÃO ========== */
 </script>
 </body>
 </html>
