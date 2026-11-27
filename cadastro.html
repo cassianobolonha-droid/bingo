@@ -107,7 +107,7 @@ function limparMsg() {
   m.textContent = '';
 }
 
-/* ---- Normaliza a ordem dos números para a grade 5x5 (linha por linha) ---- */
+/* ---- Normaliza a ordem dos números para a grade 5x5 ---- */
 function cartelaNormalizada(nums) {
   if (!nums || nums.length !== 24) return nums;
 
@@ -183,12 +183,17 @@ document.getElementById('btnGerar').onclick = function () {
       btn.textContent = 'RECEBER MINHA CARTELA';
       return;
     }
+
     var numsOk = cartelaNormalizada(d.nums);
     try {
       localStorage.setItem('bingo_dados_' + d.codigo,
         JSON.stringify({ codigo: d.codigo, nome: d.nome, nums: numsOk }));
       localStorage.setItem('bingo_ultima', d.codigo);
+      if (typeof d.rodada !== 'undefined') {
+        localStorage.setItem('bingo_rodada', String(d.rodada));
+      }
     } catch (e) {}
+
     abrirCartela(d.codigo, d.nome, numsOk);
   })
   .catch(function () {
@@ -274,14 +279,60 @@ document.getElementById('btnRetomar').onclick = function () {
   }
 };
 
+/* ---- Rodada: apaga o celular quando a base é zerada ---- */
 (function () {
-  var ultimo = null;
-  try { ultimo = localStorage.getItem('bingo_ultima'); } catch (e) {}
-  if (!ultimo) return;
-  var g = null;
-  try { g = JSON.parse(localStorage.getItem('bingo_dados_' + ultimo)); } catch (e) {}
-  if (g && g.nums && g.nums.length === 24) {
-    document.getElementById('retomar').style.display = 'block';
+  var PR = 'bingo_rodada';
+
+  function limparTudo() {
+    var mudou = false;
+    try {
+      var ks = Object.keys(localStorage);
+      for (var i = 0; i < ks.length; i++) {
+        if (ks[i].indexOf('bingo_') === 0 && ks[i] !== PR) {
+          localStorage.removeItem(ks[i]);
+          mudou = true;
+        }
+      }
+    } catch (e) {}
+    return mudou;
+  }
+
+  fetch(API + '?acao=status')
+    .then(function (r) { return r.json(); })
+    .then(function (d) {
+      if (!d || !d.ok || typeof d.rodada === 'undefined') {
+        mostrarLocal();
+        return;
+      }
+
+      var local = null;
+      try { local = localStorage.getItem(PR); } catch (e) {}
+
+      if (local !== null && local === String(d.rodada)) {
+        mostrarLocal();
+        return;
+      }
+
+      var limpou = limparTudo();
+      try { localStorage.setItem(PR, String(d.rodada)); } catch (e) {}
+
+      if (limpou) {
+        location.reload();
+      } else {
+        mostrarLocal();
+      }
+    })
+    .catch(function () { mostrarLocal(); });
+
+  function mostrarLocal() {
+    var ultimo = null;
+    try { ultimo = localStorage.getItem('bingo_ultima'); } catch (e) {}
+    if (!ultimo) return;
+    var g = null;
+    try { g = JSON.parse(localStorage.getItem('bingo_dados_' + ultimo)); } catch (e) {}
+    if (g && g.nums && g.nums.length === 24) {
+      document.getElementById('retomar').style.display = 'block';
+    }
   }
 })();
 </script>
