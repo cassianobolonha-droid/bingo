@@ -29,6 +29,9 @@
   .msg{margin-top:14px;padding:12px;border-radius:10px;text-align:center;
     font-weight:700;font-size:14px;display:none}
   .msg.err{display:block;background:rgba(198,40,40,.18);border:1px solid #c62828;color:#ff8585}
+  .retomar{display:none;width:100%;max-width:400px}
+  .retomar button{background:linear-gradient(180deg,#22b35c,#16893f);
+    box-shadow:0 8px 24px rgba(30,142,62,.35);font-size:13px;padding:13px}
   #cartela{display:none;width:100%;max-width:400px;flex-direction:column;align-items:center;gap:14px}
   .dono{font-size:15px;color:#ffd84d;font-weight:800;text-align:center;line-height:1.4}
   table{border-collapse:separate;border-spacing:6px}
@@ -58,6 +61,10 @@
   </div>
 </div>
 
+<div class="retomar" id="retomar">
+  <button id="btnRetomar">VER MINHA CARTELA ANTERIOR</button>
+</div>
+
 <div id="cartela">
   <div class="dono" id="dono"></div>
   <table>
@@ -69,6 +76,11 @@
   <button id="btnLimpar"
     style="background:#2b3c55;box-shadow:none;font-size:13px;padding:11px;max-width:320px">
     Limpar marcações
+  </button>
+  <button id="btnTrocar"
+    style="background:#3a1f1f;border:1px solid #c62828;color:#ff8585;box-shadow:none;
+    font-size:12px;padding:11px;max-width:320px">
+    Não sou eu — pegar outra cartela
   </button>
   <div class="rodape">CEMTEC · Bingo</div>
 </div>
@@ -148,6 +160,7 @@ function abrirCartela(codigo, nome, nums) {
   cartelaAtual = { codigo: codigo, nums: nums };
 
   document.getElementById('form').style.display = 'none';
+  document.getElementById('retomar').style.display = 'none';
   document.getElementById('cartela').style.display = 'flex';
   document.getElementById('dono').textContent = nome + ' — cartela ' + codigo;
 
@@ -195,7 +208,19 @@ document.getElementById('btnLimpar').onclick = function () {
   for (var i = 0; i < marcas.length; i++) marcas[i].className = '';
 };
 
-(function () {
+document.getElementById('btnTrocar').onclick = function () {
+  try {
+    var ultimo = localStorage.getItem('bingo_ultima');
+    if (ultimo) {
+      localStorage.removeItem('bingo_dados_' + ultimo);
+      localStorage.removeItem('bingo_marks_' + ultimo);
+    }
+    localStorage.removeItem('bingo_ultima');
+  } catch (e) {}
+  location.reload();
+};
+
+document.getElementById('btnRetomar').onclick = function () {
   var ultimo = null;
   try { ultimo = localStorage.getItem('bingo_ultima'); } catch (e) {}
   if (!ultimo) return;
@@ -203,6 +228,17 @@ document.getElementById('btnLimpar').onclick = function () {
   try { g = JSON.parse(localStorage.getItem('bingo_dados_' + ultimo)); } catch (e) {}
   if (g && g.nums && g.nums.length === 24) {
     abrirCartela(g.codigo, g.nome, g.nums);
+  }
+};
+
+(function () {
+  var ultimo = null;
+  try { ultimo = localStorage.getItem('bingo_ultima'); } catch (e) {}
+  if (!ultimo) return;
+  var g = null;
+  try { g = JSON.parse(localStorage.getItem('bingo_dados_' + ultimo)); } catch (e) {}
+  if (g && g.nums && g.nums.length === 24) {
+    document.getElementById('retomar').style.display = 'block';
   }
 })();
 </script>
